@@ -47,7 +47,8 @@ class _PullPointsLayerWidgetState extends State<PullPointsLayerWidget> {
               zoom: widget.mapController.zoom,
               isSelected: false,
               pullPoint: notselectedPullPoint,
-              onNotselectedPullPointMarkerTap: () {
+              onTap: () {
+                pullPointsBloc.add(UnselectPullPointEvent());
                 pullPointsBloc.add(SelectPullPointEvent(selectedPullPointId: notselectedPullPoint.id));
               },
             ),
@@ -77,7 +78,8 @@ class _PullPointsLayerWidgetState extends State<PullPointsLayerWidget> {
               zoom: widget.mapController.zoom,
               isSelected: false,
               pullPoint: notselectedPullPoint,
-              onNotselectedPullPointMarkerTap: () {
+              onTap: () {
+                pullPointsBloc.add(UnselectPullPointEvent());
                 pullPointsBloc.add(SelectPullPointEvent(selectedPullPointId: notselectedPullPoint.id));
               },
             ),

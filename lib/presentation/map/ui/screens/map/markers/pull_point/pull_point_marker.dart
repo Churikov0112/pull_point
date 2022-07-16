@@ -7,21 +7,21 @@ class PullPointMarker extends StatelessWidget {
     required this.isSelected,
     required this.zoom,
     required this.pullPoint,
-    this.onNotselectedPullPointMarkerTap,
+    this.onTap,
     Key? key,
   }) : super(key: key);
 
   final bool isSelected;
   final double zoom;
   final PullPointModel pullPoint;
-  final Function()? onNotselectedPullPointMarkerTap;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (onNotselectedPullPointMarkerTap != null) {
-          onNotselectedPullPointMarkerTap!();
+        if (onTap != null) {
+          onTap!();
         }
       },
       child: Icon(
