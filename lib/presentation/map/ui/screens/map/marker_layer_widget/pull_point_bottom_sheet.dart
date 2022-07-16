@@ -20,34 +20,35 @@ class PullPointBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     return SlidingUpPanel(
+        minHeight: 70,
         panel: Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                pullPoint.artist.name,
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w800,
-                ),
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    pullPoint.artist.name,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  TouchableOpacity(
+                    onPressed: () {
+                      context.read<PullPointsBloc>().add(UnselectPullPointEvent());
+                    },
+                    child: SizedBox.square(
+                      dimension: 32,
+                      child: Icon(Icons.close),
+                    ),
+                  ),
+                ],
               ),
-              TouchableOpacity(
-                onPressed: () {
-                  context.read<PullPointsBloc>().add(UnselectPullPointEvent());
-                },
-                child: SizedBox.square(
-                  dimension: 32,
-                  child: Icon(Icons.close),
-                ),
-              ),
-            ],
-          ),
-        )
-      ],
-    ));
+            )
+          ],
+        ));
 
     // DraggableScrollableSheet(
     //   minChildSize: 0.15,
