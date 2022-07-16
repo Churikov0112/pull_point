@@ -19,6 +19,16 @@ class LoadedState extends PullPointsState {
   });
 }
 
+class SelectedState extends PullPointsState {
+  final List<PullPointModel> otherPullPoints;
+  final PullPointModel selectedPullPoint;
+
+  const SelectedState({
+    required this.selectedPullPoint,
+    required this.otherPullPoints,
+  });
+}
+
 class FailedState extends PullPointsState {
   final String errorMessage;
 

@@ -1,7 +1,12 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart' show Colors;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+
+import '../../../blocs/blocs.dart';
+import 'marker_layer_widget/pull_point_bottom_sheet.dart';
+import 'marker_layer_widget/pull_points_layer_widget.dart';
 
 final _kMapOptions = MapOptions(
   maxZoom: 18,
@@ -26,13 +31,33 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
+  late final MapController mapController;
+
+  @override
+  void initState() {
+    super.initState();
+    mapController = MapController();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FlutterMap(
-      mapController: MapController(),
-      options: _kMapOptions,
+    return Stack(
       children: [
-        TileLayerWidget(options: _kTileLayerOptions),
+        FlutterMap(
+          mapController: mapController,
+          options: _kMapOptions,
+          children: [
+            TileLayerWidget(options: _kTileLayerOptions),
+            PullPointsLayerWidget(mapController: mapController),
+          ],
+        ),
+        BlocBuilder<PullPointsBloc, PullPointsState>(builder: (context, state) {
+          print(state.runtimeType);
+          if (state is SelectedState) {
+            return PullPointBottomSheet(pullPoint: state.selectedPullPoint);
+          }
+          return const SizedBox.shrink();
+        }),
       ],
     );
   }

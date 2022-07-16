@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/presentation/home/home_page.dart';
+import 'data/data.dart';
+import 'presentation/map/blocs/blocs.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  // init repositories
   runApp(const MyApp());
 }
 
@@ -13,21 +13,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-        // MultiBlocProvider(
-        //   providers: const [
-        //     // BlocProvider<PersonListCubit>(create: (context) => sl<PersonListCubit>()..loadPerson()),
-        //     // BlocProvider<PersonSearchBloc>(create: (context) => sl<PersonSearchBloc>()),
-        //   ],
-        //   child:
-        const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      // theme: ThemeData.dark().copyWith(
-      //   backgroundColor: AppColors.mainBackground,
-      //   scaffoldBackgroundColor: AppColors.mainBackground,
-      // ),
-      home: HomePage(),
-      // ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<PullPointsBloc>(create: (context) => PullPointsBloc(repository: PullPointsRepositoryImpl())),
+        // BlocProvider<PersonSearchBloc>(create: (context) => sl<PersonSearchBloc>()),
+      ],
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        // theme: ThemeData.dark().copyWith(
+        //   backgroundColor: AppColors.mainBackground,
+        //   scaffoldBackgroundColor: AppColors.mainBackground,
+        // ),
+        home: HomePage(),
+      ),
     );
   }
 }

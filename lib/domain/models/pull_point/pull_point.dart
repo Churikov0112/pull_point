@@ -3,6 +3,7 @@ part of '../models.dart';
 class PullPointModel {
   final int id;
   final String title;
+  final String address;
   final DateTime createdAt;
   final DateTime expireAt;
   final LatLng latLng;
@@ -11,6 +12,7 @@ class PullPointModel {
   const PullPointModel({
     required this.id,
     required this.title,
+    required this.address,
     required this.createdAt,
     required this.expireAt,
     required this.latLng,

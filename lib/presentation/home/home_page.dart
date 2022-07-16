@@ -63,9 +63,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: Center(
-        child: _currentScreen(),
-      ),
+      body: Center(child: _currentScreen()),
     );
   }
 }

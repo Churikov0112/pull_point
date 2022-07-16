@@ -30,6 +30,12 @@ dependencies:
   flutter_map: ^2.0.0
   latlong2: ^0.8.1
 
+  # Date format
+  intl: ^0.17.0
+
+  # UI
+  sliding_up_panel: ^2.0.0+1
+
 
 dev_dependencies:
   flutter_test:
