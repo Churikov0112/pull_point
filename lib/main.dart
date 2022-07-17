@@ -4,6 +4,7 @@ import 'package:pull_point/presentation/home/home_page.dart';
 import 'data/data.dart';
 import 'presentation/home/blocs/blocs.dart';
 import 'presentation/map/blocs/blocs.dart';
+import 'presentation/ui_kit/ui_kit.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -20,13 +21,19 @@ class MyApp extends StatelessWidget {
         BlocProvider<HomeBloc>(create: (context) => HomeBloc()),
         // BlocProvider<PersonSearchBloc>(create: (context) => sl<PersonSearchBloc>()),
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
+        builder: (context, child) {
+          return ScrollConfiguration(
+            behavior: CustomScrollBehavior(),
+            child: child!,
+          );
+        },
         debugShowCheckedModeBanner: false,
         // theme: ThemeData.dark().copyWith(
         //   backgroundColor: AppColors.mainBackground,
         //   scaffoldBackgroundColor: AppColors.mainBackground,
         // ),
-        home: HomePage(),
+        home: const HomePage(),
       ),
     );
   }

@@ -57,10 +57,8 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
           startsAt: DateTime.now(),
           endsAt: DateTime.now().add(const Duration(hours: 2)),
           latLng: LatLng(59.95, 30.4),
-          artist: const ArtistModel(
-            id: 2,
-            name: 'Музыкалити',
-          ),
+          artist:
+              const ArtistModel(id: 2, name: 'Музыкалити', description: "Описание артиста надо сделать обязательным!"),
         ),
       ];
     }

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show Colors;
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import '../../../../../../../../domain/models/models.dart';
@@ -22,19 +22,18 @@ class PullPointBottomSheetContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (pullPoint.description != null)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Описание выступления",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                Text(pullPoint.description),
-                const SizedBox(height: 16),
-              ],
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Описание выступления",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Text(pullPoint.description),
+              const SizedBox(height: 16),
+            ],
+          ),
           if (pullPoint.posterUrl != null)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,19 +50,18 @@ class PullPointBottomSheetContent extends StatelessWidget {
                 const SizedBox(height: 16),
               ],
             ),
-          if (pullPoint.artist.description != null)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Описание артиста",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                Text(pullPoint.artist.description!),
-                const SizedBox(height: 16),
-              ],
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Описание артиста",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Text(pullPoint.artist.description),
+              const SizedBox(height: 16),
+            ],
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
