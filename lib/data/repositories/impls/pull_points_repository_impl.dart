@@ -9,28 +9,31 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
     // TODO (churikov_egor): remove mock
 
     if (allPullPoints.isEmpty) {
-      print("PullPoints loaded from network");
+      await Future.delayed(const Duration(seconds: 3));
+      print("PullPoints loaded from network with fake duration");
       allPullPoints = [
         PullPointModel(
           id: 0,
-          title: 'title',
+          title: 'Космо Кот',
           address: 'ст.м. Невский проспект',
           createdAt: DateTime.now(),
-          expireAt: DateTime.now().add(const Duration(hours: 2)),
+          startsAt: DateTime.now(),
+          endsAt: DateTime.now().add(const Duration(hours: 2)),
           latLng: LatLng(59.9386, 30.3141),
           artist: const ArtistModel(id: 0, name: 'Космо Кот'),
           posterUrl: "https://cs4.pikabu.ru/post_img/big/2014/06/01/10/1401638213_127727120.jpg",
         ),
         PullPointModel(
           id: 1,
-          title: 'субназвание',
+          title: 'Ваш любимый концерт',
           address: 'где-то в центре СПб',
           createdAt: DateTime.now(),
-          expireAt: DateTime.now().add(const Duration(hours: 3)),
+          startsAt: DateTime.now(),
+          endsAt: DateTime.now().add(const Duration(hours: 2)),
           latLng: LatLng(59.9, 30.3),
           artist: const ArtistModel(id: 1, name: 'Банд-М'),
           posterUrl:
-              "https://static.wikia.nocookie.net/concerts/images/5/5b/IMG_2886.jpg/revision/latest?cb=20190426122541",
+              "https://avatars.mds.yandex.net/get-zen_doc/964926/pub_5b85312fc1ccb200a9cfb1b8_5b85316bd6e1a500a9c28863/scale_1200",
         ),
       ];
     }
