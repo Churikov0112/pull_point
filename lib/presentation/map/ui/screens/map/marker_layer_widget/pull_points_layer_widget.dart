@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:pull_point/presentation/map/ui/screens/map/marker_layer_widget/pull_point_bottom_sheet/pull_point_bottom_sheet.dart';
 
 import '../../../../../../domain/domain.dart';
 import '../../../../blocs/blocs.dart';
@@ -27,7 +26,9 @@ class _PullPointsLayerWidgetState extends State<PullPointsLayerWidget> {
   void initState() {
     super.initState();
     pullPointsBloc = context.read<PullPointsBloc>();
-    pullPointsBloc.add(LoadDataEvent());
+    if (pullPointsBloc.state is InitialState) {
+      pullPointsBloc.add(LoadDataEvent());
+    }
   }
 
   LayerOptions pullPointMarkers(

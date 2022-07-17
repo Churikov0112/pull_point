@@ -34,6 +34,7 @@ class PullPointsBloc extends Bloc<PullPointsEvent, PullPointsState> {
       final selectedPullPoint = pullPoints.firstWhere((pp) => pp.id == event.selectedPullPointId);
       final otherPullPoints = await _repository.getPullPoints();
       emit(SelectedState(selectedPullPoint: selectedPullPoint, otherPullPoints: otherPullPoints));
+      print('selected');
     } catch (e) {
       emit(FailedState(errorMessage: e.toString()));
     }
