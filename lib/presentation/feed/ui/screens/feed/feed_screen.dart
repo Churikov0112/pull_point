@@ -1,5 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart' show CircularProgressIndicator, Colors, RefreshIndicator;
+import 'package:flutter/material.dart' show CircularProgressIndicator;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/presentation/feed/ui/screens/feed/poster_item.dart';
@@ -22,6 +21,7 @@ class FeedScreen extends StatelessWidget {
                 height: mediaQuery.size.height - 80,
                 width: mediaQuery.size.width,
                 child: GridView.builder(
+                  physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
                   itemCount: state.pullPoints.length,
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
