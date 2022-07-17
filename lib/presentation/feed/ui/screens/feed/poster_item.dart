@@ -95,14 +95,7 @@ class PosterItem extends StatelessWidget {
               child: const DecoratedBox(
                 decoration: BoxDecoration(
                   // borderRadius: BorderRadius.all(Radius.circular(12)),
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                    colors: [
-                      Color.fromRGBO(0, 0, 0, 0.8),
-                      Color.fromRGBO(0, 0, 0, 0),
-                    ],
-                  ),
+                  color: Color.fromRGBO(0, 0, 0, 0.5),
                 ),
               ),
             ),
@@ -117,6 +110,7 @@ class PosterItem extends StatelessWidget {
                   children: [
                     Text(
                       pullPoint.title,
+                      maxLines: 2,
                       style: const TextStyle(color: Colors.white, fontSize: 20),
                     ),
                     const SizedBox(height: 4),
@@ -126,11 +120,20 @@ class PosterItem extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "Конец: ${DateFormat("dd.MM.yyyy HH.mm").format(pullPoint.endsAt)}",
+                      "Место: ${pullPoint.address}",
                       style: const TextStyle(color: Colors.white, fontSize: 12),
                     ),
                   ],
                 ),
+              ),
+            ),
+            Positioned(
+              top: 12,
+              left: 12,
+              child: Text(
+                pullPoint.artist.name,
+                maxLines: 2,
+                style: const TextStyle(color: Colors.white, fontSize: 20),
               ),
             ),
           ],
