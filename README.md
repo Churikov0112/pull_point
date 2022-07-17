@@ -6,10 +6,8 @@ A new Flutter project.
 
 You should emit initial state before emit state you want. Something like this
 
-Future<void> _selectTab(SelectTabEvent event, Emitter<HomeState> emit) async {
-    emit(const InitialState());
-    emit(TabSelectedState(tabIndex: event.tabIndex));
-}
+emit(const InitialState());
+emit(TabSelectedState(tabIndex: event.tabIndex));
 
 ### Getting Started
 
