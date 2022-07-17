@@ -1,54 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-import '../../../../../../domain/models/models.dart';
-import '../../../../../ui_kit/ui_kit.dart';
-import '../../../../blocs/blocs.dart';
+import '../../../../../../../domain/models/models.dart';
+import 'widgets/widgets.dart';
 
 class PullPointBottomSheet extends StatelessWidget {
   final PullPointModel pullPoint;
-  late PullPointsBloc pullPointsBloc;
 
-  PullPointBottomSheet({
+  const PullPointBottomSheet({
     required this.pullPoint,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
+    // final mediaQuery = MediaQuery.of(context);
     return SlidingUpPanel(
-        minHeight: 70,
-        panel: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    pullPoint.artist.name,
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  TouchableOpacity(
-                    onPressed: () {
-                      context.read<PullPointsBloc>().add(UnselectPullPointEvent());
-                    },
-                    child: SizedBox.square(
-                      dimension: 32,
-                      child: Icon(Icons.close),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ));
+      minHeight: 70,
+      panel: Column(
+        children: [
+          PullPointBottomSheetHeader(pullPoint: pullPoint),
+        ],
+      ),
+    );
 
     // DraggableScrollableSheet(
     //   minChildSize: 0.15,
