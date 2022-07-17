@@ -4,6 +4,7 @@ class PullPointModel {
   final int id;
   final String title;
   final String address;
+  final String? posterUrl;
   final DateTime createdAt;
   final DateTime expireAt;
   final LatLng latLng;
@@ -17,5 +18,6 @@ class PullPointModel {
     required this.expireAt,
     required this.latLng,
     required this.artist,
+    this.posterUrl,
   });
 }

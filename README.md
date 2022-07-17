@@ -2,7 +2,16 @@
 
 A new Flutter project.
 
-## Getting Started
+## bloc
+
+You should emit initial state before emit state you want. Something like this
+
+Future<void> _selectTab(SelectTabEvent event, Emitter<HomeState> emit) async {
+    emit(const InitialState());
+    emit(TabSelectedState(tabIndex: event.tabIndex));
+}
+
+### Getting Started
 
 This project is a starting point for a Flutter application.
 

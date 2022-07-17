@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/presentation/home/home_page.dart';
 import 'data/data.dart';
+import 'presentation/home/blocs/blocs.dart';
 import 'presentation/map/blocs/blocs.dart';
 
 void main() async {
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<PullPointsBloc>(create: (context) => PullPointsBloc(repository: PullPointsRepositoryImpl())),
+        BlocProvider<HomeBloc>(create: (context) => HomeBloc()),
         // BlocProvider<PersonSearchBloc>(create: (context) => sl<PersonSearchBloc>()),
       ],
       child: const MaterialApp(
