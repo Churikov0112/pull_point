@@ -32,9 +32,13 @@ class PullPointsBloc extends Bloc<PullPointsEvent, PullPointsState> {
     try {
       final pullPoints = await _repository.getPullPoints();
       final selectedPullPoint = pullPoints.firstWhere((pp) => pp.id == event.selectedPullPointId);
-      final otherPullPoints = await _repository.getPullPoints();
+      final List<PullPointModel> otherPullPoints = [];
+      for (final pp in pullPoints) {
+        if (pp.id != event.selectedPullPointId) {
+          otherPullPoints.add(pp);
+        }
+      }
       emit(SelectedState(selectedPullPoint: selectedPullPoint, otherPullPoints: otherPullPoints));
-      print('selected');
     } catch (e) {
       emit(FailedState(errorMessage: e.toString()));
     }

@@ -12,6 +12,7 @@ class FeedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(height: mediaQuery.padding.top),
         BlocBuilder<PullPointsBloc, PullPointsState>(

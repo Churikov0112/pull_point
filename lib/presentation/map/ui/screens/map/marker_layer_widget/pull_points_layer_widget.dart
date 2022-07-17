@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../../../../../domain/domain.dart';
 import '../../../../blocs/blocs.dart';
@@ -25,9 +26,23 @@ class _PullPointsLayerWidgetState extends State<PullPointsLayerWidget> {
   @override
   void initState() {
     super.initState();
+
+    // load data only firstly
     pullPointsBloc = context.read<PullPointsBloc>();
     if (pullPointsBloc.state is InitialState) {
       pullPointsBloc.add(LoadDataEvent());
+    }
+
+    final state = pullPointsBloc.state;
+
+    if (state is SelectedState) {
+      zoomToSpecificPullPoint(latLng: state.selectedPullPoint.latLng);
+    }
+  }
+
+  void zoomToSpecificPullPoint({LatLng? latLng}) {
+    if (latLng != null) {
+      widget.mapController.move(latLng, 18);
     }
   }
 
@@ -51,6 +66,7 @@ class _PullPointsLayerWidgetState extends State<PullPointsLayerWidget> {
               onTap: () {
                 pullPointsBloc.add(UnselectPullPointEvent());
                 pullPointsBloc.add(SelectPullPointEvent(selectedPullPointId: notselectedPullPoint.id));
+                zoomToSpecificPullPoint(latLng: notselectedPullPoint.latLng);
               },
             ),
           ),
@@ -82,6 +98,7 @@ class _PullPointsLayerWidgetState extends State<PullPointsLayerWidget> {
               onTap: () {
                 pullPointsBloc.add(UnselectPullPointEvent());
                 pullPointsBloc.add(SelectPullPointEvent(selectedPullPointId: notselectedPullPoint.id));
+                zoomToSpecificPullPoint(latLng: notselectedPullPoint.latLng);
               },
             ),
           ),
