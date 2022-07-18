@@ -58,8 +58,9 @@ class _MapScreenState extends State<MapScreen> {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
+      await Geolocator.openLocationSettings();
       setState(() => loadingLocation = false);
-      return Future.error('Location services are disabled.');
+      // return Future.error('Location services are disabled.');
     }
 
     permission = await Geolocator.checkPermission();
