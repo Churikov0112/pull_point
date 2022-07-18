@@ -88,7 +88,7 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
+    // final mediaQuery = MediaQuery.of(context);
     return Stack(
       children: [
         // map & points
@@ -139,19 +139,23 @@ class _MapScreenState extends State<MapScreen> {
             child: Center(
               child: loadingLocation
                   ? const CircularProgressIndicator()
-                  : Icon(
-                      Icons.place_outlined,
-                      color: _currentPosition != null ? Colors.orange : Colors.grey,
-                    ),
+                  : _currentPosition != null
+                      ? const Icon(Icons.place, color: Colors.orange)
+                      : const Icon(Icons.place_outlined, color: Colors.grey),
             ),
           ),
         ),
 
         // pp bs
         BlocBuilder<PullPointsBloc, PullPointsState>(builder: (context, state) {
-          print(state.runtimeType);
+          // print(state.runtimeType);
           if (state is SelectedState) {
-            return PullPointBottomSheet(pullPoint: state.selectedPullPoint);
+            return PullPointBottomSheet(
+              pullPoint: state.selectedPullPoint,
+              onClose: () {
+                mapController.move(_kDefaultLatLng, _kDefaultZoom);
+              },
+            );
           }
           return const SizedBox.shrink();
         }),

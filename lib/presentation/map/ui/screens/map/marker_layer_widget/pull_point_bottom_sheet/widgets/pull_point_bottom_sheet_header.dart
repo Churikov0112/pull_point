@@ -8,11 +8,13 @@ import '../../../../../../blocs/blocs.dart';
 
 class PullPointBottomSheetHeader extends StatelessWidget {
   const PullPointBottomSheetHeader({
-    Key? key,
     required this.pullPoint,
+    this.onClose,
+    Key? key,
   }) : super(key: key);
 
   final PullPointModel pullPoint;
+  final Function()? onClose;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +50,9 @@ class PullPointBottomSheetHeader extends StatelessWidget {
               ),
               TouchableOpacity(
                 onPressed: () {
+                  if (onClose != null) {
+                    onClose!();
+                  }
                   context.read<PullPointsBloc>().add(UnselectPullPointEvent());
                 },
                 child: const SizedBox.square(
