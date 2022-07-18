@@ -16,22 +16,25 @@ class PullPointBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    return SlidingUpPanel(
-      minHeight: 70,
-      maxHeight: mediaQuery.size.height - mediaQuery.padding.top - 56,
-      parallaxEnabled: true,
-      parallaxOffset: 0.1,
-      panelBuilder: (scrollController) {
-        return SingleChildScrollView(
-          controller: scrollController,
-          child: Column(
-            children: [
-              PullPointBottomSheetHeader(pullPoint: pullPoint),
-              PullPointBottomSheetContent(pullPoint: pullPoint, scrollController: scrollController),
-            ],
-          ),
-        );
-      },
+    return SafeArea(
+      bottom: false,
+      child: SlidingUpPanel(
+        minHeight: 70,
+        maxHeight: mediaQuery.size.height - mediaQuery.padding.top - 56,
+        parallaxEnabled: true,
+        parallaxOffset: 0.1,
+        panelBuilder: (scrollController) {
+          return SingleChildScrollView(
+            controller: scrollController,
+            child: Column(
+              children: [
+                PullPointBottomSheetHeader(pullPoint: pullPoint),
+                PullPointBottomSheetContent(pullPoint: pullPoint, scrollController: scrollController),
+              ],
+            ),
+          );
+        },
+      ),
     );
 
     // DraggableScrollableSheet(

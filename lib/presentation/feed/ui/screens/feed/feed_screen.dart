@@ -19,11 +19,12 @@ class FeedScreen extends StatelessWidget {
           builder: (context, state) {
             if (state is LoadedState) {
               return SizedBox(
-                height: mediaQuery.size.height - 80,
+                height: mediaQuery.size.height - mediaQuery.padding.top - 80,
                 width: mediaQuery.size.width,
                 child: GridView.builder(
+                  shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
+                  padding: const EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 50),
                   itemCount: state.pullPoints.length,
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                     maxCrossAxisExtent: mediaQuery.size.width / 2,
