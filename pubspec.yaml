@@ -29,6 +29,7 @@ dependencies:
   # Map
   flutter_map: ^2.0.0
   latlong2: ^0.8.1
+  geolocator: ^9.0.1
 
   # Date format
   intl: ^0.17.0
