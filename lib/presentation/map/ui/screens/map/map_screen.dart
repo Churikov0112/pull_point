@@ -1,11 +1,13 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter/material.dart' show CircularProgressIndicator, Colors, FloatingActionButton, Icons;
+import 'package:flutter/material.dart'
+    show CircularProgressIndicator, Colors, FloatingActionButton, Icons, MaterialPageRoute;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../../blocs/blocs.dart';
+import '../filters/filters_screen.dart';
 import 'marker_layer_widget/pull_point_bottom_sheet/pull_point_bottom_sheet.dart';
 import 'marker_layer_widget/pull_points_layer_widget.dart';
 
@@ -125,8 +127,9 @@ class _MapScreenState extends State<MapScreen> {
         // find location button
         Positioned(
           right: 16,
-          bottom: 40,
+          bottom: 80,
           child: FloatingActionButton(
+            heroTag: null,
             backgroundColor: Colors.white,
             onPressed: () {
               if (_currentPosition == null) {
@@ -142,6 +145,25 @@ class _MapScreenState extends State<MapScreen> {
                   : _currentPosition != null
                       ? const Icon(Icons.place, color: Colors.orange)
                       : const Icon(Icons.place_outlined, color: Colors.grey),
+            ),
+          ),
+        ),
+
+        // find location button
+        Positioned(
+          right: 16,
+          bottom: 150,
+          child: FloatingActionButton(
+            backgroundColor: Colors.white,
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => const MapFiltersScreen(),
+                ),
+              );
+            },
+            child: const Center(
+              child: Icon(Icons.filter_alt_outlined, color: Colors.grey),
             ),
           ),
         ),

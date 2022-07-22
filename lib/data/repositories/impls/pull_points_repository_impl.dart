@@ -3,9 +3,12 @@ import '../../../domain/domain.dart';
 
 class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
   List<PullPointModel> allPullPoints = [];
+  List<CategoryModel> highLevelCategories = [];
 
   @override
-  Future<List<PullPointModel>> getPullPoints() async {
+  Future<List<PullPointModel>> getPullPoints({
+    DateTimeFilter? dateTimeFilter,
+  }) async {
     // TODO (churikov_egor): remove mock
 
     if (allPullPoints.isEmpty) {
@@ -21,6 +24,16 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
           startsAt: DateTime.now(),
           endsAt: DateTime.now().add(const Duration(hours: 2)),
           latLng: LatLng(59.9386, 30.3141),
+          category: const CategoryModel(
+            id: 1,
+            name: "Музыка",
+            children: [
+              CategoryModel(id: 10, name: "Кавер"),
+              CategoryModel(id: 11, name: "Авторская песня"),
+              CategoryModel(id: 12, name: "Рок"),
+              CategoryModel(id: 13, name: "Рэп"),
+            ],
+          ),
           artist: const ArtistModel(
             id: 0,
             name: 'Космо Кот',
@@ -38,6 +51,14 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
           startsAt: DateTime.now(),
           endsAt: DateTime.now().add(const Duration(hours: 2)),
           latLng: LatLng(59.9, 30.3),
+          category: const CategoryModel(
+            id: 0,
+            name: "Музыка",
+            children: [
+              CategoryModel(id: 4, name: "Джаз"),
+              CategoryModel(id: 5, name: "Блюз"),
+            ],
+          ),
           artist: const ArtistModel(
             id: 1,
             name: 'Банд-М',
@@ -57,10 +78,46 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
           startsAt: DateTime.now(),
           endsAt: DateTime.now().add(const Duration(hours: 2)),
           latLng: LatLng(59.95, 30.4),
+          category: const CategoryModel(
+            id: 0,
+            name: "Музыка",
+            children: [
+              CategoryModel(id: 3, name: "Рэп"),
+            ],
+          ),
           artist:
               const ArtistModel(id: 2, name: 'Музыкалити', description: "Описание артиста надо сделать обязательным!"),
         ),
+        PullPointModel(
+          id: 3,
+          title: 'fire-шоу',
+          address: 'Белорусская 6',
+          description: "Поджигаю облитую бензином японскую катану и показываю красивый акробатичнские трюки",
+          createdAt: DateTime.now(),
+          startsAt: DateTime.now(),
+          endsAt: DateTime.now().add(const Duration(hours: 2)),
+          latLng: LatLng(59.936521, 30.500014),
+          category: const CategoryModel(
+            id: 1,
+            name: "Фаер-шоу",
+            children: [
+              CategoryModel(id: 6, name: "Танцы"),
+              CategoryModel(id: 7, name: "Акробатика"),
+            ],
+          ),
+          artist: const ArtistModel(id: 2, name: 'Самурай', description: "Описание артиста надо сделать обязательным!"),
+        ),
       ];
+    }
+
+    if (dateTimeFilter != null) {
+      final List<PullPointModel> result = [];
+      for (final pp in allPullPoints) {
+        if (pp.startsAt.isAfter(dateTimeFilter.from) && pp.startsAt.isBefore(dateTimeFilter.until)) {
+          result.add(pp);
+        }
+      }
+      return result;
     }
 
     return allPullPoints;

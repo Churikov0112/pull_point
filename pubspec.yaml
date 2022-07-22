@@ -37,6 +37,10 @@ dependencies:
   # UI
   sliding_up_panel: ^2.0.0+1
 
+  # filters
+  time_range_picker: ^2.2.0
+  # syncfusion_flutter_datepicker: ^20.2.39
+
 
 dev_dependencies:
   flutter_test:

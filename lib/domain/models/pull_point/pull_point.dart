@@ -6,11 +6,11 @@ class PullPointModel {
   final String description;
   final String address;
   final LatLng latLng;
+  final CategoryModel category;
   final ArtistModel artist;
   final DateTime createdAt;
   final DateTime startsAt;
   final DateTime endsAt;
-
   final String? posterUrl;
 
   const PullPointModel({
@@ -23,6 +23,7 @@ class PullPointModel {
     required this.latLng,
     required this.artist,
     required this.description,
+    required this.category,
     this.posterUrl,
   });
 }

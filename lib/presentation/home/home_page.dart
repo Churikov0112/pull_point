@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' show Scaffold, BottomNavigationBar, Icons;
+import 'package:flutter/material.dart' show AppBar, BottomNavigationBar, IconButton, Icons, MaterialPageRoute, Scaffold;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -36,6 +36,19 @@ class _HomePageState extends State<HomePage> {
         return const FeedScreen();
       case 2:
         return const ProfileScreen();
+      default:
+        return const Text("Ошибка навигации. См. home_page.dart");
+    }
+  }
+
+  Widget _currentScreenName({required int index}) {
+    switch (index) {
+      case 0:
+        return const Text("Карта");
+      case 1:
+        return const Text("Афиши");
+      case 2:
+        return const Text("Проифль");
       default:
         return const Text("Ошибка навигации. См. home_page.dart");
     }
