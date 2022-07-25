@@ -149,24 +149,24 @@ class _MapScreenState extends State<MapScreen> {
           ),
         ),
 
-        // filters button
-        Positioned(
-          right: 16,
-          bottom: 150,
-          child: FloatingActionButton(
-            backgroundColor: Colors.white,
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (BuildContext context) => const MapFiltersScreen(),
-                ),
-              );
-            },
-            child: const Center(
-              child: Icon(Icons.filter_alt_outlined, color: Colors.grey),
-            ),
-          ),
-        ),
+        // // filters button
+        // Positioned(
+        //   right: 16,
+        //   bottom: 150,
+        //   child: FloatingActionButton(
+        //     backgroundColor: Colors.white,
+        //     onPressed: () {
+        //       Navigator.of(context).push(
+        //         MaterialPageRoute<void>(
+        //           builder: (BuildContext context) => const MapFiltersScreen(),
+        //         ),
+        //       );
+        //     },
+        //     child: const Center(
+        //       child: Icon(Icons.filter_alt_outlined, color: Colors.grey),
+        //     ),
+        //   ),
+        // ),
 
         // pp bs
         BlocBuilder<PullPointsBloc, PullPointsState>(builder: (context, state) {
