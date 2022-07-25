@@ -21,7 +21,7 @@ class PullPointBottomSheet extends StatelessWidget {
     return SafeArea(
       bottom: false,
       child: SlidingUpPanel(
-        minHeight: 70,
+        minHeight: 200,
         maxHeight: mediaQuery.size.height - mediaQuery.padding.top - 56,
         parallaxEnabled: true,
         parallaxOffset: 0.1,

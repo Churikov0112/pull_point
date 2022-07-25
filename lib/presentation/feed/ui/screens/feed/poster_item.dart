@@ -1,8 +1,10 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:flutter/material.dart' show Colors;
+import 'package:flutter/material.dart' show Colors, showModalBottomSheet;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:pull_point/presentation/map/ui/screens/map/marker_layer_widget/pull_point_bottom_sheet/widgets/pull_point_bottom_sheet_content.dart';
+import 'package:pull_point/presentation/map/ui/screens/map/marker_layer_widget/pull_point_bottom_sheet/widgets/pull_point_bottom_sheet_header.dart';
 
 import '../../../../../domain/models/models.dart';
 import '../../../../home/blocs/blocs.dart';
@@ -30,12 +32,44 @@ class PosterItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaqQuery = MediaQuery.of(context);
     return TouchableOpacity(
-      onPressed: () {
+      onPressed: () async {
         if (isActive(pp: pullPoint)) {
           context.read<PullPointsBloc>().add(SelectPullPointEvent(selectedPullPointId: pullPoint.id));
           context.read<HomeBloc>().add(const SelectTabEvent(tabIndex: 0));
         } else {
-          var cancel = BotToast.showText(text: "Это выступление еще не началось");
+          await showModalBottomSheet(
+            isScrollControlled: true,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+            backgroundColor: Colors.transparent,
+            context: context,
+            builder: (BuildContext context) {
+              final scrollController = ScrollController();
+              return SafeArea(
+                bottom: false,
+                child: Padding(
+                  padding: EdgeInsets.only(top: mediaqQuery.padding.top),
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    child: Column(
+                      children: [
+                        // SizedBox(height: mediaqQuery.padding.top),
+                        PullPointBottomSheetHeader(
+                          pullPoint: pullPoint,
+                          onClose: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        PullPointBottomSheetContent(
+                          pullPoint: pullPoint,
+                          scrollController: ScrollController(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
         }
       },
       child: ClipRRect(
