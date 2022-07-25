@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/data/repositories/impls/map_filters_repository_impl.dart';
@@ -28,12 +29,13 @@ class MyApp extends StatelessWidget {
         // BlocProvider<PersonSearchBloc>(create: (context) => sl<PersonSearchBloc>()),
       ],
       child: MaterialApp(
-        builder: (context, child) {
-          return ScrollConfiguration(
-            behavior: CustomScrollBehavior(),
-            child: child!,
-          );
-        },
+        builder: BotToastInit(),
+        // builder: (context, child) {
+        //   return ScrollConfiguration(
+        //     behavior: CustomScrollBehavior(),
+        //     child: child!,
+        //   );
+        // },
         debugShowCheckedModeBanner: false,
         // theme: ThemeData.dark().copyWith(
         //   backgroundColor: AppColors.mainBackground,

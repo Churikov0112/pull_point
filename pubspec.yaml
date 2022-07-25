@@ -39,7 +39,9 @@ dependencies:
 
   # filters
   time_range_picker: ^2.2.0
-  # syncfusion_flutter_datepicker: ^20.2.39
+
+  # toasts
+  bot_toast: ^4.0.3
 
 
 dev_dependencies:
