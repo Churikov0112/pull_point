@@ -110,15 +110,15 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
       ];
     }
 
-    if (dateTimeFilter != null) {
-      final List<PullPointModel> result = [];
-      for (final pp in allPullPoints) {
-        if (pp.startsAt.isAfter(dateTimeFilter.from) && pp.startsAt.isBefore(dateTimeFilter.until)) {
-          result.add(pp);
-        }
-      }
-      return result;
-    }
+    // if (dateTimeFilter != null) {
+    //   final List<PullPointModel> result = [];
+    //   for (final pp in allPullPoints) {
+    //     if (pp.startsAt.isAfter(dateTimeFilter.date.start) && pp.startsAt.isBefore(dateTimeFilter.until)) {
+    //       result.add(pp);
+    //     }
+    //   }
+    //   return result;
+    // }
 
     return allPullPoints;
   }

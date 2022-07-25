@@ -149,7 +149,7 @@ class _MapScreenState extends State<MapScreen> {
           ),
         ),
 
-        // find location button
+        // filters button
         Positioned(
           right: 16,
           bottom: 150,

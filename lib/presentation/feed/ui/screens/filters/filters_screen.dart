@@ -1,25 +1,101 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_range_picker/time_range_picker.dart';
 
-class FeedFiltersScreen extends StatelessWidget {
+import '../../../../../domain/domain.dart';
+import '../../../blocs/blocs.dart';
+
+class FeedFiltersScreen extends StatefulWidget {
   const FeedFiltersScreen({Key? key}) : super(key: key);
+
+  @override
+  State<FeedFiltersScreen> createState() => _FeedFiltersScreenState();
+}
+
+class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
+  late FeedFiltersBloc feedFiltersBloc;
+
+  DateTimeRange? date;
+  TimeRange? time;
+
+  @override
+  void initState() {
+    feedFiltersBloc = context.read<FeedFiltersBloc>();
+    if (feedFiltersBloc.state is FeedFiltersFilteredState) {
+      FeedFiltersFilteredState state = feedFiltersBloc.state as FeedFiltersFilteredState;
+      date = state.dateTimeFilter.dateRange;
+      time = state.dateTimeFilter.timeRange;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Фильтры")),
-      body: Column(
-        children: [
-          IconButton(
-            onPressed: () async {
-              // TimeRange result = await showTimeRangePicker(
-              //   context: context,
-              // );
-            },
-            icon: const Icon(Icons.watch),
-          )
-        ],
-      ),
+      body: BlocBuilder<FeedFiltersBloc, FeedFiltersState>(builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () async {
+                      final result = await showDateRangePicker(
+                        context: context,
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime.now().add(const Duration(days: 7)),
+                      );
+                      if (result != null) {
+                        setState(() {
+                          date = result;
+                        });
+                        feedFiltersBloc.add(
+                          SetFeedFiltersEvent(
+                            filters: [
+                              DateTimeFilter(dateRange: date, timeRange: time),
+                            ],
+                          ),
+                        );
+                      }
+                    },
+                    icon: const Icon(Icons.calendar_month),
+                  ),
+                  if (date != null)
+                    Text("с ${date!.start.day}.${date!.start.month} до ${date!.end.day}.${date!.end.month}"),
+                ],
+              ),
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () async {
+                      final TimeRange? result = await showTimeRangePicker(context: context);
+                      if (result != null) {
+                        setState(() {
+                          time = result;
+                        });
+                        feedFiltersBloc.add(
+                          SetFeedFiltersEvent(
+                            filters: [
+                              DateTimeFilter(dateRange: date, timeRange: time),
+                            ],
+                          ),
+                        );
+                      }
+                    },
+                    icon: const Icon(Icons.watch),
+                  ),
+                  if (time != null)
+                    Text(
+                        "с ${time!.startTime.hour}:${time!.startTime.minute} до ${time!.endTime.hour}:${time!.endTime.minute}"),
+                ],
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

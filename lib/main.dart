@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pull_point/data/repositories/impls/map_filters_repository_impl.dart';
 import 'package:pull_point/presentation/home/home_page.dart';
 import 'data/data.dart';
+import 'presentation/feed/blocs/blocs.dart';
 import 'presentation/home/blocs/blocs.dart';
 import 'presentation/map/blocs/blocs.dart';
 import 'presentation/ui_kit/ui_kit.dart';
@@ -17,8 +19,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<PullPointsBloc>(create: (context) => PullPointsBloc(repository: PullPointsRepositoryImpl())),
         BlocProvider<HomeBloc>(create: (context) => HomeBloc()),
+        BlocProvider<PullPointsBloc>(create: (context) => PullPointsBloc(repository: PullPointsRepositoryImpl())),
+        BlocProvider<MapFiltersBloc>(
+            create: (context) => MapFiltersBloc(mapFiltersRepository: MapFiltersRepositoryImpl())),
+        BlocProvider<FeedFiltersBloc>(
+            create: (context) => FeedFiltersBloc(feedFiltersRepository: FeedFiltersRepositoryImpl())),
         // BlocProvider<PersonSearchBloc>(create: (context) => sl<PersonSearchBloc>()),
       ],
       child: MaterialApp(
