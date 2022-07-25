@@ -1,6 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:time_range_picker/time_range_picker.dart';
 
 import '../../../../../domain/domain.dart';
 import '../../../../ui_kit/ui_kit.dart';
@@ -16,28 +16,32 @@ class FeedFiltersScreen extends StatefulWidget {
 class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
   late FeedFiltersBloc feedFiltersBloc;
 
-  DateTimeRange? date;
-  TimeRange? time;
+  DateTimeRange? dateRange;
+
+  TimeOfDay? start;
+  TimeOfDay? end;
 
   @override
   void initState() {
     feedFiltersBloc = context.read<FeedFiltersBloc>();
     if (feedFiltersBloc.state is FeedFiltersFilteredState) {
       FeedFiltersFilteredState state = feedFiltersBloc.state as FeedFiltersFilteredState;
-      date = state.dateTimeFilter.dateRange;
-      time = state.dateTimeFilter.timeRange;
+      dateRange = state.dateTimeFilter.dateRange;
+      start = state.dateTimeFilter.timeRange?.start;
+      end = state.dateTimeFilter.timeRange?.end;
     }
     super.initState();
   }
 
-  @override
-  void deactivate() {
-    feedFiltersBloc.add(SetFeedFiltersEvent(filters: [DateTimeFilter(dateRange: date, timeRange: time)]));
-    super.deactivate();
-  }
+  // @override
+  // void deactivate() {
+  //   feedFiltersBloc.add(SetFeedFiltersEvent(filters: [DateTimeFilter(dateRange: dateRange, timeRange: timeRange)]));
+  //   super.deactivate();
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Фильтры"),
@@ -45,8 +49,9 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
           TouchableOpacity(
             onPressed: () {
               setState(() {
-                date = null;
-                time = null;
+                dateRange = null;
+                start = null;
+                end = null;
               });
             },
             child: const SizedBox(
@@ -57,59 +62,158 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
           ),
         ],
       ),
-      body: BlocBuilder<FeedFiltersBloc, FeedFiltersState>(builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () async {
-                      final result = await showDateRangePicker(
-                        context: context,
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime.now().add(const Duration(days: 7)),
-                      );
-                      if (result != null) {
-                        setState(() {
-                          date = result;
-                        });
-                      }
-                    },
-                    icon: const Icon(Icons.calendar_month),
+      body: BlocBuilder<FeedFiltersBloc, FeedFiltersState>(
+        builder: (context, state) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    TouchableOpacity(
+                      onPressed: () async {
+                        final result = await showDateRangePicker(
+                          context: context,
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime.now().add(const Duration(days: 7)),
+                        );
+                        if (result != null) {
+                          setState(() {
+                            dateRange = result;
+                          });
+                        }
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.black12,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          child: Text("Дата (range)"),
+                        ),
+                      ),
+                    ),
+                    if (dateRange != null)
+                      Text(
+                          "с ${dateRange!.start.day}.${dateRange!.start.month} до ${dateRange!.end.day}.${dateRange!.end.month}"),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    TouchableOpacity(
+                      onPressed: () async {
+                        final result = await showTimePicker(
+                          context: context,
+                          initialTime: TimeOfDay.now(),
+                          initialEntryMode: TimePickerEntryMode.input,
+                          builder: (BuildContext context, Widget? child) {
+                            return MediaQuery(
+                              data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+                              child: child!,
+                            );
+                          },
+                        );
+                        if (result != null) {
+                          setState(() {
+                            start = result;
+                          });
+                        }
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.black12,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          child: Text("Время (start)"),
+                        ),
+                      ),
+                    ),
+                    if (start != null) Text("с ${start!.hour}:${start!.minute}"),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    TouchableOpacity(
+                      onPressed: () async {
+                        final result = await showTimePicker(
+                          context: context,
+                          initialTime: TimeOfDay.now(),
+                          initialEntryMode: TimePickerEntryMode.input,
+                          builder: (BuildContext context, Widget? child) {
+                            return MediaQuery(
+                              data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+                              child: child!,
+                            );
+                          },
+                        );
+                        if (result != null) {
+                          setState(() {
+                            end = result;
+                          });
+                        }
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.black12,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          child: Text("Время (end)"),
+                        ),
+                      ),
+                    ),
+                    if (end != null) Text("до ${end!.hour}:${end!.minute}"),
+                  ],
+                ),
+                const SizedBox(height: 32),
+                TouchableOpacity(
+                  onPressed: () {
+                    if (start != null && end == null) {
+                      BotToast.showText(text: "Вы не выбрали верхнюю границу времени");
+                      return;
+                    }
+                    if (start == null && end != null) {
+                      BotToast.showText(text: "Вы не выбрали нижнюю границу времени");
+                      return;
+                    }
+                    if ((start != null && end != null)) {
+                      feedFiltersBloc.add(SetFeedFiltersEvent(filters: [
+                        DateTimeFilter(dateRange: dateRange, timeRange: TimeRange(start: start!, end: end!))
+                      ]));
+                    } else {
+                      feedFiltersBloc
+                          .add(SetFeedFiltersEvent(filters: [DateTimeFilter(dateRange: dateRange, timeRange: null)]));
+                    }
+                    Navigator.of(context).pop();
+                  },
+                  child: Container(
+                    width: mediaQuery.size.width,
+                    decoration: const BoxDecoration(
+                      color: Colors.blueAccent,
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                      child: Center(
+                          child: Text(
+                        "Применить",
+                        style: TextStyle(color: Colors.white),
+                      )),
+                    ),
                   ),
-                  if (date != null)
-                    Text("с ${date!.start.day}.${date!.start.month} до ${date!.end.day}.${date!.end.month}"),
-                ],
-              ),
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () async {
-                      final TimeRange? result = await showTimeRangePicker(
-                        context: context,
-                        start: const TimeOfDay(hour: 8, minute: 0),
-                        end: const TimeOfDay(hour: 23, minute: 55),
-                      );
-                      if (result != null) {
-                        setState(() {
-                          time = result;
-                        });
-                      }
-                    },
-                    icon: const Icon(Icons.watch),
-                  ),
-                  if (time != null)
-                    Text(
-                        "с ${time!.startTime.hour}:${time!.startTime.minute} до ${time!.endTime.hour}:${time!.endTime.minute}"),
-                ],
-              ),
-            ],
-          ),
-        );
-      }),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

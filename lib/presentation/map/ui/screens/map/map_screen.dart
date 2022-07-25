@@ -7,7 +7,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../../blocs/blocs.dart';
-import '../filters/filters_screen.dart';
 import 'marker_layer_widget/pull_point_bottom_sheet/pull_point_bottom_sheet.dart';
 import 'marker_layer_widget/pull_points_layer_widget.dart';
 

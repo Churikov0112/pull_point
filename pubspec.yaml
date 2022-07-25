@@ -37,9 +37,6 @@ dependencies:
   # UI
   sliding_up_panel: ^2.0.0+1
 
-  # filters
-  time_range_picker: ^2.2.0
-
   # toasts
   bot_toast: ^4.0.3
 

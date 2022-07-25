@@ -9,6 +9,16 @@ abstract class AbstractFilter {
   });
 }
 
+class TimeRange {
+  final TimeOfDay start;
+  final TimeOfDay end;
+
+  TimeRange({
+    required this.start,
+    required this.end,
+  });
+}
+
 class DateTimeFilter extends AbstractFilter {
   DateTimeRange? dateRange;
   TimeRange? timeRange;

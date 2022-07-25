@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:time_range_picker/time_range_picker.dart';
-
 import '../../../domain/models/models.dart';
 import '../../../domain/repositories/repositories.dart';
 
@@ -13,8 +11,8 @@ class MapFiltersRepositoryImpl extends MapFiltersRepositoryInterface {
         end: DateTime.now().add(const Duration(days: 0)),
       ),
       timeRange: TimeRange(
-        startTime: TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute),
-        endTime: const TimeOfDay(hour: 23, minute: 59),
+        start: TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute),
+        end: const TimeOfDay(hour: 23, minute: 59),
       ),
     ),
   ];

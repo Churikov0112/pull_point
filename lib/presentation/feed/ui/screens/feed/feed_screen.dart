@@ -3,8 +3,6 @@ import 'package:flutter/material.dart'
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/presentation/feed/ui/screens/feed/poster_item.dart';
-import 'package:time_range_picker/time_range_picker.dart';
-
 import '../../../../../domain/domain.dart';
 import '../../../../map/blocs/blocs.dart';
 import '../../../blocs/blocs.dart';
@@ -29,10 +27,10 @@ List<PullPointModel> filterPullPointsByTime({
 }) {
   final List<PullPointModel> filteredPullPoints = [];
   for (final pp in pullPoints) {
-    if (pp.startsAt.hour >= timeRange.startTime.hour) {
-      if (pp.startsAt.minute >= timeRange.startTime.minute) {
-        if (pp.endsAt.hour <= timeRange.endTime.hour) {
-          if (pp.startsAt.minute <= timeRange.endTime.minute) {
+    if (pp.startsAt.hour >= timeRange.start.hour) {
+      if (pp.startsAt.minute >= timeRange.start.minute) {
+        if (pp.endsAt.hour <= timeRange.end.hour) {
+          if (pp.startsAt.minute <= timeRange.end.minute) {
             filteredPullPoints.add(pp);
           }
         }
