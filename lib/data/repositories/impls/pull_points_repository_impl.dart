@@ -21,8 +21,8 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
           description: "Магия музыки и ритма в центре Санкт-Петербурга. Уникальные инструменты",
           address: 'ст.м. Невский проспект',
           createdAt: DateTime.now(),
-          startsAt: DateTime.now(),
-          endsAt: DateTime.now().add(const Duration(hours: 2)),
+          startsAt: DateTime(2022, 7, 25, 15, 0),
+          endsAt: DateTime(2022, 7, 25, 18, 0),
           latLng: LatLng(59.9386, 30.3141),
           category: const CategoryModel(
             id: 1,
@@ -48,8 +48,8 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
           description: "Приятный теплый вечер под приятную музыку! Приходите сами, приводите друзей, тут рады всем",
           address: 'ст.м. Адмиралтейская',
           createdAt: DateTime.now(),
-          startsAt: DateTime.now(),
-          endsAt: DateTime.now().add(const Duration(hours: 2)),
+          startsAt: DateTime(2022, 7, 26, 12, 0),
+          endsAt: DateTime(2022, 7, 26, 15, 0),
           latLng: LatLng(59.9, 30.3),
           category: const CategoryModel(
             id: 0,
@@ -75,8 +75,8 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
           description:
               "Описание выстпления - обязательное поле, чтобы было что отображать и окно не казалось таким уж пустым",
           createdAt: DateTime.now(),
-          startsAt: DateTime.now(),
-          endsAt: DateTime.now().add(const Duration(hours: 2)),
+          startsAt: DateTime(2022, 7, 28, 19, 30),
+          endsAt: DateTime(2022, 7, 28, 23, 0),
           latLng: LatLng(59.95, 30.4),
           category: const CategoryModel(
             id: 0,
@@ -94,8 +94,8 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
           address: 'Белорусская 6',
           description: "Поджигаю облитую бензином японскую катану и показываю красивый акробатичнские трюки",
           createdAt: DateTime.now(),
-          startsAt: DateTime.now(),
-          endsAt: DateTime.now().add(const Duration(hours: 2)),
+          startsAt: DateTime(2022, 7, 30, 23, 0),
+          endsAt: DateTime(2022, 7, 31, 2, 15),
           latLng: LatLng(59.936521, 30.500014),
           category: const CategoryModel(
             id: 1,

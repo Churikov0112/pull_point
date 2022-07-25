@@ -71,7 +71,11 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                 children: [
                   IconButton(
                     onPressed: () async {
-                      final TimeRange? result = await showTimeRangePicker(context: context);
+                      final TimeRange? result = await showTimeRangePicker(
+                        context: context,
+                        start: const TimeOfDay(hour: 8, minute: 0),
+                        end: const TimeOfDay(hour: 23, minute: 55),
+                      );
                       if (result != null) {
                         setState(() {
                           time = result;

@@ -13,23 +13,19 @@ class LoadingState extends PullPointsState {}
 
 class LoadedState extends PullPointsState {
   final List<PullPointModel> pullPoints;
-  final DateTimeFilter? dateTimeFilter;
 
   const LoadedState({
     required this.pullPoints,
-    this.dateTimeFilter,
   });
 }
 
 class SelectedState extends PullPointsState {
   final List<PullPointModel> otherPullPoints;
   final PullPointModel selectedPullPoint;
-  final DateTimeFilter? dateTimeFilter;
 
   const SelectedState({
     required this.selectedPullPoint,
     required this.otherPullPoints,
-    this.dateTimeFilter,
   });
 }
 
