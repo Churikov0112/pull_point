@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_range_picker/time_range_picker.dart';
 
 import '../../../../../domain/domain.dart';
+import '../../../../ui_kit/ui_kit.dart';
 import '../../../blocs/blocs.dart';
 
 class FeedFiltersScreen extends StatefulWidget {
@@ -30,9 +31,32 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
   }
 
   @override
+  void deactivate() {
+    feedFiltersBloc.add(SetFeedFiltersEvent(filters: [DateTimeFilter(dateRange: date, timeRange: time)]));
+    super.deactivate();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Фильтры")),
+      appBar: AppBar(
+        title: const Text("Фильтры"),
+        actions: [
+          TouchableOpacity(
+            onPressed: () {
+              setState(() {
+                date = null;
+                time = null;
+              });
+            },
+            child: const SizedBox(
+              height: 30,
+              width: 100,
+              child: Center(child: Text("Сбросить")),
+            ),
+          ),
+        ],
+      ),
       body: BlocBuilder<FeedFiltersBloc, FeedFiltersState>(builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.all(16.0),
@@ -52,13 +76,6 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                         setState(() {
                           date = result;
                         });
-                        feedFiltersBloc.add(
-                          SetFeedFiltersEvent(
-                            filters: [
-                              DateTimeFilter(dateRange: date, timeRange: time),
-                            ],
-                          ),
-                        );
                       }
                     },
                     icon: const Icon(Icons.calendar_month),
@@ -80,13 +97,6 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                         setState(() {
                           time = result;
                         });
-                        feedFiltersBloc.add(
-                          SetFeedFiltersEvent(
-                            filters: [
-                              DateTimeFilter(dateRange: date, timeRange: time),
-                            ],
-                          ),
-                        );
                       }
                     },
                     icon: const Icon(Icons.watch),
