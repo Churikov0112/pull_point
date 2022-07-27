@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter/material.dart'
-    show CircularProgressIndicator, Colors, FloatingActionButton, Icons, MaterialPageRoute;
+import 'package:flutter/material.dart' show CircularProgressIndicator, Colors, FloatingActionButton, Icons, MaterialPageRoute;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
@@ -173,6 +172,7 @@ class _MapScreenState extends State<MapScreen> {
           if (state is SelectedState) {
             return PullPointBottomSheet(
               pullPoint: state.selectedPullPoint,
+              nearestMetroStations: state.metroStations,
               onClose: () {
                 mapController.move(_kDefaultLatLng, _kDefaultZoom);
               },

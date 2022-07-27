@@ -8,10 +8,13 @@ part 'pull_points_state.dart';
 
 class PullPointsBloc extends Bloc<PullPointsEvent, PullPointsState> {
   final PullPointsRepositoryInterface _repository;
+  final MetroStationsRepositoryInterface _metroStationsRepository;
 
   PullPointsBloc({
     required PullPointsRepositoryInterface repository,
+    required MetroStationsRepositoryInterface metroStationsRepository,
   })  : _repository = repository,
+        _metroStationsRepository = metroStationsRepository,
         super(InitialState()) {
     on<LoadDataEvent>(_loadData);
     on<SelectPullPointEvent>(_select);
@@ -21,8 +24,9 @@ class PullPointsBloc extends Bloc<PullPointsEvent, PullPointsState> {
   Future<void> _loadData(LoadDataEvent event, Emitter<PullPointsState> emit) async {
     try {
       emit(LoadingState());
-      final pullPoints = await _repository.getPullPoints(dateTimeFilter: event.dateTimeFilter);
-      emit(LoadedState(pullPoints: pullPoints));
+      final pullPoints = await _repository.getPullPoints();
+      final metroStations = _metroStationsRepository.getAllMetroStations();
+      emit(LoadedState(pullPoints: pullPoints, metroStations: metroStations));
     } catch (e) {
       emit(FailedState(errorMessage: e.toString()));
     }
@@ -30,7 +34,7 @@ class PullPointsBloc extends Bloc<PullPointsEvent, PullPointsState> {
 
   Future<void> _select(SelectPullPointEvent event, Emitter<PullPointsState> emit) async {
     try {
-      final pullPoints = await _repository.getPullPoints(dateTimeFilter: event.dateTimeFilter);
+      final pullPoints = await _repository.getPullPoints();
       final selectedPullPoint = pullPoints.firstWhere((pp) => pp.id == event.selectedPullPointId);
       final List<PullPointModel> otherPullPoints = [];
       for (final pp in pullPoints) {
@@ -38,7 +42,8 @@ class PullPointsBloc extends Bloc<PullPointsEvent, PullPointsState> {
           otherPullPoints.add(pp);
         }
       }
-      emit(SelectedState(selectedPullPoint: selectedPullPoint, otherPullPoints: otherPullPoints));
+      final metroStations = _metroStationsRepository.getNearestMetroStations(latLng: selectedPullPoint.latLng);
+      emit(SelectedState(selectedPullPoint: selectedPullPoint, otherPullPoints: otherPullPoints, metroStations: metroStations));
     } catch (e) {
       emit(FailedState(errorMessage: e.toString()));
     }
@@ -46,8 +51,9 @@ class PullPointsBloc extends Bloc<PullPointsEvent, PullPointsState> {
 
   Future<void> _unselect(UnselectPullPointEvent event, Emitter<PullPointsState> emit) async {
     try {
-      final pullPoints = await _repository.getPullPoints(dateTimeFilter: event.dateTimeFilter);
-      emit(LoadedState(pullPoints: pullPoints));
+      final pullPoints = await _repository.getPullPoints();
+      final metroStations = _metroStationsRepository.getAllMetroStations();
+      emit(LoadedState(pullPoints: pullPoints, metroStations: metroStations));
     } catch (e) {
       emit(FailedState(errorMessage: e.toString()));
     }

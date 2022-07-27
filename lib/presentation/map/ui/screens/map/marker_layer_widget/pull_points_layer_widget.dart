@@ -30,7 +30,7 @@ class _PullPointsLayerWidgetState extends State<PullPointsLayerWidget> {
     // load data only firstly
     pullPointsBloc = context.read<PullPointsBloc>();
     if (pullPointsBloc.state is InitialState) {
-      pullPointsBloc.add(LoadDataEvent());
+      pullPointsBloc.add(const LoadDataEvent());
     }
 
     final state = pullPointsBloc.state;
@@ -64,7 +64,7 @@ class _PullPointsLayerWidgetState extends State<PullPointsLayerWidget> {
               isSelected: false,
               pullPoint: notselectedPullPoint,
               onTap: () {
-                pullPointsBloc.add(UnselectPullPointEvent());
+                pullPointsBloc.add(const UnselectPullPointEvent());
                 pullPointsBloc.add(SelectPullPointEvent(selectedPullPointId: notselectedPullPoint.id));
                 zoomToSpecificPullPoint(latLng: notselectedPullPoint.latLng);
               },
@@ -96,7 +96,7 @@ class _PullPointsLayerWidgetState extends State<PullPointsLayerWidget> {
               isSelected: false,
               pullPoint: notselectedPullPoint,
               onTap: () {
-                pullPointsBloc.add(UnselectPullPointEvent());
+                pullPointsBloc.add(const UnselectPullPointEvent());
                 pullPointsBloc.add(SelectPullPointEvent(selectedPullPointId: notselectedPullPoint.id));
                 zoomToSpecificPullPoint(latLng: notselectedPullPoint.latLng);
               },
@@ -118,7 +118,7 @@ class _PullPointsLayerWidgetState extends State<PullPointsLayerWidget> {
   @override
   void deactivate() {
     if (pullPointsBloc.state is SelectedState) {
-      pullPointsBloc.add(UnselectPullPointEvent());
+      pullPointsBloc.add(const UnselectPullPointEvent());
     }
     super.deactivate();
   }

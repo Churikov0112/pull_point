@@ -18,9 +18,11 @@ class PullPointBottomSheetContent extends StatelessWidget {
     Key? key,
     required this.pullPoint,
     required this.scrollController,
+    required this.nearestMetroStations,
   }) : super(key: key);
 
   final PullPointModel pullPoint;
+  final List<MetroStationModel> nearestMetroStations;
   final ScrollController scrollController;
 
   @override
@@ -35,10 +37,7 @@ class PullPointBottomSheetContent extends StatelessWidget {
           children: [
             Text(
               isActive(pp: pullPoint) ? "Выступление уже идет" : "Выступление еще не началось",
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: isActive(pp: pullPoint) ? Colors.green : Colors.red),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: isActive(pp: pullPoint) ? Colors.green : Colors.red),
             ),
             const SizedBox(height: 16),
             Column(
@@ -92,6 +91,18 @@ class PullPointBottomSheetContent extends StatelessWidget {
                 Text("Место: ${pullPoint.address}"),
                 const SizedBox(height: 8),
                 Text("Время: ${DateFormat('HH:mm').format(pullPoint.startsAt)}"),
+                const SizedBox(height: 8),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("Метро: "),
+                    Column(
+                      children: [
+                        for (final metro in nearestMetroStations) Text(metro.title),
+                      ],
+                    ),
+                  ],
+                )
               ],
             ),
             const SizedBox(height: 32),

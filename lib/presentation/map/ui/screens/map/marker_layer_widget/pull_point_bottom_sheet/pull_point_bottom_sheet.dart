@@ -7,10 +7,13 @@ import 'widgets/widgets.dart';
 
 class PullPointBottomSheet extends StatelessWidget {
   final PullPointModel pullPoint;
+  final List<MetroStationModel> nearestMetroStations;
+
   final Function()? onClose;
 
   const PullPointBottomSheet({
     required this.pullPoint,
+    required this.nearestMetroStations,
     this.onClose,
     Key? key,
   }) : super(key: key);
@@ -31,7 +34,7 @@ class PullPointBottomSheet extends StatelessWidget {
             child: Column(
               children: [
                 PullPointBottomSheetHeader(pullPoint: pullPoint, onClose: onClose),
-                PullPointBottomSheetContent(pullPoint: pullPoint, scrollController: scrollController),
+                PullPointBottomSheetContent(pullPoint: pullPoint, nearestMetroStations: nearestMetroStations, scrollController: scrollController),
               ],
             ),
           );

@@ -8,27 +8,17 @@ abstract class PullPointsEvent extends Equatable {
 }
 
 class LoadDataEvent extends PullPointsEvent {
-  final DateTimeFilter? dateTimeFilter;
-
-  const LoadDataEvent({
-    this.dateTimeFilter,
-  });
+  const LoadDataEvent();
 }
 
 class SelectPullPointEvent extends PullPointsEvent {
   final int selectedPullPointId;
-  final DateTimeFilter? dateTimeFilter;
 
   const SelectPullPointEvent({
     required this.selectedPullPointId,
-    this.dateTimeFilter,
   });
 }
 
 class UnselectPullPointEvent extends PullPointsEvent {
-  final DateTimeFilter? dateTimeFilter;
-
-  const UnselectPullPointEvent({
-    this.dateTimeFilter,
-  });
+  const UnselectPullPointEvent();
 }

@@ -6,9 +6,7 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
   List<CategoryModel> highLevelCategories = [];
 
   @override
-  Future<List<PullPointModel>> getPullPoints({
-    DateTimeFilter? dateTimeFilter,
-  }) async {
+  Future<List<PullPointModel>> getPullPoints() async {
     // TODO (churikov_egor): remove mock
 
     if (allPullPoints.isEmpty) {
@@ -37,8 +35,7 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
           artist: const ArtistModel(
             id: 0,
             name: 'Космо Кот',
-            description:
-                "Космо Кот — легенда Петербурга. Сейчас композитора можно часто встретить на площадках проекта «Музыка в метро».",
+            description: "Космо Кот — легенда Петербурга. Сейчас композитора можно часто встретить на площадках проекта «Музыка в метро».",
           ),
           posterUrl: "https://cs4.pikabu.ru/post_img/big/2014/06/01/10/1401638213_127727120.jpg",
         ),
@@ -66,15 +63,13 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
             description:
                 "Российская поп-группа, основанная композитором и продюсером Константином Меладзе. Группа была создана 22 ноября 2014 года после финала шоу «Хочу к Меладзе».",
           ),
-          posterUrl:
-              "https://avatars.mds.yandex.net/get-zen_doc/964926/pub_5b85312fc1ccb200a9cfb1b8_5b85316bd6e1a500a9c28863/scale_1200",
+          posterUrl: "https://avatars.mds.yandex.net/get-zen_doc/964926/pub_5b85312fc1ccb200a9cfb1b8_5b85316bd6e1a500a9c28863/scale_1200",
         ),
         PullPointModel(
           id: 2,
           title: 'Пою русские народные песни',
           address: 'Смольная набережная',
-          description:
-              "Описание выстпления - обязательное поле, чтобы было что отображать и окно не казалось таким уж пустым",
+          description: "Описание выстпления - обязательное поле, чтобы было что отображать и окно не казалось таким уж пустым",
           createdAt: DateTime.now(),
           startsAt: DateTime(2022, 7, 28, 19, 30),
           endsAt: DateTime(2022, 7, 28, 23, 0),
@@ -86,8 +81,7 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
               CategoryModel(id: 3, name: "Рэп"),
             ],
           ),
-          artist:
-              const ArtistModel(id: 2, name: 'Музыкалити', description: "Описание артиста надо сделать обязательным!"),
+          artist: const ArtistModel(id: 2, name: 'Музыкалити', description: "Описание артиста надо сделать обязательным!"),
         ),
         PullPointModel(
           id: 3,
@@ -110,16 +104,6 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
         ),
       ];
     }
-
-    // if (dateTimeFilter != null) {
-    //   final List<PullPointModel> result = [];
-    //   for (final pp in allPullPoints) {
-    //     if (pp.startsAt.isAfter(dateTimeFilter.date.start) && pp.startsAt.isBefore(dateTimeFilter.until)) {
-    //       result.add(pp);
-    //     }
-    //   }
-    //   return result;
-    // }
 
     return allPullPoints;
   }

@@ -2,6 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/data/repositories/impls/map_filters_repository_impl.dart';
+import 'package:pull_point/data/repositories/impls/metro_stations_repository_impl.dart';
 import 'package:pull_point/presentation/home/home_page.dart';
 import 'data/data.dart';
 import 'presentation/feed/blocs/blocs.dart';
@@ -21,11 +22,10 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<HomeBloc>(create: (context) => HomeBloc()),
-        BlocProvider<PullPointsBloc>(create: (context) => PullPointsBloc(repository: PullPointsRepositoryImpl())),
-        BlocProvider<MapFiltersBloc>(
-            create: (context) => MapFiltersBloc(mapFiltersRepository: MapFiltersRepositoryImpl())),
-        BlocProvider<FeedFiltersBloc>(
-            create: (context) => FeedFiltersBloc(feedFiltersRepository: FeedFiltersRepositoryImpl())),
+        BlocProvider<PullPointsBloc>(
+            create: (context) => PullPointsBloc(repository: PullPointsRepositoryImpl(), metroStationsRepository: MetroStationsRepositoryImpl())),
+        BlocProvider<MapFiltersBloc>(create: (context) => MapFiltersBloc(mapFiltersRepository: MapFiltersRepositoryImpl())),
+        BlocProvider<FeedFiltersBloc>(create: (context) => FeedFiltersBloc(feedFiltersRepository: FeedFiltersRepositoryImpl())),
         // BlocProvider<PersonSearchBloc>(create: (context) => sl<PersonSearchBloc>()),
       ],
       child: MaterialApp(

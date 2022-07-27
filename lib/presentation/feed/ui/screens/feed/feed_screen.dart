@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart'
-    show CircularProgressIndicator, Colors, DateTimeRange, FloatingActionButton, Icons, MaterialPageRoute;
+import 'package:flutter/material.dart' show CircularProgressIndicator, Colors, DateTimeRange, FloatingActionButton, Icons, MaterialPageRoute;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/presentation/feed/ui/screens/feed/poster_item.dart';
@@ -59,12 +58,10 @@ class FeedScreen extends StatelessWidget {
                   if (filtersState is FeedFiltersFilteredState) {
                     loadedPullPoints = pullPointsState.pullPoints;
                     if (filtersState.dateTimeFilter.dateRange != null) {
-                      loadedPullPoints = filterPullPointsByDate(
-                          pullPoints: loadedPullPoints, dateRange: filtersState.dateTimeFilter.dateRange!);
+                      loadedPullPoints = filterPullPointsByDate(pullPoints: loadedPullPoints, dateRange: filtersState.dateTimeFilter.dateRange!);
                     }
                     if (filtersState.dateTimeFilter.timeRange != null) {
-                      loadedPullPoints = filterPullPointsByTime(
-                          pullPoints: loadedPullPoints, timeRange: filtersState.dateTimeFilter.timeRange!);
+                      loadedPullPoints = filterPullPointsByTime(pullPoints: loadedPullPoints, timeRange: filtersState.dateTimeFilter.timeRange!);
                     }
                   }
                   return Stack(
@@ -83,7 +80,10 @@ class FeedScreen extends StatelessWidget {
                             crossAxisSpacing: 8.0,
                           ),
                           itemBuilder: (context, index) {
-                            return PosterItem(pullPoint: loadedPullPoints[index]);
+                            return PosterItem(
+                              pullPoint: loadedPullPoints[index],
+                              nearestMetroStations: pullPointsState.metroStations,
+                            );
                           },
                         ),
                       ),

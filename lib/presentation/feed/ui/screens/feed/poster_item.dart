@@ -21,9 +21,11 @@ bool isActive({
 
 class PosterItem extends StatelessWidget {
   final PullPointModel pullPoint;
+  final List<MetroStationModel> nearestMetroStations;
 
   const PosterItem({
     required this.pullPoint,
+    required this.nearestMetroStations,
     Key? key,
   }) : super(key: key);
 
@@ -60,6 +62,7 @@ class PosterItem extends StatelessWidget {
                         ),
                         PullPointBottomSheetContent(
                           pullPoint: pullPoint,
+                          nearestMetroStations: nearestMetroStations,
                           scrollController: ScrollController(),
                         ),
                       ],
