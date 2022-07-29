@@ -172,7 +172,6 @@ class _MapScreenState extends State<MapScreen> {
           if (state is SelectedState) {
             return PullPointBottomSheet(
               pullPoint: state.selectedPullPoint,
-              nearestMetroStations: state.metroStations,
               onClose: () {
                 mapController.move(_kDefaultLatLng, _kDefaultZoom);
               },

@@ -8,13 +8,10 @@ part 'pull_points_state.dart';
 
 class PullPointsBloc extends Bloc<PullPointsEvent, PullPointsState> {
   final PullPointsRepositoryInterface _repository;
-  final MetroStationsRepositoryInterface _metroStationsRepository;
 
   PullPointsBloc({
     required PullPointsRepositoryInterface repository,
-    required MetroStationsRepositoryInterface metroStationsRepository,
   })  : _repository = repository,
-        _metroStationsRepository = metroStationsRepository,
         super(InitialState()) {
     on<LoadDataEvent>(_loadData);
     on<SelectPullPointEvent>(_select);
@@ -25,8 +22,7 @@ class PullPointsBloc extends Bloc<PullPointsEvent, PullPointsState> {
     try {
       emit(LoadingState());
       final pullPoints = await _repository.getPullPoints();
-      final metroStations = _metroStationsRepository.getAllMetroStations();
-      emit(LoadedState(pullPoints: pullPoints, metroStations: metroStations));
+      emit(LoadedState(pullPoints: pullPoints));
     } catch (e) {
       emit(FailedState(errorMessage: e.toString()));
     }
@@ -42,8 +38,7 @@ class PullPointsBloc extends Bloc<PullPointsEvent, PullPointsState> {
           otherPullPoints.add(pp);
         }
       }
-      final metroStations = _metroStationsRepository.getNearestMetroStations(latLng: selectedPullPoint.latLng);
-      emit(SelectedState(selectedPullPoint: selectedPullPoint, otherPullPoints: otherPullPoints, metroStations: metroStations));
+      emit(SelectedState(selectedPullPoint: selectedPullPoint, otherPullPoints: otherPullPoints));
     } catch (e) {
       emit(FailedState(errorMessage: e.toString()));
     }
@@ -52,8 +47,7 @@ class PullPointsBloc extends Bloc<PullPointsEvent, PullPointsState> {
   Future<void> _unselect(UnselectPullPointEvent event, Emitter<PullPointsState> emit) async {
     try {
       final pullPoints = await _repository.getPullPoints();
-      final metroStations = _metroStationsRepository.getAllMetroStations();
-      emit(LoadedState(pullPoints: pullPoints, metroStations: metroStations));
+      emit(LoadedState(pullPoints: pullPoints));
     } catch (e) {
       emit(FailedState(errorMessage: e.toString()));
     }

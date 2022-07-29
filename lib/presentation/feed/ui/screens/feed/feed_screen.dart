@@ -80,10 +80,7 @@ class FeedScreen extends StatelessWidget {
                             crossAxisSpacing: 8.0,
                           ),
                           itemBuilder: (context, index) {
-                            return PosterItem(
-                              pullPoint: loadedPullPoints[index],
-                              nearestMetroStations: pullPointsState.metroStations,
-                            );
+                            return PosterItem(pullPoint: loadedPullPoints[index]);
                           },
                         ),
                       ),

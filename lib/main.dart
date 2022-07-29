@@ -22,8 +22,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<HomeBloc>(create: (context) => HomeBloc()),
-        BlocProvider<PullPointsBloc>(
-            create: (context) => PullPointsBloc(repository: PullPointsRepositoryImpl(), metroStationsRepository: MetroStationsRepositoryImpl())),
+        BlocProvider<PullPointsBloc>(create: (context) => PullPointsBloc(repository: PullPointsRepositoryImpl())),
         BlocProvider<MapFiltersBloc>(create: (context) => MapFiltersBloc(mapFiltersRepository: MapFiltersRepositoryImpl())),
         BlocProvider<FeedFiltersBloc>(create: (context) => FeedFiltersBloc(feedFiltersRepository: FeedFiltersRepositoryImpl())),
         // BlocProvider<PersonSearchBloc>(create: (context) => sl<PersonSearchBloc>()),

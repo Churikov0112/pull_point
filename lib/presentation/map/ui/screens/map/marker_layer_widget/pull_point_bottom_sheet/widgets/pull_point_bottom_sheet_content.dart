@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' show Colors;
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:pull_point/data/repositories/impls/metro_stations_repository_impl.dart';
 import '../../../../../../../../domain/models/models.dart';
 import '../../../../../../../ui_kit/ui_kit.dart';
 
@@ -18,11 +19,9 @@ class PullPointBottomSheetContent extends StatelessWidget {
     Key? key,
     required this.pullPoint,
     required this.scrollController,
-    required this.nearestMetroStations,
   }) : super(key: key);
 
   final PullPointModel pullPoint;
-  final List<MetroStationModel> nearestMetroStations;
   final ScrollController scrollController;
 
   @override
@@ -76,7 +75,7 @@ class PullPointBottomSheetContent extends StatelessWidget {
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
-                Text(pullPoint.artist.description),
+                Text(pullPoint.artists.first.description),
                 const SizedBox(height: 16),
               ],
             ),
@@ -88,7 +87,7 @@ class PullPointBottomSheetContent extends StatelessWidget {
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
-                Text("Место: ${pullPoint.address}"),
+                Text("Место: ${pullPoint.geo.address}"),
                 const SizedBox(height: 8),
                 Text("Время: ${DateFormat('HH:mm').format(pullPoint.startsAt)}"),
                 const SizedBox(height: 8),
@@ -98,7 +97,7 @@ class PullPointBottomSheetContent extends StatelessWidget {
                     const Text("Метро: "),
                     Column(
                       children: [
-                        for (final metro in nearestMetroStations) Text(metro.title),
+                        for (final metro in MetroStations.getNearestMetroStations(latLng: pullPoint.geo.latLng)) Text(metro.title),
                       ],
                     ),
                   ],
