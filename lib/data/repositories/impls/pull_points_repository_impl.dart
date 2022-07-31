@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import '../../../domain/domain.dart';
+import 'package:http/http.dart' as http;
 
 class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
   List<PullPointModel> allPullPoints = [];
@@ -8,6 +11,10 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
   Future<List<PullPointModel>> getPullPoints() async {
     try {
       if (allPullPoints.isEmpty) {
+        // final response = await http.get(Uri.parse("http://pullpoint.ru:2022/guest/getPullPoints"));
+        // String source = const Utf8Decoder().convert(response.bodyBytes);
+        // print(source);
+
         final json = [
           {
             "id": 1,
