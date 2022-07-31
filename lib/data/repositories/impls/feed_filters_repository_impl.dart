@@ -3,18 +3,7 @@ import '../../../domain/repositories/repositories.dart';
 
 class FeedFiltersRepositoryImpl extends FeedFiltersRepositoryInterface {
   // use as const
-  final List<AbstractFilter> _allFilters = [
-    // DateTimeFilter(
-    //   dateRange: DateTimeRange(
-    //     start: DateTime.now(),
-    //     end: DateTime.now().add(const Duration(days: 0)),
-    //   ),
-    //   timeRange: TimeRange(
-    //     startTime: TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute),
-    //     endTime: const TimeOfDay(hour: 23, minute: 59),
-    //   ),
-    // ),
-  ];
+  final List<AbstractFilter> _allFilters = [];
 
   List<AbstractFilter> activeFilters = [];
 

@@ -39,6 +39,21 @@ List<PullPointModel> filterPullPointsByTime({
   return filteredPullPoints;
 }
 
+List<PullPointModel> filterPullPointsByNearestMetro({
+  required List<PullPointModel> pullPoints,
+  required List<MetroStationModel> selectedMetroStations,
+}) {
+  final List<PullPointModel> filteredPullPoints = [];
+  for (final pp in pullPoints) {
+    for (final metro in selectedMetroStations) {
+      if (pp.nearestMetroStations.contains(metro) && !filteredPullPoints.contains(pp)) {
+        filteredPullPoints.add(pp);
+      }
+    }
+  }
+  return filteredPullPoints;
+}
+
 class FeedScreen extends StatelessWidget {
   const FeedScreen({Key? key}) : super(key: key);
 
@@ -62,6 +77,11 @@ class FeedScreen extends StatelessWidget {
                     }
                     if (filtersState.dateTimeFilter.timeRange != null) {
                       loadedPullPoints = filterPullPointsByTime(pullPoints: loadedPullPoints, timeRange: filtersState.dateTimeFilter.timeRange!);
+                    }
+                    print(filtersState.nearestMetroFilter?.selectedMetroStations);
+                    if (filtersState.nearestMetroFilter != null) {
+                      loadedPullPoints = filterPullPointsByNearestMetro(
+                          pullPoints: loadedPullPoints, selectedMetroStations: filtersState.nearestMetroFilter!.selectedMetroStations);
                     }
                   }
                   return Stack(

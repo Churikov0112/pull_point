@@ -13,9 +13,11 @@ class FeedFiltersInitialState extends FeedFiltersState {
 
 class FeedFiltersFilteredState extends FeedFiltersState {
   final DateTimeFilter dateTimeFilter;
+  final NearestMetroFilter? nearestMetroFilter;
 
   const FeedFiltersFilteredState({
     required this.dateTimeFilter,
+    this.nearestMetroFilter,
   });
 
   @override

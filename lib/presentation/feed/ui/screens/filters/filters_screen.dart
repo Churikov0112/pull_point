@@ -22,7 +22,7 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
   TimeOfDay? start;
   TimeOfDay? end;
 
-  List<MetroStationModel?>? metroStations;
+  List<MetroStationModel> metroStations = [];
 
   @override
   void initState() {
@@ -32,6 +32,7 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
       dateRange = state.dateTimeFilter.dateRange;
       start = state.dateTimeFilter.timeRange?.start;
       end = state.dateTimeFilter.timeRange?.end;
+      metroStations = state.nearestMetroFilter?.selectedMetroStations ?? [];
     }
     super.initState();
   }
@@ -57,6 +58,7 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                 dateRange = null;
                 start = null;
                 end = null;
+                metroStations = [];
               });
             },
             child: const SizedBox(
@@ -181,26 +183,25 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                   children: [
                     TouchableOpacity(
                       onPressed: () async {
-                        var result;
+                        dynamic result;
                         await showDialog(
                           context: context,
                           builder: (ctx) {
                             return MultiSelectDialog(
                               items: _items,
-                              initialValue: [],
+                              initialValue: metroStations,
+                              searchable: true,
+                              listType: MultiSelectListType.CHIP,
                               onConfirm: (values) {
                                 result = values;
+                                if (result != null) {
+                                  metroStations = result;
+                                  setState(() {});
+                                }
                               },
                             );
                           },
                         );
-                        if (result != null) {
-                          if (result!.isNotEmpty) {
-                            setState(() {
-                              metroStations = result;
-                            });
-                          }
-                        }
                       },
                       child: Container(
                         decoration: const BoxDecoration(
@@ -213,14 +214,14 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                         ),
                       ),
                     ),
-                    if (metroStations != null)
-                      Column(
-                        children: [
-                          for (final station in metroStations!) Text(station!.title),
-                        ],
-                      ),
                   ],
                 ),
+                if (metroStations.isNotEmpty)
+                  Column(
+                    children: [
+                      for (final station in metroStations) Text(station.title),
+                    ],
+                  ),
                 const SizedBox(height: 32),
                 TouchableOpacity(
                   onPressed: () {
@@ -233,10 +234,15 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                       return;
                     }
                     if ((start != null && end != null)) {
-                      feedFiltersBloc
-                          .add(SetFeedFiltersEvent(filters: [DateTimeFilter(dateRange: dateRange, timeRange: TimeRange(start: start!, end: end!))]));
+                      feedFiltersBloc.add(SetFeedFiltersEvent(filters: [
+                        DateTimeFilter(dateRange: dateRange, timeRange: TimeRange(start: start!, end: end!)),
+                        if (metroStations.isNotEmpty) NearestMetroFilter(selectedMetroStations: metroStations),
+                      ]));
                     } else {
-                      feedFiltersBloc.add(SetFeedFiltersEvent(filters: [DateTimeFilter(dateRange: dateRange, timeRange: null)]));
+                      feedFiltersBloc.add(SetFeedFiltersEvent(filters: [
+                        DateTimeFilter(dateRange: dateRange, timeRange: null),
+                        if (metroStations.isNotEmpty) NearestMetroFilter(selectedMetroStations: metroStations),
+                      ]));
                     }
                     Navigator.of(context).pop();
                   },
