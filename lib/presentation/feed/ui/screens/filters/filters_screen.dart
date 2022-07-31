@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pull_point/data/repositories/impls/metro_stations_repository_impl.dart';
 
 import '../../../../../domain/domain.dart';
 import '../../../../ui_kit/ui_kit.dart';
@@ -21,6 +22,8 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
   TimeOfDay? start;
   TimeOfDay? end;
 
+  List<MetroStationModel?>? metroStations;
+
   @override
   void initState() {
     feedFiltersBloc = context.read<FeedFiltersBloc>();
@@ -38,6 +41,8 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
   //   feedFiltersBloc.add(SetFeedFiltersEvent(filters: [DateTimeFilter(dateRange: dateRange, timeRange: timeRange)]));
   //   super.deactivate();
   // }
+
+  final _items = MetroStations.getAllMetroStations().map((station) => MultiSelectItem<MetroStationModel>(station, station.title)).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -96,8 +101,7 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                       ),
                     ),
                     if (dateRange != null)
-                      Text(
-                          "с ${dateRange!.start.day}.${dateRange!.start.month} до ${dateRange!.end.day}.${dateRange!.end.month}"),
+                      Text("с ${dateRange!.start.day}.${dateRange!.start.month} до ${dateRange!.end.day}.${dateRange!.end.month}"),
                   ],
                 ),
                 const SizedBox(height: 8),
@@ -172,6 +176,51 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                     if (end != null) Text("до ${end!.hour}:${end!.minute}"),
                   ],
                 ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    TouchableOpacity(
+                      onPressed: () async {
+                        var result;
+                        await showDialog(
+                          context: context,
+                          builder: (ctx) {
+                            return MultiSelectDialog(
+                              items: _items,
+                              initialValue: [],
+                              onConfirm: (values) {
+                                result = values;
+                              },
+                            );
+                          },
+                        );
+                        if (result != null) {
+                          if (result!.isNotEmpty) {
+                            setState(() {
+                              metroStations = result;
+                            });
+                          }
+                        }
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.black12,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          child: Text("Ближайшие станции метро (несколько)"),
+                        ),
+                      ),
+                    ),
+                    if (metroStations != null)
+                      Column(
+                        children: [
+                          for (final station in metroStations!) Text(station!.title),
+                        ],
+                      ),
+                  ],
+                ),
                 const SizedBox(height: 32),
                 TouchableOpacity(
                   onPressed: () {
@@ -184,12 +233,10 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                       return;
                     }
                     if ((start != null && end != null)) {
-                      feedFiltersBloc.add(SetFeedFiltersEvent(filters: [
-                        DateTimeFilter(dateRange: dateRange, timeRange: TimeRange(start: start!, end: end!))
-                      ]));
-                    } else {
                       feedFiltersBloc
-                          .add(SetFeedFiltersEvent(filters: [DateTimeFilter(dateRange: dateRange, timeRange: null)]));
+                          .add(SetFeedFiltersEvent(filters: [DateTimeFilter(dateRange: dateRange, timeRange: TimeRange(start: start!, end: end!))]));
+                    } else {
+                      feedFiltersBloc.add(SetFeedFiltersEvent(filters: [DateTimeFilter(dateRange: dateRange, timeRange: null)]));
                     }
                     Navigator.of(context).pop();
                   },
@@ -202,10 +249,11 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                     child: const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                       child: Center(
-                          child: Text(
-                        "Применить",
-                        style: TextStyle(color: Colors.white),
-                      )),
+                        child: Text(
+                          "Применить",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
                     ),
                   ),
                 ),
