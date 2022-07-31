@@ -2,15 +2,7 @@ import '../../../domain/models/models.dart';
 import '../../../domain/repositories/repositories.dart';
 
 class FeedFiltersRepositoryImpl extends FeedFiltersRepositoryInterface {
-  // use as const
-  final List<AbstractFilter> _allFilters = [];
-
   List<AbstractFilter> activeFilters = [];
-
-  @override
-  List<AbstractFilter> getAllFeedFilters() {
-    return _allFilters;
-  }
 
   @override
   List<AbstractFilter> getActiveFeedFilters() {
@@ -28,7 +20,6 @@ class FeedFiltersRepositoryImpl extends FeedFiltersRepositoryInterface {
   @override
   AbstractFilter resetFeedFilters() {
     activeFilters.clear();
-    activeFilters.add(_allFilters.first);
     return activeFilters.first;
   }
 }

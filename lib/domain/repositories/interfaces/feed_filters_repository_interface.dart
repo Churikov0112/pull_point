@@ -1,8 +1,6 @@
 import '../../models/models.dart';
 
 abstract class FeedFiltersRepositoryInterface {
-  List<AbstractFilter> getAllFeedFilters();
-
   List<AbstractFilter> getActiveFeedFilters();
 
   AbstractFilter resetFeedFilters();

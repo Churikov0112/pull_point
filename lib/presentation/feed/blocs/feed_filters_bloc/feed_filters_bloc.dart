@@ -8,13 +8,10 @@ part 'feed_filters_state.dart';
 
 class FeedFiltersBloc extends Bloc<FeedFiltersEvent, FeedFiltersState> {
   final FeedFiltersRepositoryInterface _feedFiltersRepository;
-  // final PullPointsRepositoryInterface _pullPointsRepository;
 
   FeedFiltersBloc({
     required FeedFiltersRepositoryInterface feedFiltersRepository,
-    // required PullPointsRepositoryInterface pullPointsRepository,
   })  : _feedFiltersRepository = feedFiltersRepository,
-        // _pullPointsRepository = pullPointsRepository,
         super(const FeedFiltersInitialState()) {
     on<SetFeedFiltersEvent>(_setFilters);
     on<ResetFeedFiltersEvent>(_resetFilters);
