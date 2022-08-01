@@ -78,7 +78,6 @@ class FeedScreen extends StatelessWidget {
                     if (filtersState.dateTimeFilter.timeRange != null) {
                       loadedPullPoints = filterPullPointsByTime(pullPoints: loadedPullPoints, timeRange: filtersState.dateTimeFilter.timeRange!);
                     }
-                    print(filtersState.nearestMetroFilter?.selectedMetroStations);
                     if (filtersState.nearestMetroFilter != null) {
                       loadedPullPoints = filterPullPointsByNearestMetro(
                           pullPoints: loadedPullPoints, selectedMetroStations: filtersState.nearestMetroFilter!.selectedMetroStations);
