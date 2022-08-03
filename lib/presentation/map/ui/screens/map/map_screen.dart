@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:pull_point/presentation/map/ui/screens/create_pp_screen.dart';
 
 import '../../../blocs/blocs.dart';
 import 'marker_layer_widget/pull_point_bottom_sheet/pull_point_bottom_sheet.dart';
@@ -147,6 +148,29 @@ class _MapScreenState extends State<MapScreen> {
           ),
         ),
 
+        // find location button
+        Positioned(
+          right: 16,
+          bottom: 15,
+          child: FloatingActionButton(
+            heroTag: null,
+            backgroundColor: Colors.red,
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => const CreatePullPointScreen(),
+                ),
+              );
+            },
+            child: const Center(
+              child: Text(
+                "+PP",
+                style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+              ),
+            ),
+          ),
+        ),
+
         // // filters button
         // Positioned(
         //   right: 16,
@@ -168,12 +192,11 @@ class _MapScreenState extends State<MapScreen> {
 
         // pp bs
         BlocBuilder<PullPointsBloc, PullPointsState>(builder: (context, state) {
-          // print(state.runtimeType);
           if (state is SelectedState) {
             return PullPointBottomSheet(
               pullPoint: state.selectedPullPoint,
               onClose: () {
-                mapController.move(_kDefaultLatLng, _kDefaultZoom);
+                // mapController.move(_kDefaultLatLng, _kDefaultZoom);
               },
             );
           }
@@ -183,5 +206,3 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 }
-
-// https://www.openstreetmap.org/#map=6/51.944/25.917
