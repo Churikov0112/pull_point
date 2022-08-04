@@ -1,14 +1,11 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pull_point/data/repositories/impls/map_filters_repository_impl.dart';
-import 'package:pull_point/data/repositories/impls/metro_stations_repository_impl.dart';
 import 'package:pull_point/presentation/home/home_page.dart';
 import 'data/data.dart';
 import 'presentation/feed/blocs/blocs.dart';
 import 'presentation/home/blocs/blocs.dart';
 import 'presentation/map/blocs/blocs.dart';
-import 'presentation/ui_kit/ui_kit.dart';
 
 void main() async {
   runApp(const MyApp());

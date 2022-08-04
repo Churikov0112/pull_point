@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart' show AppBar, BottomNavigationBar, IconButton, Icons, MaterialPageRoute, Scaffold;
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:pull_point/presentation/favourites/ui/screens/screens.dart';
+import 'package:pull_point/presentation/qr_reader/ui/screens/qr_reader/qr_reader.dart';
 
 import '../feed/feed.dart';
 import '../map/map.dart';
@@ -35,20 +36,11 @@ class _HomePageState extends State<HomePage> {
       case 1:
         return const FeedScreen();
       case 2:
+        return const QrReaderScreen();
+      case 3:
+        return const FavouritesScreen();
+      case 4:
         return const ProfileScreen();
-      default:
-        return const Text("Ошибка навигации. См. home_page.dart");
-    }
-  }
-
-  Widget _currentScreenName({required int index}) {
-    switch (index) {
-      case 0:
-        return const Text("Карта");
-      case 1:
-        return const Text("Афиши");
-      case 2:
-        return const Text("Проифль");
       default:
         return const Text("Ошибка навигации. См. home_page.dart");
     }
@@ -61,6 +53,11 @@ class _HomePageState extends State<HomePage> {
         if (state is TabSelectedState) {
           return Scaffold(
             bottomNavigationBar: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              selectedItemColor: Colors.red,
+              // unselectedItemColor: Colors.grey,
+              // unselectedFontSize: 12,
+              // selectedFontSize: 12,
               currentIndex: state.tabIndex,
               onTap: (index) => _onItemTapped(index),
               items: const <BottomNavigationBarItem>[
@@ -71,6 +68,14 @@ class _HomePageState extends State<HomePage> {
                 BottomNavigationBarItem(
                   icon: Icon(Icons.feed_outlined),
                   label: 'Афиши',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.qr_code_2),
+                  label: 'QR',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.star_border_outlined),
+                  label: 'Избранное',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.person_outline),
