@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
@@ -35,20 +35,20 @@ double _distanceInKmBetweenEarthCoordinates(lat1, lon1, lat2, lon2) {
   return earthRadiusKm * c;
 }
 
-Gradient _getGradientByMetroLine(MetroLines line) {
+Color _getColorByMetroLine(MetroLines line) {
   switch (line) {
     case MetroLines.firstRed:
-      return AppGradients.main;
+      return Colors.red;
     case MetroLines.secondBlue:
-      return AppGradients.first;
+      return Colors.blue;
     case MetroLines.thirdGreen:
-      return AppGradients.fifth;
+      return Colors.green;
     case MetroLines.fourthOrange:
-      return AppGradients.second;
+      return Colors.deepOrange;
     case MetroLines.fifthPurple:
-      return AppGradients.sixth;
+      return Colors.deepPurple;
     default:
-      return AppGradients.first;
+      return Colors.transparent;
   }
 }
 
@@ -184,7 +184,7 @@ class PosterItemV2 extends StatelessWidget {
                           children: [
                             for (int i = 0; i < pullPoint.nearestMetroStations.length; i++)
                               CategoryChip(
-                                gradient: _getGradientByMetroLine(pullPoint.nearestMetroStations[i].line),
+                                backgroundColor: _getColorByMetroLine(pullPoint.nearestMetroStations[i].line),
                                 childText: pullPoint.nearestMetroStations[i].title,
                               ),
                           ],
