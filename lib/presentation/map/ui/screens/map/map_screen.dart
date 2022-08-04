@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:pull_point/presentation/map/ui/screens/create_pp_screen.dart';
 
+import '../../../../ui_kit/ui_kit.dart';
 import '../../../blocs/blocs.dart';
 import 'marker_layer_widget/pull_point_bottom_sheet/pull_point_bottom_sheet.dart';
 import 'marker_layer_widget/pull_points_layer_widget.dart';
@@ -126,7 +127,7 @@ class _MapScreenState extends State<MapScreen> {
         // find location button
         Positioned(
           right: 16,
-          bottom: 80,
+          bottom: 90,
           child: FloatingActionButton(
             heroTag: null,
             backgroundColor: Colors.white,
@@ -148,13 +149,11 @@ class _MapScreenState extends State<MapScreen> {
           ),
         ),
 
-        // find location button
+        // create PP button
         Positioned(
           right: 16,
           bottom: 15,
-          child: FloatingActionButton(
-            heroTag: null,
-            backgroundColor: Colors.red,
+          child: TouchableOpacity(
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute<void>(
@@ -162,13 +161,30 @@ class _MapScreenState extends State<MapScreen> {
                 ),
               );
             },
-            child: const Center(
-              child: Text(
-                "+PP",
-                style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
-              ),
+            child: Container(
+              height: 60,
+              width: 60,
+              decoration: const BoxDecoration(shape: BoxShape.circle, gradient: AppGradients.main),
+              child: const Center(child: AppTitle("+PP", textColor: AppColors.textOnColors)),
             ),
-          ),
+          ), //
+          // FloatingActionButton(
+          //   heroTag: null,
+          //   backgroundColor: Colors.red,
+          //   onPressed: () {
+          //     Navigator.of(context).push(
+          //       MaterialPageRoute<void>(
+          //         builder: (BuildContext context) => const CreatePullPointScreen(),
+          //       ),
+          //     );
+          //   },
+          //   child: const Center(
+          //     child: Text(
+          //       "PP",
+          //       style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+          //     ),
+          //   ),
+          // ),
         ),
 
         // // filters button

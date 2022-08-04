@@ -6,6 +6,7 @@ import 'data/data.dart';
 import 'presentation/feed/blocs/blocs.dart';
 import 'presentation/home/blocs/blocs.dart';
 import 'presentation/map/blocs/blocs.dart';
+import 'presentation/ui_kit/ui_kit.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -33,10 +34,9 @@ class MyApp extends StatelessWidget {
         //   );
         // },
         debugShowCheckedModeBanner: false,
-        // theme: ThemeData.dark().copyWith(
-        //   backgroundColor: AppColors.mainBackground,
-        //   scaffoldBackgroundColor: AppColors.mainBackground,
-        // ),
+        theme: ThemeData.light().copyWith(
+          backgroundColor: AppColors.primary,
+        ),
         home: const HomePage(),
       ),
     );

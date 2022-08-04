@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:pull_point/presentation/favourites/ui/screens/screens.dart';
 import 'package:pull_point/presentation/qr_reader/ui/screens/qr_reader/qr_reader.dart';
+import 'package:pull_point/presentation/ui_kit/ui_kit.dart';
 
 import '../feed/feed.dart';
 import '../map/map.dart';
@@ -53,32 +54,43 @@ class _HomePageState extends State<HomePage> {
         if (state is TabSelectedState) {
           return Scaffold(
             bottomNavigationBar: BottomNavigationBar(
+              // showSelectedLabels: false,
+              // showUnselectedLabels: false,
               type: BottomNavigationBarType.fixed,
-              selectedItemColor: Colors.red,
+              selectedItemColor: AppColors.primary,
               // unselectedItemColor: Colors.grey,
-              // unselectedFontSize: 12,
-              // selectedFontSize: 12,
+              unselectedFontSize: 0,
+              selectedFontSize: 0,
               currentIndex: state.tabIndex,
               onTap: (index) => _onItemTapped(index),
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.map_outlined),
+              items: <BottomNavigationBarItem>[
+                const BottomNavigationBarItem(
+                  icon: Icon(Icons.place_outlined),
+                  activeIcon: Icon(Icons.place),
                   label: 'Карта',
                 ),
-                BottomNavigationBarItem(
+                const BottomNavigationBarItem(
                   icon: Icon(Icons.feed_outlined),
+                  activeIcon: Icon(Icons.feed),
                   label: 'Афиши',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.qr_code_2),
+                  icon: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: const BoxDecoration(shape: BoxShape.circle, gradient: AppGradients.main),
+                    child: const Center(child: Icon(Icons.qr_code, size: 20, color: AppColors.iconsOnColors)),
+                  ), // Icon(Icons.qr_code_2),
                   label: 'QR',
                 ),
-                BottomNavigationBarItem(
+                const BottomNavigationBarItem(
                   icon: Icon(Icons.star_border_outlined),
+                  activeIcon: Icon(Icons.star),
                   label: 'Избранное',
                 ),
-                BottomNavigationBarItem(
+                const BottomNavigationBarItem(
                   icon: Icon(Icons.person_outline),
+                  activeIcon: Icon(Icons.person),
                   label: 'Профиль',
                 ),
               ],
