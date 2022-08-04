@@ -135,10 +135,10 @@ class _FeedScreenState extends State<FeedScreen> {
                         return Stack(
                           children: [
                             SizedBox(
-                              height: mediaQuery.size.height - mediaQuery.padding.top - 80,
+                              height: mediaQuery.size.height - mediaQuery.padding.top - 56,
                               width: mediaQuery.size.width,
                               child: ListView.builder(
-                                padding: EdgeInsets.zero,
+                                padding: const EdgeInsets.only(top: 16),
                                 itemCount: loadedPullPoints.length,
                                 itemBuilder: (context, index) {
                                   return PosterItemV2(
