@@ -41,4 +41,20 @@ class AppGradients {
       Color.fromRGBO(238, 171, 0, 1),
     ],
   );
+  static const fifth = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      Color.fromRGBO(90, 255, 21, 1),
+      Color.fromRGBO(0, 183, 18, 1),
+    ],
+  );
+  static const sixth = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      Color.fromRGBO(168, 139, 235, 1),
+      Color.fromRGBO(248, 206, 236, 1),
+    ],
+  );
 }

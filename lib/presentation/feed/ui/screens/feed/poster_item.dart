@@ -1,12 +1,9 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart' show Colors, ExpansionTile, showModalBottomSheet;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:pull_point/presentation/map/ui/screens/map/marker_layer_widget/pull_point_bottom_sheet/widgets/pull_point_bottom_sheet_content.dart';
-import 'package:pull_point/presentation/map/ui/screens/map/marker_layer_widget/pull_point_bottom_sheet/widgets/pull_point_bottom_sheet_header.dart';
 
 import '../../../../../domain/models/models.dart';
 import '../../../../home/blocs/blocs.dart';
@@ -36,6 +33,23 @@ double _distanceInKmBetweenEarthCoordinates(lat1, lon1, lat2, lon2) {
   var a = sin(dLat / 2) * sin(dLat / 2) + sin(dLon / 2) * sin(dLon / 2) * cos(lat1) * cos(lat2);
   var c = 2 * atan2(sqrt(a), sqrt(1 - a));
   return earthRadiusKm * c;
+}
+
+Gradient _getGradientByMetroLine(MetroLines line) {
+  switch (line) {
+    case MetroLines.firstRed:
+      return AppGradients.main;
+    case MetroLines.secondBlue:
+      return AppGradients.first;
+    case MetroLines.thirdGreen:
+      return AppGradients.fifth;
+    case MetroLines.fourthOrange:
+      return AppGradients.second;
+    case MetroLines.fifthPurple:
+      return AppGradients.sixth;
+    default:
+      return AppGradients.first;
+  }
 }
 
 class PosterItemV2 extends StatelessWidget {
@@ -115,7 +129,7 @@ class PosterItemV2 extends StatelessWidget {
                                     for (int i = 0; i < 3; i++)
                                       CategoryChip(
                                         gradient: AppGradients.first,
-                                        childText: "cat $i",
+                                        childText: "some",
                                       ),
                                   ],
                                 ),
@@ -153,6 +167,27 @@ class PosterItemV2 extends StatelessWidget {
                             width: mediaqQuery.size.width,
                             fit: BoxFit.cover,
                           ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                if (pullPoint.nearestMetroStations.isNotEmpty)
+                  Column(
+                    children: [
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        width: mediaqQuery.size.width,
+                        child: Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: [
+                            for (int i = 0; i < pullPoint.nearestMetroStations.length; i++)
+                              CategoryChip(
+                                gradient: _getGradientByMetroLine(pullPoint.nearestMetroStations[i].line),
+                                childText: pullPoint.nearestMetroStations[i].title,
+                              ),
+                          ],
                         ),
                       ),
                     ],

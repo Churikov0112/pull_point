@@ -3,16 +3,18 @@ import 'package:flutter/widgets.dart';
 import '../../../ui_kit.dart';
 
 class CategoryChip extends StatelessWidget {
-  final Gradient gradient;
+  final Gradient? gradient;
   final Color? disabledBackgroundColor;
   final Color? disabledTextColor;
   final Color? textColor;
+  final Color? backgroundColor;
   final bool disabled;
   final String childText;
 
   const CategoryChip({
-    required this.gradient,
     required this.childText,
+    this.gradient,
+    this.backgroundColor,
     this.disabled = false,
     this.disabledBackgroundColor = AppColors.icons,
     this.disabledTextColor = AppColors.text,
@@ -26,7 +28,7 @@ class CategoryChip extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(16)),
         gradient: !disabled ? gradient : null,
-        color: disabled ? disabledBackgroundColor : null,
+        color: disabled ? disabledBackgroundColor : backgroundColor,
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),

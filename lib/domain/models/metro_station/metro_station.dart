@@ -6,12 +6,12 @@ class MetroStationModel {
   final int id;
   final String title;
   final LatLng latLng;
-  final List<MetroLines> lines;
+  final MetroLines line;
 
   const MetroStationModel({
     required this.id,
     required this.title,
     required this.latLng,
-    required this.lines,
+    required this.line,
   });
 }
