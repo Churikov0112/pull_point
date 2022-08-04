@@ -141,10 +141,10 @@ class _MapScreenState extends State<MapScreen> {
             },
             child: Center(
               child: loadingLocation
-                  ? const CircularProgressIndicator()
+                  ? const CircularProgressIndicator(color: AppColors.primary)
                   : _currentPosition != null
-                      ? const Icon(Icons.place, color: Colors.orange)
-                      : const Icon(Icons.place_outlined, color: Colors.grey),
+                      ? const Icon(Icons.place, color: AppColors.primary)
+                      : const Icon(Icons.place_outlined, color: AppColors.icons),
             ),
           ),
         ),

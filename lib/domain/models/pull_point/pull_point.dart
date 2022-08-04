@@ -29,8 +29,8 @@ class PullPointModel {
       title: source['name'],
       description: source['description'],
       geo: Geo.fromJson(source['geo']),
-      startsAt: DateTime.parse(source['start']),
-      endsAt: DateTime.parse(source['end']),
+      startsAt: DateTime.fromMillisecondsSinceEpoch(source['start'] * 1000),
+      endsAt: DateTime.fromMillisecondsSinceEpoch(source['end'] * 1000),
       artists: [
         for (final artist in source['artists']) ArtistModel.fromJson(artist),
       ],

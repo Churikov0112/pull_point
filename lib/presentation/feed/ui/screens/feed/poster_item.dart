@@ -13,20 +13,18 @@ import '../../../../home/blocs/blocs.dart';
 import '../../../../map/blocs/blocs.dart';
 import '../../../../ui_kit/ui_kit.dart';
 
-bool _isActive({
-  required PullPointModel pp,
-}) {
+bool _isActive(PullPointModel pp) {
   if (pp.startsAt.isBefore(DateTime.now()) && pp.endsAt.isAfter(DateTime.now())) {
     return true;
   }
   return false;
 }
 
-dynamic _degreesToRadians(degrees) {
+double _degreesToRadians(degrees) {
   return degrees * pi / 180;
 }
 
-dynamic _distanceInKmBetweenEarthCoordinates(lat1, lon1, lat2, lon2) {
+double _distanceInKmBetweenEarthCoordinates(lat1, lon1, lat2, lon2) {
   var earthRadiusKm = 6371;
 
   var dLat = _degreesToRadians(lat2 - lat1);
@@ -80,173 +78,256 @@ class PosterItemV2 extends StatelessWidget {
                       child: const Center(child: Text("Фото")),
                     ),
                     const SizedBox(width: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(width: mediaqQuery.size.width / 2, child: AppTitle(pullPoint.title)),
-                        if (_isActive(pp: pullPoint))
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              SizedBox(height: 8),
-                              AppSubtitle2("Уже идет"),
-                            ],
-                          ),
-                        if (userLocation != null)
+                    SizedBox(
+                      height: 112,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(width: mediaqQuery.size.width / 2, child: AppTitle(pullPoint.title)),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const SizedBox(height: 8),
-                              AppSubtitle2(
-                                  "${_distanceInKmBetweenEarthCoordinates(pullPoint.geo.latLng.latitude, pullPoint.geo.latLng.longitude, userLocation!.latitude, userLocation!.longitude)} м"),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  AppText(
+                                    _isActive(pullPoint) ? "Уже идет" : "Еще не началось",
+                                    textColor: _isActive(pullPoint) ? AppColors.success : AppColors.error,
+                                  ),
+                                  if (userLocation != null) const SizedBox(width: 16),
+                                  if (userLocation != null)
+                                    AppText(
+                                        "${_distanceInKmBetweenEarthCoordinates(pullPoint.geo.latLng.latitude, pullPoint.geo.latLng.longitude, userLocation!.latitude, userLocation!.longitude).toStringAsFixed(0)} м"),
+                                ],
+                              )
                             ],
                           ),
-                        const SizedBox(height: 4),
-                        SizedBox(
-                          width: mediaqQuery.size.width / 2,
-                          child: AppText(pullPoint.description, maxLines: 3),
-                        ),
-                      ],
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: mediaqQuery.size.width / 2,
+                                child: Wrap(
+                                  spacing: 8,
+                                  runSpacing: 8,
+                                  children: [
+                                    for (int i = 0; i < 3; i++)
+                                      CategoryChip(
+                                        gradient: AppGradients.first,
+                                        childText: "cat $i",
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-                const SizedBox(width: 16),
               ],
             ),
           ),
-          expanded: Text("children"),
-        ),
-      ),
-    );
-  }
-}
-
-class PosterItem extends StatelessWidget {
-  final PullPointModel pullPoint;
-
-  const PosterItem({
-    required this.pullPoint,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final mediaqQuery = MediaQuery.of(context);
-    return TouchableOpacity(
-      onPressed: () async {
-        if (_isActive(pp: pullPoint)) {
-          context.read<PullPointsBloc>().add(SelectPullPointEvent(selectedPullPointId: pullPoint.id));
-          context.read<HomeBloc>().add(const SelectTabEvent(tabIndex: 0));
-        } else {
-          await showModalBottomSheet(
-            isScrollControlled: true,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-            backgroundColor: Colors.transparent,
-            context: context,
-            builder: (BuildContext context) {
-              final scrollController = ScrollController();
-              return SafeArea(
-                bottom: false,
-                child: Padding(
-                  padding: EdgeInsets.only(top: mediaqQuery.padding.top),
-                  child: SingleChildScrollView(
-                    controller: scrollController,
-                    child: Column(
-                      children: [
-                        // SizedBox(height: mediaqQuery.padding.top),
-                        PullPointBottomSheetHeader(
-                          pullPoint: pullPoint,
-                          onClose: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        PullPointBottomSheetContent(
-                          pullPoint: pullPoint,
-                          scrollController: ScrollController(),
-                        ),
-                      ],
+          expanded: Padding(
+            padding: const EdgeInsets.only(left: 24, right: 24, bottom: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppText(pullPoint.description),
+                const SizedBox(height: 16),
+                TouchableOpacity(
+                  onPressed: () {
+                    context.read<PullPointsBloc>().add(SelectPullPointEvent(selectedPullPointId: pullPoint.id));
+                    context.read<HomeBloc>().add(const SelectTabEvent(tabIndex: 0));
+                  },
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(16)),
+                    child: Image.asset(
+                      "assets/raster/images/map_preview.png",
+                      height: 112,
+                      width: mediaqQuery.size.width,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
-              );
-            },
-          );
-        }
-      },
-      child: SizedBox(
-        height: mediaqQuery.size.width / 2,
-        width: mediaqQuery.size.width / 2,
-        child: ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(12)),
-          child: Stack(
-            children: [
-              SizedBox(
-                height: mediaqQuery.size.width / 2,
-                width: mediaqQuery.size.width / 2,
-                child: pullPoint.posterUrl != null
-                    ? Image.network(
-                        pullPoint.posterUrl!,
-                        fit: BoxFit.cover,
-                      )
-                    : null,
-              ),
-              // Накладывает opacity поверх всех виджетов и изображения
-              // в карточке, для затемнения
-              SizedBox(
-                height: mediaqQuery.size.width / 2,
-                width: mediaqQuery.size.width / 2,
-                child: const DecoratedBox(
-                  decoration: BoxDecoration(
-                    // borderRadius: BorderRadius.all(Radius.circular(12)),
-                    color: Color.fromRGBO(0, 0, 0, 0.5),
+                const SizedBox(height: 16),
+                AppText("Начало: ${DateFormat("dd.MM.yyyy в HH:mm").format(pullPoint.startsAt)}"),
+                const SizedBox(height: 8),
+                AppText("Конец: ${DateFormat("dd.MM.yyyy в HH:mm").format(pullPoint.endsAt)}"),
+                const SizedBox(height: 16),
+                TouchableOpacity(
+                  onPressed: () {},
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(16)),
+                      gradient: AppGradients.main,
+                      // color: AppColors.primary,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ClipRRect(
+                            borderRadius: const BorderRadius.all(Radius.circular(100)),
+                            child: pullPoint.artists.first.avatar != null
+                                ? Image.network(
+                                    pullPoint.artists.first.avatar!,
+                                    height: 40,
+                                    width: 40,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Container(
+                                    height: 40,
+                                    width: 40,
+                                    decoration: const BoxDecoration(shape: BoxShape.circle, color: AppColors.primary),
+                                  ),
+                          ),
+                          const SizedBox(width: 8),
+                          AppText(pullPoint.artists.first.name, textColor: AppColors.textOnColors),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: mediaqQuery.size.width / 2,
-                width: mediaqQuery.size.width / 2,
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        pullPoint.title,
-                        maxLines: 2,
-                        style: const TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        "Начало: ${DateFormat("dd.MM.yyyy HH.mm").format(pullPoint.startsAt)}",
-                        style: const TextStyle(color: Colors.white, fontSize: 12),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        "Место: ${pullPoint.geo.address}",
-                        style: const TextStyle(color: Colors.white, fontSize: 12),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 12,
-                left: 12,
-                child: SizedBox(
-                  width: mediaqQuery.size.width / 2 - 32,
-                  child: Text(
-                    pullPoint.artists.first.name,
-                    maxLines: 2,
-                    style: const TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                ),
-              ),
-            ],
+
+                //
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 }
+
+// class PosterItem extends StatelessWidget {
+//   final PullPointModel pullPoint;
+
+//   const PosterItem({
+//     required this.pullPoint,
+//     Key? key,
+//   }) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final mediaqQuery = MediaQuery.of(context);
+//     return TouchableOpacity(
+//       onPressed: () async {
+//         if (_isActive(pullPoint)) {
+//           context.read<PullPointsBloc>().add(SelectPullPointEvent(selectedPullPointId: pullPoint.id));
+//           context.read<HomeBloc>().add(const SelectTabEvent(tabIndex: 0));
+//         } else {
+//           await showModalBottomSheet(
+//             isScrollControlled: true,
+//             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+//             backgroundColor: Colors.transparent,
+//             context: context,
+//             builder: (BuildContext context) {
+//               final scrollController = ScrollController();
+//               return SafeArea(
+//                 bottom: false,
+//                 child: Padding(
+//                   padding: EdgeInsets.only(top: mediaqQuery.padding.top),
+//                   child: SingleChildScrollView(
+//                     controller: scrollController,
+//                     child: Column(
+//                       children: [
+//                         // SizedBox(height: mediaqQuery.padding.top),
+//                         PullPointBottomSheetHeader(
+//                           pullPoint: pullPoint,
+//                           onClose: () {
+//                             Navigator.of(context).pop();
+//                           },
+//                         ),
+//                         PullPointBottomSheetContent(
+//                           pullPoint: pullPoint,
+//                           scrollController: ScrollController(),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                 ),
+//               );
+//             },
+//           );
+//         }
+//       },
+//       child: SizedBox(
+//         height: mediaqQuery.size.width / 2,
+//         width: mediaqQuery.size.width / 2,
+//         child: ClipRRect(
+//           borderRadius: const BorderRadius.all(Radius.circular(12)),
+//           child: Stack(
+//             children: [
+//               SizedBox(
+//                 height: mediaqQuery.size.width / 2,
+//                 width: mediaqQuery.size.width / 2,
+//                 child: pullPoint.posterUrl != null
+//                     ? Image.network(
+//                         pullPoint.posterUrl!,
+//                         fit: BoxFit.cover,
+//                       )
+//                     : null,
+//               ),
+//               // Накладывает opacity поверх всех виджетов и изображения
+//               // в карточке, для затемнения
+//               SizedBox(
+//                 height: mediaqQuery.size.width / 2,
+//                 width: mediaqQuery.size.width / 2,
+//                 child: const DecoratedBox(
+//                   decoration: BoxDecoration(
+//                     // borderRadius: BorderRadius.all(Radius.circular(12)),
+//                     color: Color.fromRGBO(0, 0, 0, 0.5),
+//                   ),
+//                 ),
+//               ),
+//               SizedBox(
+//                 height: mediaqQuery.size.width / 2,
+//                 width: mediaqQuery.size.width / 2,
+//                 child: Padding(
+//                   padding: const EdgeInsets.all(12),
+//                   child: Column(
+//                     mainAxisAlignment: MainAxisAlignment.end,
+//                     crossAxisAlignment: CrossAxisAlignment.start,
+//                     children: [
+//                       Text(
+//                         pullPoint.title,
+//                         maxLines: 2,
+//                         style: const TextStyle(color: Colors.white, fontSize: 20),
+//                       ),
+//                       const SizedBox(height: 4),
+//                       Text(
+//                         "Начало: ${DateFormat("dd.MM.yyyy HH.mm").format(pullPoint.startsAt)}",
+//                         style: const TextStyle(color: Colors.white, fontSize: 12),
+//                       ),
+//                       const SizedBox(height: 4),
+//                       Text(
+//                         "Место: ${pullPoint.geo.address}",
+//                         style: const TextStyle(color: Colors.white, fontSize: 12),
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//               Positioned(
+//                 top: 12,
+//                 left: 12,
+//                 child: SizedBox(
+//                   width: mediaqQuery.size.width / 2 - 32,
+//                   child: Text(
+//                     pullPoint.artists.first.name,
+//                     maxLines: 2,
+//                     style: const TextStyle(color: Colors.white, fontSize: 20),
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

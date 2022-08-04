@@ -1,5 +1,5 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import '../../../ui_kit.dart';
 
 class ExpandableContainer extends StatefulWidget {
   const ExpandableContainer({
@@ -20,18 +20,22 @@ class _ExpandableContainerState extends State<ExpandableContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
-      onPressed: () {
+    return GestureDetector(
+      onTap: () {
         setState(() {
           isExpanded = !isExpanded;
         });
       },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          widget.collapsed,
-          if (isExpanded) widget.expanded,
-        ],
+      child: Container(
+        color: Colors.transparent,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            widget.collapsed,
+            if (isExpanded) widget.expanded,
+          ],
+        ),
       ),
     );
   }

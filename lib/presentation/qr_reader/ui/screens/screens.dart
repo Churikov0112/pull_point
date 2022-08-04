@@ -1,1 +1,1 @@
-export 'favourites/favourites_screen.dart';
+export 'qr_reader/qr_reader.dart';

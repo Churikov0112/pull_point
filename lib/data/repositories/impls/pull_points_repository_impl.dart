@@ -19,8 +19,8 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
           {
             "id": 1,
             "name": "Стрит на Грибе",
-            "start": "1659124800",
-            "end": "1659139200",
+            "start": 1659807806,
+            "end": 1659721406,
             "geo": {
               "latitude": 59.935601,
               "longitude": 30.327134,
@@ -32,6 +32,7 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
                 "id": 1,
                 "name": "Дешёвые драмы",
                 "description": "Лучший уличный коллектив города Санкт-Петербурга.",
+                "avatar": "https://musclub.ru/data/catalog/f/e/4/fe4fdd9fed9b911c3ee6512e4493051e.jpeg",
                 "categories": [
                   {"id": 1, "name": "Музыка", "pic": "somepic"}
                 ]
@@ -41,8 +42,8 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
           {
             "id": 2,
             "name": "Худшее фаер-шоу на свете",
-            "start": "1659204000",
-            "end": "1659222000",
+            "start": 1659635006,
+            "end": 1660153406,
             "geo": {
               "latitude": 59.936521,
               "longitude": 30.500014,
@@ -53,6 +54,7 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
               {
                 "id": 2,
                 "name": "dec-a-dance",
+                "avatar": "https://i.pinimg.com/736x/0a/82/cd/0a82cd53712e023c19c53a7941bffb98--dancer-silhouette-dance-dance-dance.jpg",
                 "description": "Какой-то странный чел снова устраивает фаер-шоу",
                 "categories": [
                   {"id": 2, "name": "Фаер-шоу", "pic": "somepic"}
@@ -63,8 +65,8 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
           {
             "id": 3,
             "name": "Рисуем грибы",
-            "start": "1659117600",
-            "end": "1659135600",
+            "start": 1659635006,
+            "end": 1661881406,
             "geo": {
               "latitude": 60.049799,
               "longitude": 30.442248,
@@ -74,6 +76,7 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
             "artists": [
               {
                 "id": 3,
+                "avatar": "https://podarokmos.ru/wp-content/uploads/8/5/b/85b789b50f99936b3f06244d5b6f9e3a.jpeg",
                 "name": "Рисуем грибы за 10 минут",
                 "description": "Учимся рисовать грибы всего за 10 минут у профессиональных художников.",
                 "categories": [

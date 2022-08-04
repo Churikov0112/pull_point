@@ -147,20 +147,6 @@ class _FeedScreenState extends State<FeedScreen> {
                                   );
                                 },
                               ),
-                              // GridView.builder(
-                              //   shrinkWrap: true,
-                              //   physics: const BouncingScrollPhysics(),
-                              //   padding: const EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 50),
-                              //   itemCount: loadedPullPoints.length,
-                              //   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                              //     maxCrossAxisExtent: mediaQuery.size.width / 2,
-                              //     mainAxisSpacing: 8.0,
-                              //     crossAxisSpacing: 8.0,
-                              //   ),
-                              //   itemBuilder: (context, index) {
-                              //     return PosterItem(pullPoint: loadedPullPoints[index]);
-                              //   },
-                              // ),
                             ),
 
                             // filters button
@@ -176,9 +162,7 @@ class _FeedScreenState extends State<FeedScreen> {
                                     ),
                                   );
                                 },
-                                child: const Center(
-                                  child: Icon(Icons.filter_alt_outlined, color: Colors.grey),
-                                ),
+                                child: const Center(child: Icon(Icons.filter_alt_outlined, color: Colors.grey)),
                               ),
                             ),
                           ],
@@ -214,10 +198,10 @@ class _FeedScreenState extends State<FeedScreen> {
             },
             child: Center(
               child: loadingLocation
-                  ? const CircularProgressIndicator()
+                  ? const CircularProgressIndicator(color: AppColors.primary)
                   : _currentPosition != null
-                      ? const Icon(Icons.place, color: Colors.orange)
-                      : const Icon(Icons.place_outlined, color: Colors.grey),
+                      ? const Icon(Icons.place, color: AppColors.primary)
+                      : const Icon(Icons.place_outlined, color: AppColors.icons),
             ),
           ),
         ),

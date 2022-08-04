@@ -31,7 +31,7 @@ class AppText extends StatelessWidget {
       style: TextStyle(
         color: textColor,
         backgroundColor: backgroundColor,
-        fontSize: 10,
+        fontSize: 14,
         fontWeight: FontWeight.w400,
       ),
     );
