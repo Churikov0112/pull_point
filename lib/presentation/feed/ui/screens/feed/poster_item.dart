@@ -136,25 +136,31 @@ class PosterItemV2 extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppText(pullPoint.description),
-                const SizedBox(height: 16),
-                TouchableOpacity(
-                  onPressed: () {
-                    context.read<PullPointsBloc>().add(SelectPullPointEvent(selectedPullPointId: pullPoint.id));
-                    context.read<HomeBloc>().add(const SelectTabEvent(tabIndex: 0));
-                  },
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(16)),
-                    child: Image.asset(
-                      "assets/raster/images/map_preview.png",
-                      height: 112,
-                      width: mediaqQuery.size.width,
-                      fit: BoxFit.cover,
-                    ),
+                if (_isActive(pullPoint))
+                  Column(
+                    children: [
+                      const SizedBox(height: 16),
+                      TouchableOpacity(
+                        onPressed: () {
+                          context.read<PullPointsBloc>().add(SelectPullPointEvent(selectedPullPointId: pullPoint.id));
+                          context.read<HomeBloc>().add(const SelectTabEvent(tabIndex: 0));
+                        },
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.all(Radius.circular(16)),
+                          child: Image.asset(
+                            "assets/raster/images/map_preview.png",
+                            height: 112,
+                            width: mediaqQuery.size.width,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
+
                 const SizedBox(height: 16),
                 AppText("Начало: ${DateFormat("dd.MM.yyyy в HH:mm").format(pullPoint.startsAt)}"),
-                const SizedBox(height: 8),
+                const SizedBox(height: 16),
                 AppText("Конец: ${DateFormat("dd.MM.yyyy в HH:mm").format(pullPoint.endsAt)}"),
                 const SizedBox(height: 16),
                 TouchableOpacity(
