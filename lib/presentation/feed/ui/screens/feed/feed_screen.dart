@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart' show CircularProgressIndicator, Colors, DateTimeRange, FloatingActionButton, Icons, MaterialPageRoute;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:pull_point/presentation/feed/ui/screens/feed/poster_item.dart';
 import '../../../../../domain/domain.dart';
 import '../../../../map/blocs/blocs.dart';
+import '../../../../ui_kit/ui_kit.dart';
 import '../../../blocs/blocs.dart';
 import '../screens.dart';
 
@@ -54,92 +57,169 @@ List<PullPointModel> filterPullPointsByNearestMetro({
   return filteredPullPoints;
 }
 
-class FeedScreen extends StatelessWidget {
+class FeedScreen extends StatefulWidget {
   const FeedScreen({Key? key}) : super(key: key);
+
+  @override
+  State<FeedScreen> createState() => _FeedScreenState();
+}
+
+class _FeedScreenState extends State<FeedScreen> {
+  Position? _currentPosition;
+  bool loadingLocation = false;
+
+  void _getLocation() async {
+    setState(() => loadingLocation = true);
+
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      await Geolocator.openLocationSettings();
+      setState(() => loadingLocation = false);
+      // return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        setState(() => loadingLocation = false);
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      setState(() => loadingLocation = false);
+      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    _currentPosition = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+    setState(() => loadingLocation = false);
+  }
 
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Stack(
       children: [
-        SizedBox(height: mediaQuery.padding.top),
-        BlocBuilder<PullPointsBloc, PullPointsState>(
-          builder: (context, pullPointsState) {
-            if (pullPointsState is LoadedState) {
-              List<PullPointModel> loadedPullPoints = pullPointsState.pullPoints;
-              return BlocBuilder<FeedFiltersBloc, FeedFiltersState>(
-                builder: (context, filtersState) {
-                  if (filtersState is FeedFiltersFilteredState) {
-                    loadedPullPoints = pullPointsState.pullPoints;
-                    if (filtersState.dateTimeFilter.dateRange != null) {
-                      loadedPullPoints = filterPullPointsByDate(pullPoints: loadedPullPoints, dateRange: filtersState.dateTimeFilter.dateRange!);
-                    }
-                    if (filtersState.dateTimeFilter.timeRange != null) {
-                      loadedPullPoints = filterPullPointsByTime(pullPoints: loadedPullPoints, timeRange: filtersState.dateTimeFilter.timeRange!);
-                    }
-                    if (filtersState.nearestMetroFilter != null) {
-                      loadedPullPoints = filterPullPointsByNearestMetro(
-                          pullPoints: loadedPullPoints, selectedMetroStations: filtersState.nearestMetroFilter!.selectedMetroStations);
-                    }
-                  }
-                  return Stack(
-                    children: [
-                      SizedBox(
-                        height: mediaQuery.size.height - mediaQuery.padding.top - 80,
-                        width: mediaQuery.size.width,
-                        child: ListView.builder(
-                          itemCount: loadedPullPoints.length,
-                          itemBuilder: (context, index) {
-                            return PosterItemV2(pullPoint: loadedPullPoints[index]);
-                          },
-                        ),
-                        // GridView.builder(
-                        //   shrinkWrap: true,
-                        //   physics: const BouncingScrollPhysics(),
-                        //   padding: const EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 50),
-                        //   itemCount: loadedPullPoints.length,
-                        //   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        //     maxCrossAxisExtent: mediaQuery.size.width / 2,
-                        //     mainAxisSpacing: 8.0,
-                        //     crossAxisSpacing: 8.0,
-                        //   ),
-                        //   itemBuilder: (context, index) {
-                        //     return PosterItem(pullPoint: loadedPullPoints[index]);
-                        //   },
-                        // ),
-                      ),
-
-                      // filters button
-                      Positioned(
-                        right: 16,
-                        bottom: 20,
-                        child: FloatingActionButton(
-                          backgroundColor: Colors.white,
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                builder: (BuildContext context) => const FeedFiltersScreen(),
+        DecoratedBox(
+          decoration: const BoxDecoration(color: AppColors.backgroundPage),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: mediaQuery.padding.top),
+              BlocBuilder<PullPointsBloc, PullPointsState>(
+                builder: (context, pullPointsState) {
+                  if (pullPointsState is LoadedState) {
+                    List<PullPointModel> loadedPullPoints = pullPointsState.pullPoints;
+                    return BlocBuilder<FeedFiltersBloc, FeedFiltersState>(
+                      builder: (context, filtersState) {
+                        if (filtersState is FeedFiltersFilteredState) {
+                          loadedPullPoints = pullPointsState.pullPoints;
+                          if (filtersState.dateTimeFilter.dateRange != null) {
+                            loadedPullPoints =
+                                filterPullPointsByDate(pullPoints: loadedPullPoints, dateRange: filtersState.dateTimeFilter.dateRange!);
+                          }
+                          if (filtersState.dateTimeFilter.timeRange != null) {
+                            loadedPullPoints =
+                                filterPullPointsByTime(pullPoints: loadedPullPoints, timeRange: filtersState.dateTimeFilter.timeRange!);
+                          }
+                          if (filtersState.nearestMetroFilter != null) {
+                            loadedPullPoints = filterPullPointsByNearestMetro(
+                                pullPoints: loadedPullPoints, selectedMetroStations: filtersState.nearestMetroFilter!.selectedMetroStations);
+                          }
+                        }
+                        return Stack(
+                          children: [
+                            SizedBox(
+                              height: mediaQuery.size.height - mediaQuery.padding.top - 80,
+                              width: mediaQuery.size.width,
+                              child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                itemCount: loadedPullPoints.length,
+                                itemBuilder: (context, index) {
+                                  return PosterItemV2(
+                                    pullPoint: loadedPullPoints[index],
+                                    userLocation: _currentPosition != null ? LatLng(_currentPosition!.latitude, _currentPosition!.longitude) : null,
+                                  );
+                                },
                               ),
-                            );
-                          },
-                          child: const Center(
-                            child: Icon(Icons.filter_alt_outlined, color: Colors.grey),
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
+                              // GridView.builder(
+                              //   shrinkWrap: true,
+                              //   physics: const BouncingScrollPhysics(),
+                              //   padding: const EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 50),
+                              //   itemCount: loadedPullPoints.length,
+                              //   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                              //     maxCrossAxisExtent: mediaQuery.size.width / 2,
+                              //     mainAxisSpacing: 8.0,
+                              //     crossAxisSpacing: 8.0,
+                              //   ),
+                              //   itemBuilder: (context, index) {
+                              //     return PosterItem(pullPoint: loadedPullPoints[index]);
+                              //   },
+                              // ),
+                            ),
+
+                            // filters button
+                            Positioned(
+                              right: 16,
+                              bottom: 20,
+                              child: FloatingActionButton(
+                                backgroundColor: Colors.white,
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute<void>(
+                                      builder: (BuildContext context) => const FeedFiltersScreen(),
+                                    ),
+                                  );
+                                },
+                                child: const Center(
+                                  child: Icon(Icons.filter_alt_outlined, color: Colors.grey),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                  if (pullPointsState is LoadingState) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return const SizedBox.shrink();
                 },
-              );
-            }
-            if (pullPointsState is LoadingState) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return const SizedBox.shrink();
-          },
+              ),
+            ],
+          ),
+        ),
+
+        // find location button
+        Positioned(
+          right: 16,
+          bottom: 100,
+          child: FloatingActionButton(
+            heroTag: null,
+            backgroundColor: Colors.white,
+            onPressed: () {
+              if (_currentPosition == null) {
+                _getLocation();
+              } else {
+                setState(() => _currentPosition = null);
+              }
+            },
+            child: Center(
+              child: loadingLocation
+                  ? const CircularProgressIndicator()
+                  : _currentPosition != null
+                      ? const Icon(Icons.place, color: Colors.orange)
+                      : const Icon(Icons.place_outlined, color: Colors.grey),
+            ),
+          ),
         ),
       ],
     );

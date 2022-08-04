@@ -5,7 +5,7 @@ import 'package:pull_point/data/repositories/impls/metro_stations_repository_imp
 import '../../../../../../../../domain/models/models.dart';
 import '../../../../../../../ui_kit/ui_kit.dart';
 
-bool isActive({
+bool _isActive({
   required PullPointModel pp,
 }) {
   if (pp.startsAt.isBefore(DateTime.now()) && pp.endsAt.isAfter(DateTime.now())) {
@@ -35,8 +35,8 @@ class PullPointBottomSheetContent extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              isActive(pp: pullPoint) ? "Выступление уже идет" : "Выступление еще не началось",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: isActive(pp: pullPoint) ? Colors.green : Colors.red),
+              _isActive(pp: pullPoint) ? "Выступление уже идет" : "Выступление еще не началось",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: _isActive(pp: pullPoint) ? Colors.green : Colors.red),
             ),
             const SizedBox(height: 16),
             Column(
