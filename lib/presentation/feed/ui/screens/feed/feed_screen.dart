@@ -88,20 +88,26 @@ class FeedScreen extends StatelessWidget {
                       SizedBox(
                         height: mediaQuery.size.height - mediaQuery.padding.top - 80,
                         width: mediaQuery.size.width,
-                        child: GridView.builder(
-                          shrinkWrap: true,
-                          physics: const BouncingScrollPhysics(),
-                          padding: const EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 50),
+                        child: ListView.builder(
                           itemCount: loadedPullPoints.length,
-                          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: mediaQuery.size.width / 2,
-                            mainAxisSpacing: 8.0,
-                            crossAxisSpacing: 8.0,
-                          ),
                           itemBuilder: (context, index) {
-                            return PosterItem(pullPoint: loadedPullPoints[index]);
+                            return PosterItemV2(pullPoint: loadedPullPoints[index]);
                           },
                         ),
+                        // GridView.builder(
+                        //   shrinkWrap: true,
+                        //   physics: const BouncingScrollPhysics(),
+                        //   padding: const EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 50),
+                        //   itemCount: loadedPullPoints.length,
+                        //   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                        //     maxCrossAxisExtent: mediaQuery.size.width / 2,
+                        //     mainAxisSpacing: 8.0,
+                        //     crossAxisSpacing: 8.0,
+                        //   ),
+                        //   itemBuilder: (context, index) {
+                        //     return PosterItem(pullPoint: loadedPullPoints[index]);
+                        //   },
+                        // ),
                       ),
 
                       // filters button
