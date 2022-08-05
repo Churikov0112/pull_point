@@ -23,6 +23,7 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     return Scaffold(
+      backgroundColor: AppColors.backgroundPage,
       appBar: AppBar(title: const Text("Создание выступления")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -57,6 +58,10 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                 maxLines: null,
               ),
               const SizedBox(height: 16),
+              // LongButton(
+              //   backgroundGradient: AppGradients.main,
+              //   child: AppText("Создать", textColor: Colors.white),
+              // ),
               TouchableOpacity(
                 onPressed: () async {
                   Navigator.of(context).pop();
