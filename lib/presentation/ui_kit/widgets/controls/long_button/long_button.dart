@@ -19,22 +19,24 @@ class LongButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(isDisabled);
     final mediaQuery = MediaQuery.of(context);
     return TouchableOpacity(
-      onPressed: () {
-        if (onTap != null) {
-          onTap!();
-        } else {
-          print("onTap not implemented");
-        }
-      },
+      onPressed: (onTap != null && !isDisabled) ? onTap : null,
       child: Container(
         height: 50,
         width: mediaQuery.size.width,
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(16)),
-          gradient: backgroundGradient,
-          color: isDisabled ? backgroundColor?.withOpacity(0.5) : backgroundColor,
+          gradient: isDisabled
+              ? LinearGradient(
+                  colors: [
+                    AppColors.primary.withOpacity(0.1),
+                    AppColors.primary.withOpacity(0.1),
+                  ],
+                )
+              : backgroundGradient,
+          color: backgroundColor,
         ),
         child: Center(child: child),
       ),

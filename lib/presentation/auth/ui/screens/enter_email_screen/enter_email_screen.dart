@@ -1,5 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:pull_point/presentation/auth/ui/screens/enter_code_screen/enter_code_screen.dart';
 import 'package:pull_point/presentation/home/home_page.dart';
 import 'package:pull_point/presentation/ui_kit/ui_kit.dart';
 
@@ -24,7 +25,8 @@ class EnterEmailScreen extends StatefulWidget {
 
 class _EnterEmailScreenState extends State<EnterEmailScreen> {
   final TextEditingController emailEditingController = TextEditingController();
-  bool? _isValid;
+  bool isEmpty = true;
+  bool isValid = false;
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +39,12 @@ class _EnterEmailScreenState extends State<EnterEmailScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             const GradientText(
-                gradient: AppGradients.main,
-                src: Text(
-                  "Введите ваш Email",
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
-                )),
+              gradient: AppGradients.main,
+              src: Text(
+                "Введите ваш Email",
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+              ),
+            ),
             Form(
               // autovalidateMode: AutovalidateMode.onUserInteraction,
               child: AppTextFormField(
@@ -49,24 +52,23 @@ class _EnterEmailScreenState extends State<EnterEmailScreen> {
                 keyboardType: TextInputType.emailAddress,
                 hintText: "example@gmail.com",
                 maxLines: 1,
-                errorText: _isValid != null
-                    ? _isValid!
+                errorText: !isEmpty
+                    ? isValid
                         ? null
                         : "Некорректный email"
                     : null,
                 controller: emailEditingController,
                 onEditingComplete: () {
                   setState(() {
-                    print(EmailValidator.validate(emailEditingController.text));
-                    _isValid = EmailValidator.validate(emailEditingController.text);
+                    isEmpty = false;
+                    isValid = EmailValidator.validate(emailEditingController.text);
+                    if (isValid) {
+                      Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => const EnterCodeScreen()));
+                    }
                   });
                   FocusScope.of(context).unfocus();
                 },
               ),
-            ),
-            const LongButton(
-              child: AppText("Отправить код", textColor: AppColors.textOnColors),
-              backgroundGradient: AppGradients.main,
             ),
           ],
         ),

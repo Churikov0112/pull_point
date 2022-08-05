@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pull_point/presentation/ui_kit/colors/colors.dart';
 
 class AppTextFormField extends StatelessWidget {
@@ -10,6 +11,7 @@ class AppTextFormField extends StatelessWidget {
     this.maxLines,
     this.autofocus,
     this.onEditingComplete,
+    this.inputFormatters,
     Key? key,
   }) : super(key: key);
 
@@ -20,6 +22,7 @@ class AppTextFormField extends StatelessWidget {
   final String? errorText;
   final TextEditingController? controller;
   final Function()? onEditingComplete;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +32,7 @@ class AppTextFormField extends StatelessWidget {
       keyboardType: keyboardType,
       autofocus: autofocus ?? false,
       maxLines: maxLines,
+      inputFormatters: inputFormatters,
       decoration: InputDecoration(
         hintText: hintText,
         errorText: errorText,
