@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pull_point/presentation/auth/ui/screens/screens.dart';
 import 'package:pull_point/presentation/home/home_page.dart';
 import 'data/data.dart';
 import 'presentation/feed/blocs/blocs.dart';
@@ -37,7 +38,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData.light().copyWith(
           backgroundColor: AppColors.primary,
         ),
-        home: const HomePage(),
+        home: const StartScreen(),
+        // home: const HomePage(),
       ),
     );
   }

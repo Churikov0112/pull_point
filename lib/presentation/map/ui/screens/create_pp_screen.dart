@@ -52,20 +52,9 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              TextField(
-                // scrollPadding: EdgeInsets.only(bottom: 40),
+              const AppTextFormField(
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
-
-                decoration: InputDecoration(
-                  hintText: "Описание выступления",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.black12,
-                ),
               ),
               const SizedBox(height: 16),
               TouchableOpacity(

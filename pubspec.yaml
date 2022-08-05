@@ -40,6 +40,9 @@ dependencies:
   # toasts
   bot_toast: ^4.0.3
 
+  # validation
+  email_validator: ^2.1.17
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

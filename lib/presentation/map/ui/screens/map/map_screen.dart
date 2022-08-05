@@ -155,11 +155,7 @@ class _MapScreenState extends State<MapScreen> {
           bottom: 15,
           child: TouchableOpacity(
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (BuildContext context) => const CreatePullPointScreen(),
-                ),
-              );
+              Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => const CreatePullPointScreen()));
             },
             child: Container(
               height: 60,

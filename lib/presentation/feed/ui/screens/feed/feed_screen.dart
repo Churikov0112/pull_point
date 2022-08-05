@@ -156,11 +156,7 @@ class _FeedScreenState extends State<FeedScreen> {
                               child: FloatingActionButton(
                                 backgroundColor: Colors.white,
                                 onPressed: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute<void>(
-                                      builder: (BuildContext context) => const FeedFiltersScreen(),
-                                    ),
-                                  );
+                                  Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => const FeedFiltersScreen()));
                                 },
                                 child: const Center(child: Icon(Icons.filter_alt_outlined, color: Colors.grey)),
                               ),
