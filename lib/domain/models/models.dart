@@ -3,8 +3,9 @@ import 'package:latlong2/latlong.dart';
 import 'package:pull_point/data/repositories/impls/metro_stations_repository_impl.dart';
 import 'package:pull_point/domain/models/geo/geo.dart';
 
+export 'user/user.dart';
+
 part 'pull_point/pull_point.dart';
-part 'user/user.dart';
 part 'artist/artist.dart';
 part 'metro_station/metro_station.dart';
 part 'category/category.dart';

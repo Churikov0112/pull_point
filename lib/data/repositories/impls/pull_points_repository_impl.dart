@@ -1,7 +1,7 @@
-import 'dart:convert';
+// import 'dart:convert';
+// import 'package:http/http.dart' as http;
 
 import '../../../domain/domain.dart';
-import 'package:http/http.dart' as http;
 
 class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
   List<PullPointModel> allPullPoints = [];

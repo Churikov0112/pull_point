@@ -1,23 +1,17 @@
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pull_point/presentation/home/home_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/presentation/ui_kit/ui_kit.dart';
 
-String? validateEmail(String? value) {
-  String pattern = r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-      r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-      r"{0,253}[a-zA-Z0-9])?)*$";
-  RegExp regex = RegExp(pattern);
-  if (value == null || value.isEmpty || !regex.hasMatch(value)) {
-    return 'Enter a valid email address';
-  } else {
-    return null;
-  }
-}
+import '../../../blocs/blocs.dart';
 
 class EnterCodeScreen extends StatefulWidget {
-  const EnterCodeScreen({Key? key}) : super(key: key);
+  const EnterCodeScreen({
+    required this.email,
+    Key? key,
+  }) : super(key: key);
+
+  final String email;
 
   @override
   State<EnterCodeScreen> createState() => _EnterCodeScreenState();
@@ -56,11 +50,7 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
                 errorText: (codeEditingController.text == "qwerty" || codeEditingController.text.isEmpty) ? null : "Код неверный",
                 controller: codeEditingController,
                 onEditingComplete: () {
-                  if (codeEditingController.text == 'qwerty') {
-                    Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => const HomePage()));
-                  } else {
-                    setState(() {});
-                  }
+                  context.read<AuthBloc>().add(AuthEventLogin(email: widget.email, code: codeEditingController.text));
                 },
               ),
             ),

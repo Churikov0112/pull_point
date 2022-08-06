@@ -1,8 +1,11 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/presentation/auth/ui/screens/enter_code_screen/enter_code_screen.dart';
 import 'package:pull_point/presentation/home/home_page.dart';
 import 'package:pull_point/presentation/ui_kit/ui_kit.dart';
+
+import '../../../blocs/blocs.dart';
 
 String? validateEmail(String? value) {
   String pattern = r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
@@ -63,7 +66,9 @@ class _EnterEmailScreenState extends State<EnterEmailScreen> {
                     isEmpty = false;
                     isValid = EmailValidator.validate(emailEditingController.text);
                     if (isValid) {
-                      Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => const EnterCodeScreen()));
+                      // Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => const EnterCodeScreen()));
+                      context.read<AuthBloc>().add(AuthEventSendCode(email: emailEditingController.text));
+                      Navigator.of(context).pop();
                     }
                   });
                   FocusScope.of(context).unfocus();
