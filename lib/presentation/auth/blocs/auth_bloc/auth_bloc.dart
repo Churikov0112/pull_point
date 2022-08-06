@@ -25,6 +25,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _continueAsGuest(AuthEventContinueAsGuest event, Emitter<AuthState> emit) async {
     emit(const AuthStateGuest());
+    BotToast.showText(text: "Вы продолжили как гость. Некоторые функции будут недоступны");
   }
 
   Future<void> _checkAccountLocally(AuthEventCheckAccoutLocally event, Emitter<AuthState> emit) async {
@@ -43,6 +44,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (sent) {
       emit(AuthStateCodeSent(email: event.email));
     } else {
+      BotToast.showText(text: "Не удалось отправить проверочный код");
       emit(const AuthStateUnauthorized());
     }
   }
