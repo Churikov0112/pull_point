@@ -15,11 +15,14 @@ import 'presentation/home/blocs/blocs.dart';
 import 'presentation/map/blocs/blocs.dart';
 import 'presentation/ui_kit/ui_kit.dart';
 
+late Box<UserModel?> userBox;
+
 void main() async {
-  // final appDocumentDir = await path_provider.getApplicationDocumentsDirectory();
-  // Hive.init(appDocumentDir.path);
-  // Hive.registerAdapter(UserModelAdapter()); // регистрируем адаптер user
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
+  final directory = await path_provider.getApplicationDocumentsDirectory();
+  Hive.registerAdapter(UserModelAdapter());
+  Hive.init(directory.path);
+  userBox = await Hive.openBox<UserModel?>('user_data');
   runApp(const MyApp());
 }
 
@@ -30,7 +33,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AuthBloc>(create: (context) => AuthBloc(authRepositoryImpl: AuthRepositoryImpl())),
+        BlocProvider<AuthBloc>(
+            create: (context) => AuthBloc(authRepositoryImpl: AuthRepositoryImpl(userBox: userBox))..add(const AuthEventCheckAccoutLocally())),
         BlocProvider<HomeBloc>(create: (context) => HomeBloc()),
         BlocProvider<PullPointsBloc>(create: (context) => PullPointsBloc(repository: PullPointsRepositoryImpl())),
         BlocProvider<MapFiltersBloc>(create: (context) => MapFiltersBloc(mapFiltersRepository: MapFiltersRepositoryImpl())),

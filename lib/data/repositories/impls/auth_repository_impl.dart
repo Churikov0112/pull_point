@@ -4,10 +4,17 @@ import 'package:http/http.dart' as http;
 import '../../../domain/domain.dart';
 
 class AuthRepositoryImpl extends AuthRepositoryInterface {
+  AuthRepositoryImpl({
+    required this.userBox,
+  });
+
+  UserModel? user;
+  Box<UserModel?> userBox;
+
   @override
   Future<UserModel?> checkAccountLocally() async {
-    final userBox = await Hive.openBox<UserModel>('user_box');
-    final result = userBox.get('user_data');
+    final result = userBox.get('user');
+    print("user: $result");
     return result;
   }
 
@@ -56,6 +63,9 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
       print("statusCode: ${response.statusCode}");
       final decodedResponse = jsonDecode(source);
       final UserModel user = UserModel.fromJson(decodedResponse["user"]);
+      userBox.put("user", user);
+      final result = userBox.get('user');
+      print("user: $result");
       return user;
     } else {
       return null;
@@ -78,6 +88,9 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
     );
     if (response.statusCode == 200) {
       final UserModel user = UserModel(id: id, email: email, username: username);
+      userBox.put("user", user);
+      final result = userBox.get('user');
+      print("user: $result");
       return user;
     } else {
       return null;
@@ -86,8 +99,8 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
 
   @override
   Future<void> logout() async {
-    final userBox = await Hive.openBox<UserModel>('user_box');
-    userBox.delete('user_data');
+    userBox.clear();
+    // userBox.close();
     return;
   }
 }
