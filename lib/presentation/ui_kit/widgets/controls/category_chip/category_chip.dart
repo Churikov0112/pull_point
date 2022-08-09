@@ -24,15 +24,18 @@ class CategoryChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
-        gradient: !disabled ? gradient : null,
-        color: disabled ? disabledBackgroundColor : backgroundColor,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        child: AppButtonText(childText, textColor: disabled ? disabledTextColor : textColor),
+    return TouchableOpacity(
+      onPressed: () {},
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
+          gradient: !disabled ? gradient : null,
+          color: disabled ? disabledBackgroundColor : backgroundColor,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: AppButtonText(childText, textColor: disabled ? disabledTextColor : textColor),
+        ),
       ),
     );
   }

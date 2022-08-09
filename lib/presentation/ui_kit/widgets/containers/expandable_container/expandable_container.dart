@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'expanded_section.dart';
 
 class ExpandableContainer extends StatefulWidget {
   const ExpandableContainer({
@@ -15,15 +15,15 @@ class ExpandableContainer extends StatefulWidget {
   State<ExpandableContainer> createState() => _ExpandableContainerState();
 }
 
-class _ExpandableContainerState extends State<ExpandableContainer> {
-  bool isExpanded = false;
+class _ExpandableContainerState extends State<ExpandableContainer> with SingleTickerProviderStateMixin {
+  bool _isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         setState(() {
-          isExpanded = !isExpanded;
+          _isExpanded = !_isExpanded;
         });
       },
       child: Container(
@@ -33,7 +33,8 @@ class _ExpandableContainerState extends State<ExpandableContainer> {
           mainAxisSize: MainAxisSize.min,
           children: [
             widget.collapsed,
-            if (isExpanded) widget.expanded,
+            // if (_isExpanded)
+            ExpandedSection(expand: _isExpanded, child: widget.expanded),
           ],
         ),
       ),

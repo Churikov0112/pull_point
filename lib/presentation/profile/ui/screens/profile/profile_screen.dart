@@ -1,9 +1,8 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../../domain/domain.dart';
 import '../../../../auth/blocs/blocs.dart';
 import '../../../../ui_kit/ui_kit.dart';
+import 'widgets/widgets.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -41,51 +40,14 @@ class ProfileScreen extends StatelessWidget {
                 child: LongButton(
                   backgroundGradient: AppGradients.main,
                   child: const AppText("Авторизоваться", textColor: AppColors.textOnColors),
-                  onTap: () {},
+                  onTap: () {
+                    context.read<AuthBloc>().add(const AuthEventLogout());
+                  },
                 ),
               ),
             );
           }
         },
-      ),
-    );
-  }
-}
-
-class UserInfoWidget extends StatelessWidget {
-  const UserInfoWidget({
-    Key? key,
-    required this.user,
-  }) : super(key: key);
-
-  final UserModel user;
-
-  @override
-  Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-
-    return Container(
-      width: mediaQuery.size.width,
-      decoration: const BoxDecoration(
-        color: AppColors.backgroundCard,
-        borderRadius: BorderRadius.all(Radius.circular(16)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                AppTitle(user.username!),
-                AppTitle("id: ${user.id}"),
-              ],
-            ),
-            const SizedBox(height: 8),
-            AppText(user.email),
-          ],
-        ),
       ),
     );
   }

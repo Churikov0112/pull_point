@@ -22,58 +22,70 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    return Scaffold(
-      backgroundColor: AppColors.backgroundPage,
-      appBar: AppBar(title: const Text("Создание выступления")),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              TouchableOpacity(
-                onPressed: () async {
-                  Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context) => PickLocationScreen(
-                        onSubmit: updateLocation,
-                        initialCenter: pickedLocation,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.backgroundPage,
+        appBar: AppBar(title: const Text("Создание выступления")),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                TouchableOpacity(
+                  onPressed: () async {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => PickLocationScreen(
+                          onSubmit: updateLocation,
+                          initialCenter: pickedLocation,
+                        ),
                       ),
+                    );
+                  },
+                  child: Container(
+                    width: mediaQuery.size.width,
+                    height: 100,
+                    decoration: const BoxDecoration(color: Colors.black12, borderRadius: BorderRadius.all(Radius.circular(12))),
+                    child: Center(
+                      child: Text(pickedLocation == null
+                          ? "Выбрать место проведения"
+                          : "lat: ${pickedLocation!.latitude.toStringAsFixed(4)} , lon: ${pickedLocation!.longitude.toStringAsFixed(4)}"),
                     ),
-                  );
-                },
-                child: Container(
-                  width: mediaQuery.size.width,
-                  height: 100,
-                  decoration: const BoxDecoration(color: Colors.black12, borderRadius: BorderRadius.all(Radius.circular(12))),
-                  child: Center(
-                    child: Text(pickedLocation == null
-                        ? "Выбрать место проведения"
-                        : "lat: ${pickedLocation!.latitude.toStringAsFixed(4)} , lon: ${pickedLocation!.longitude.toStringAsFixed(4)}"),
                   ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              const AppTextFormField(
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-              ),
-              const SizedBox(height: 16),
-              // LongButton(
-              //   backgroundGradient: AppGradients.main,
-              //   child: AppText("Создать", textColor: Colors.white),
-              // ),
-              TouchableOpacity(
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                },
-                child: Container(
-                  width: mediaQuery.size.width,
-                  height: 50,
-                  decoration: const BoxDecoration(color: Colors.blueAccent, borderRadius: BorderRadius.all(Radius.circular(12))),
-                  child: const Center(child: Text("confirm", style: TextStyle(color: Colors.white))),
+                const SizedBox(height: 16),
+                const AppTextFormField(
+                  keyboardType: TextInputType.text,
+                  hintText: "Название выступления",
+                  maxLines: 1,
                 ),
-              ),
-            ],
+                const SizedBox(height: 16),
+                const AppTextFormField(
+                  keyboardType: TextInputType.multiline,
+                  hintText: "Описание выступления",
+                  maxLines: null,
+                ),
+                const SizedBox(height: 16),
+                // LongButton(
+                //   backgroundGradient: AppGradients.main,
+                //   child: AppText("Создать", textColor: Colors.white),
+                // ),
+                TouchableOpacity(
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                  },
+                  child: Container(
+                    width: mediaQuery.size.width,
+                    height: 50,
+                    decoration: const BoxDecoration(color: Colors.blueAccent, borderRadius: BorderRadius.all(Radius.circular(12))),
+                    child: const Center(child: Text("confirm", style: TextStyle(color: Colors.white))),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

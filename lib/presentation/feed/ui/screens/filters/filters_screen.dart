@@ -18,10 +18,8 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
   late FeedFiltersBloc feedFiltersBloc;
 
   DateTimeRange? dateRange;
-
   TimeOfDay? start;
   TimeOfDay? end;
-
   List<MetroStationModel> metroStations = [];
 
   @override
@@ -37,13 +35,15 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
     super.initState();
   }
 
-  // @override
-  // void deactivate() {
-  //   feedFiltersBloc.add(SetFeedFiltersEvent(filters: [DateTimeFilter(dateRange: dateRange, timeRange: timeRange)]));
-  //   super.deactivate();
-  // }
-
   final _items = MetroStations.getAllMetroStations().map((station) => MultiSelectItem<MetroStationModel>(station, station.title)).toList();
+
+  void _resetAll() {
+    dateRange = null;
+    start = null;
+    end = null;
+    metroStations = [];
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,19 +53,8 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
         title: const Text("Фильтры"),
         actions: [
           TouchableOpacity(
-            onPressed: () {
-              setState(() {
-                dateRange = null;
-                start = null;
-                end = null;
-                metroStations = [];
-              });
-            },
-            child: const SizedBox(
-              height: 30,
-              width: 100,
-              child: Center(child: Text("Сбросить")),
-            ),
+            onPressed: _resetAll,
+            child: const SizedBox(height: 30, width: 100, child: Center(child: Text("Сбросить"))),
           ),
         ],
       ),
@@ -78,29 +67,16 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
               children: [
                 Row(
                   children: [
-                    TouchableOpacity(
+                    ChipWidget(
                       onPressed: () async {
                         final result = await showDateRangePicker(
                           context: context,
                           firstDate: DateTime.now(),
                           lastDate: DateTime.now().add(const Duration(days: 7)),
                         );
-                        if (result != null) {
-                          setState(() {
-                            dateRange = result;
-                          });
-                        }
+                        if (result != null) setState(() => dateRange = result);
                       },
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.black12,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          child: Text("Дата (range)"),
-                        ),
-                      ),
+                      text: "Дата (range)",
                     ),
                     if (dateRange != null)
                       Text("с ${dateRange!.start.day}.${dateRange!.start.month} до ${dateRange!.end.day}.${dateRange!.end.month}"),
@@ -109,35 +85,19 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    TouchableOpacity(
+                    ChipWidget(
                       onPressed: () async {
                         final result = await showTimePicker(
                           context: context,
                           initialTime: TimeOfDay.now(),
                           initialEntryMode: TimePickerEntryMode.input,
                           builder: (BuildContext context, Widget? child) {
-                            return MediaQuery(
-                              data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-                              child: child!,
-                            );
+                            return MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
                           },
                         );
-                        if (result != null) {
-                          setState(() {
-                            start = result;
-                          });
-                        }
+                        if (result != null) setState(() => start = result);
                       },
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.black12,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          child: Text("Время (start)"),
-                        ),
-                      ),
+                      text: "Время (start)",
                     ),
                     if (start != null) Text("с ${start!.hour}:${start!.minute}"),
                   ],
@@ -145,35 +105,19 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    TouchableOpacity(
+                    ChipWidget(
                       onPressed: () async {
                         final result = await showTimePicker(
                           context: context,
                           initialTime: TimeOfDay.now(),
                           initialEntryMode: TimePickerEntryMode.input,
                           builder: (BuildContext context, Widget? child) {
-                            return MediaQuery(
-                              data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-                              child: child!,
-                            );
+                            return MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
                           },
                         );
-                        if (result != null) {
-                          setState(() {
-                            end = result;
-                          });
-                        }
+                        if (result != null) setState(() => end = result);
                       },
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.black12,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          child: Text("Время (end)"),
-                        ),
-                      ),
+                      text: "Время (end)",
                     ),
                     if (end != null) Text("до ${end!.hour}:${end!.minute}"),
                   ],
@@ -181,7 +125,7 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    TouchableOpacity(
+                    ChipWidget(
                       onPressed: () async {
                         dynamic result;
                         await showDialog(
@@ -194,25 +138,13 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                               listType: MultiSelectListType.CHIP,
                               onConfirm: (values) {
                                 result = values;
-                                if (result != null) {
-                                  metroStations = result;
-                                  setState(() {});
-                                }
+                                if (result != null) setState(() => metroStations = result);
                               },
                             );
                           },
                         );
                       },
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.black12,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          child: Text("Ближайшие станции метро (несколько)"),
-                        ),
-                      ),
+                      text: "Ближайшие станции метро (несколько)",
                     ),
                   ],
                 ),
