@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../blocs/blocs.dart';
+import 'map/marker_layer_widget/metro_stations_layer_widget.dart';
 import 'map/marker_layer_widget/pull_point_bottom_sheet/pull_point_bottom_sheet.dart';
 import 'map/marker_layer_widget/pull_points_layer_widget.dart';
 
@@ -100,6 +101,7 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
             ),
             children: [
               TileLayerWidget(options: kTileLayerOptions),
+              MetroStationsLayerWidget(mapController: mapController),
               PullPointsLayerWidget(mapController: mapController),
               if (_currentPosition != null)
                 MarkerLayerWidget(

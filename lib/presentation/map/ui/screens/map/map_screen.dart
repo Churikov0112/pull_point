@@ -5,6 +5,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:pull_point/presentation/map/ui/screens/create_pp_screen.dart';
+import 'package:pull_point/presentation/map/ui/screens/map/marker_layer_widget/metro_stations_layer_widget.dart';
 
 import '../../../../ui_kit/ui_kit.dart';
 import '../../../blocs/blocs.dart';
@@ -99,6 +100,7 @@ class _MapScreenState extends State<MapScreen> {
           options: _kMapOptions,
           children: [
             TileLayerWidget(options: _kTileLayerOptions),
+            MetroStationsLayerWidget(mapController: mapController),
             PullPointsLayerWidget(mapController: mapController),
             if (_currentPosition != null)
               MarkerLayerWidget(
