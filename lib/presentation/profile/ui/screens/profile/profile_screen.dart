@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../auth/blocs/blocs.dart';
+import '../../../../auth/ui/screens/enter_email_screen/enter_email_screen.dart';
 import '../../../../ui_kit/ui_kit.dart';
 import 'widgets/widgets.dart';
 
@@ -41,7 +42,8 @@ class ProfileScreen extends StatelessWidget {
                   backgroundGradient: AppGradients.main,
                   child: const AppText("Авторизоваться", textColor: AppColors.textOnColors),
                   onTap: () {
-                    context.read<AuthBloc>().add(const AuthEventLogout());
+                    // context.read<AuthBloc>().add(const AuthEventLogout());
+                    Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => const EnterEmailScreen()));
                   },
                 ),
               ),
