@@ -113,7 +113,7 @@ class PosterItemV2 extends StatelessWidget {
                                   if (userLocation != null) const SizedBox(width: 16),
                                   if (userLocation != null)
                                     AppText(
-                                        "${_distanceInKmBetweenEarthCoordinates(pullPoint.geo.latLng.latitude, pullPoint.geo.latLng.longitude, userLocation!.latitude, userLocation!.longitude).toStringAsFixed(0)} м"),
+                                        "${_distanceInKmBetweenEarthCoordinates(pullPoint.geo.latLng.latitude, pullPoint.geo.latLng.longitude, userLocation!.latitude, userLocation!.longitude).toStringAsFixed(1)} км"),
                                 ],
                               )
                             ],
