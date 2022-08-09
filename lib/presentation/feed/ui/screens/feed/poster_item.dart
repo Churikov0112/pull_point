@@ -144,11 +144,13 @@ class PosterItemV2 extends StatelessWidget {
                         CategoryChip(
                           backgroundColor: _getColorByMetroLine(pullPoint.nearestMetroStations[i].line),
                           childText: pullPoint.nearestMetroStations[i].title,
+                          onPressed: () {},
                         ),
                       for (int i = 0; i < 5; i++)
-                        const CategoryChip(
+                        CategoryChip(
                           gradient: AppGradients.first,
                           childText: "some some",
+                          onPressed: () {},
                         ),
                     ],
                   ),
