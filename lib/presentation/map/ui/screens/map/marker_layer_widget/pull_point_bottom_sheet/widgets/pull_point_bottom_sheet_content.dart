@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart' show Colors;
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:pull_point/data/repositories/impls/metro_stations_repository_impl.dart';
+import 'package:pull_point/data/repositories/mock/metro_stations.dart';
 import '../../../../../../../../domain/models/models.dart';
 import '../../../../../../../ui_kit/ui_kit.dart';
 

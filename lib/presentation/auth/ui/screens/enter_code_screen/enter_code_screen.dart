@@ -33,11 +33,12 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
             SizedBox(
               width: mediaQuery.size.width - 32,
               child: const GradientText(
-                  gradient: AppGradients.main,
-                  src: Text(
-                    "Введите код, который мы прислали на ваш Email",
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
-                  )),
+                gradient: AppGradients.main,
+                src: Text(
+                  "Введите код, который мы прислали на ваш Email",
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+                ),
+              ),
             ),
             Form(
               // autovalidateMode: AutovalidateMode.onUserInteraction,

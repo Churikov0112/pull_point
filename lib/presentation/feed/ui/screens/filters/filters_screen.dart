@@ -1,7 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pull_point/data/repositories/impls/metro_stations_repository_impl.dart';
+import 'package:pull_point/data/repositories/mock/metro_stations.dart';
 
 import '../../../../../domain/domain.dart';
 import '../../../../ui_kit/ui_kit.dart';
@@ -22,6 +22,7 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
   TimeOfDay? end;
   List<MetroStationModel> metroStations = [];
 
+  // проверить на наличие фильтров
   @override
   void initState() {
     feedFiltersBloc = context.read<FeedFiltersBloc>();

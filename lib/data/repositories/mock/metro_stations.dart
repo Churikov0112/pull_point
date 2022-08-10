@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:latlong2/latlong.dart';
 import '../../../domain/models/models.dart';
 
-class MetroStations {
+abstract class MetroStations {
   static _degreesToRadians(degrees) {
     return degrees * pi / 180;
   }

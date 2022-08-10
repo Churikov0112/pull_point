@@ -1,13 +1,13 @@
 part of '../models.dart';
 
-class CategoryModel {
+class SubcategoryModel {
   final int id;
+  final int parentId;
   final String name;
-  final List<SubcategoryModel> children;
 
-  const CategoryModel({
+  const SubcategoryModel({
     required this.id,
+    required this.parentId,
     required this.name,
-    required this.children,
   });
 }

@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:pull_point/presentation/map/ui/screens/map/markers/metro_station/metro_station_marker.dart';
 
-import '../../../../../../data/repositories/impls/metro_stations_repository_impl.dart';
+import '../../../../../../data/repositories/mock/metro_stations.dart';
 import '../../../../../../domain/domain.dart';
 
 class MetroStationsLayerWidget extends StatefulWidget {
