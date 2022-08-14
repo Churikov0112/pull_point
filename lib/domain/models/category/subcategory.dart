@@ -10,4 +10,12 @@ class SubcategoryModel {
     required this.parentId,
     required this.name,
   });
+
+  static SubcategoryModel fromJson(dynamic source) {
+    return SubcategoryModel(
+      id: source['id'],
+      name: source['name'],
+      parentId: source['parent']['id'],
+    );
+  }
 }

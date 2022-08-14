@@ -2,6 +2,7 @@ import 'package:hive/hive.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../../domain/domain.dart';
+import '../../config/config.dart';
 
 class AuthRepositoryImpl extends AuthRepositoryInterface {
   AuthRepositoryImpl({
@@ -24,7 +25,7 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
   }) async {
     try {
       final response = await http.post(
-        Uri.parse("http://www.pullpoint.ru:2022/auth/sendToken"),
+        Uri.parse("${BackendConfig.baseUrl}/auth/sendToken"),
         body: jsonEncode({"phone": email}),
         headers: {
           "Accept": "application/json",
@@ -51,7 +52,7 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
     required String code,
   }) async {
     final response = await http.post(
-      Uri.parse("http://www.pullpoint.ru:2022/auth/verify"),
+      Uri.parse("${BackendConfig.baseUrl}/auth/verify"),
       body: jsonEncode({"phone": email, "token": code}),
       headers: {
         "Accept": "application/json",
@@ -80,7 +81,7 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
     required bool wannaBeArtist,
   }) async {
     final response = await http.put(
-      Uri.parse("http://www.pullpoint.ru:2022/auth/update_user"),
+      Uri.parse("${BackendConfig.baseUrl}/auth/update_user"),
       body: jsonEncode({"id": id, "username": username, "phone": email}),
       headers: {
         "Accept": "application/json",
@@ -93,7 +94,7 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
     if (response.statusCode == 200) {
       if (wannaBeArtist) {
         final iAmArtistResponse = await http.post(
-          Uri.parse("http://www.pullpoint.ru:2022/auth/i_am_artist/$id"),
+          Uri.parse("${BackendConfig.baseUrl}/auth/i_am_artist/$id"),
           headers: {
             "Accept": "application/json",
             "content-type": "application/json",

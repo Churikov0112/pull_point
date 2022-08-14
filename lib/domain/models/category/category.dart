@@ -3,11 +3,16 @@ part of '../models.dart';
 class CategoryModel {
   final int id;
   final String name;
-  final List<SubcategoryModel> children;
 
   const CategoryModel({
     required this.id,
     required this.name,
-    required this.children,
   });
+
+  static CategoryModel fromJson(dynamic source) {
+    return CategoryModel(
+      id: source['id'],
+      name: source['name'],
+    );
+  }
 }

@@ -38,7 +38,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<HomeBloc>(create: (context) => HomeBloc()),
         BlocProvider<PullPointsBloc>(create: (context) => PullPointsBloc(repository: PullPointsRepositoryImpl())),
         BlocProvider<MapFiltersBloc>(create: (context) => MapFiltersBloc(mapFiltersRepository: MapFiltersRepositoryImpl())),
-        BlocProvider<FeedFiltersBloc>(create: (context) => FeedFiltersBloc(feedFiltersRepository: FeedFiltersRepositoryImpl())),
+        BlocProvider<CategoriesBloc>(create: (context) => CategoriesBloc(categoriesRepository: CategoriesRepositoryImpl())),
+        BlocProvider<SubcategoriesBloc>(create: (context) => SubcategoriesBloc(categoriesRepository: CategoriesRepositoryImpl())),
+
         // BlocProvider<PersonSearchBloc>(create: (context) => sl<PersonSearchBloc>()),
       ],
       child: MaterialApp(

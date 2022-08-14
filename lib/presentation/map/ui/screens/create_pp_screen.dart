@@ -1,10 +1,11 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:pull_point/presentation/map/ui/screens/pick_location_screen.dart';
-import '../../../../data/repositories/mock/categories.dart';
 import '../../../../domain/models/models.dart';
 import '../../../ui_kit/ui_kit.dart';
+import '../../blocs/blocs.dart';
+import 'pick_location_screen.dart';
 
 class CreatePullPointScreen extends StatefulWidget {
   const CreatePullPointScreen({Key? key}) : super(key: key);
@@ -29,12 +30,18 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
 
   List<SubcategoryModel> pickedSubcategories = [];
 
-  getSubcategoryItems({required int pickedCategoryId}) {
-    List<MultiSelectItem<SubcategoryModel>> items = Categories.getSubcategoriesOfCategory(categoryId: pickedCategoryId)
-        .map((subcat) => MultiSelectItem<SubcategoryModel>(subcat, subcat.name))
-        .toList();
-    if (items.isNotEmpty) return items;
-    return null;
+  // getSubcategoryItems({required int pickedCategoryId}) {
+  //   List<MultiSelectItem<SubcategoryModel>> items = Categories.getSubcategoriesOfCategory(categoryId: pickedCategoryId)
+  //       .map((subcat) => MultiSelectItem<SubcategoryModel>(subcat, subcat.name))
+  //       .toList();
+  //   if (items.isNotEmpty) return items;
+  //   return null;
+  // }
+
+  @override
+  void initState() {
+    context.read<CategoriesBloc>().add(const CategoriesEventLoad());
+    super.initState();
   }
 
   void updateLocation(LatLng? location) {
@@ -221,62 +228,82 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                   const SizedBox(height: 16),
 
                   // выбор главной категории
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const AppTitle("Выберите категорию"),
-                      const SizedBox(height: 8),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: [
-                          for (final cat in Categories.getCategories())
-                            CategoryChip(
-                              childText: cat.name,
-                              gradient: pickedCategory?.id == cat.id ? AppGradients.main : AppGradients.first,
-                              onPressed: () {
-                                setState(() => pickedCategory = cat);
-                              },
+                  BlocBuilder<CategoriesBloc, CategoriesState>(
+                    builder: (context, state) {
+                      if (state is CategoriesStateLoaded) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const AppTitle("Выберите категорию"),
+                            const SizedBox(height: 8),
+                            Wrap(
+                              spacing: 8,
+                              runSpacing: 8,
+                              children: [
+                                for (final cat in state.categories)
+                                  CategoryChip(
+                                    childText: cat.name,
+                                    gradient: pickedCategory?.id == cat.id ? AppGradients.main : AppGradients.first,
+                                    onPressed: () {
+                                      setState(() => pickedCategory = cat);
+                                      context.read<SubcategoriesBloc>().add(SubcategoriesEventLoad(parentCategoryId: cat.id));
+                                    },
+                                  ),
+                              ],
                             ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        );
+                      }
+                      if (state is CategoriesStateLoading) {
+                        return const LoadingIndicator();
+                      }
+                      return const SizedBox.shrink();
+                    },
                   ),
 
                   // выбор подкатегории
                   if (pickedCategory != null)
-                    if (Categories.getSubcategoriesOfCategory(categoryId: pickedCategory!.id).isNotEmpty)
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 16),
-                          const AppTitle("Выберите подкатегории (макс.3)"),
-                          const SizedBox(height: 8),
-                          Wrap(
-                            spacing: 8,
-                            runSpacing: 8,
+                    BlocBuilder<SubcategoriesBloc, SubcategoriesState>(
+                      builder: (context, state) {
+                        if (state is SubcategoriesStateLoaded) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              for (final cat in Categories.getSubcategoriesOfCategory(categoryId: pickedCategory!.id))
-                                CategoryChip(
-                                  childText: cat.name,
-                                  gradient: pickedSubcategories.contains(cat) ? AppGradients.main : AppGradients.first,
-                                  onPressed: () {
-                                    if (pickedSubcategories.contains(cat)) {
-                                      pickedSubcategories.remove(cat);
-                                    } else {
-                                      if (pickedSubcategories.length < 3) {
-                                        pickedSubcategories.add(cat);
-                                      } else {
-                                        BotToast.showText(text: "Нельзя выбрать больше трех подкатегорий");
-                                      }
-                                    }
-                                    setState(() {});
-                                  },
-                                ),
+                              const SizedBox(height: 16),
+                              const AppTitle("Выберите подкатегории (макс.3)"),
+                              const SizedBox(height: 8),
+                              Wrap(
+                                spacing: 8,
+                                runSpacing: 8,
+                                children: [
+                                  for (final cat in state.subcategories)
+                                    CategoryChip(
+                                      childText: cat.name,
+                                      gradient: pickedSubcategories.contains(cat) ? AppGradients.main : AppGradients.first,
+                                      onPressed: () {
+                                        if (pickedSubcategories.contains(cat)) {
+                                          pickedSubcategories.remove(cat);
+                                        } else {
+                                          if (pickedSubcategories.length < 3) {
+                                            pickedSubcategories.add(cat);
+                                          } else {
+                                            BotToast.showText(text: "Нельзя выбрать больше трех подкатегорий");
+                                          }
+                                        }
+                                        setState(() {});
+                                      },
+                                    ),
+                                ],
+                              ),
                             ],
-                          ),
-                        ],
-                      ),
+                          );
+                        }
+                        if (state is SubcategoriesStateLoading) {
+                          return const LoadingIndicator();
+                        }
+                        return const SizedBox.shrink();
+                      },
+                    ),
 
                   const SizedBox(height: 32),
 

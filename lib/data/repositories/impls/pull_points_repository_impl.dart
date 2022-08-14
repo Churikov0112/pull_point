@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../../../domain/domain.dart';
+import '../../config/config.dart';
 
 class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
   List<PullPointModel> allPullPoints = [];
@@ -11,7 +12,7 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
   Future<List<PullPointModel>> getPullPoints() async {
     try {
       if (allPullPoints.isEmpty) {
-        final response = await http.get(Uri.parse("http://pullpoint.ru:2022/guest/getPullPoints"));
+        final response = await http.get(Uri.parse("${BackendConfig.baseUrl}/guest/getPullPoints"));
         String source = const Utf8Decoder().convert(response.bodyBytes);
         print(source);
 
