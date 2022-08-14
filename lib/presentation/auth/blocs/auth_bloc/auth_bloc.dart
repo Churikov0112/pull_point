@@ -66,7 +66,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _register(AuthEventRegister event, Emitter<AuthState> emit) async {
     emit(const AuthStatePending());
-    final user = await _authRepositoryInterface.register(id: event.id, email: event.email, username: event.username);
+    final user = await _authRepositoryInterface.updateUser(
+      id: event.id,
+      email: event.email,
+      username: event.username,
+      wannaBeArtist: event.wannaBeArtist,
+    );
     if (user != null) {
       emit(AuthStateAuthorized(user: user));
     } else {

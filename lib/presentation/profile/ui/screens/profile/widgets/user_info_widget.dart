@@ -28,7 +28,7 @@ class UserInfoWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                AppTitle(user.username!),
+                AppTitle(user.username ?? "NO USERNAME"),
                 AppTitle("id: ${user.id}"),
               ],
             ),

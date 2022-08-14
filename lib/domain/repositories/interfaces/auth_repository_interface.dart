@@ -12,10 +12,11 @@ abstract class AuthRepositoryInterface {
     required String code,
   });
 
-  Future<UserModel?> register({
+  Future<UserModel?> updateUser({
     required int id,
     required String email,
     required String username,
+    required bool wannaBeArtist,
   });
 
   Future<void> logout();

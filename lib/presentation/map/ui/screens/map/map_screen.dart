@@ -7,6 +7,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:pull_point/presentation/map/ui/screens/create_pp_screen.dart';
 import 'package:pull_point/presentation/map/ui/screens/map/marker_layer_widget/metro_stations_layer_widget.dart';
 
+import '../../../../auth/blocs/blocs.dart';
 import '../../../../ui_kit/ui_kit.dart';
 import '../../../blocs/blocs.dart';
 import 'marker_layer_widget/pull_point_bottom_sheet/pull_point_bottom_sheet.dart';
@@ -152,37 +153,29 @@ class _MapScreenState extends State<MapScreen> {
         ),
 
         // create PP button
-        Positioned(
-          right: 16,
-          bottom: 15,
-          child: TouchableOpacity(
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => const CreatePullPointScreen()));
-            },
-            child: Container(
-              height: 60,
-              width: 60,
-              decoration: const BoxDecoration(shape: BoxShape.circle, gradient: AppGradients.main),
-              child: const Center(child: AppTitle("+PP", textColor: AppColors.textOnColors)),
-            ),
-          ), //
-          // FloatingActionButton(
-          //   heroTag: null,
-          //   backgroundColor: Colors.red,
-          //   onPressed: () {
-          //     Navigator.of(context).push(
-          //       MaterialPageRoute<void>(
-          //         builder: (BuildContext context) => const CreatePullPointScreen(),
-          //       ),
-          //     );
-          //   },
-          //   child: const Center(
-          //     child: Text(
-          //       "PP",
-          //       style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
-          //     ),
-          //   ),
-          // ),
+        BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            if (state is AuthStateAuthorized) {
+              if (state.user.isArtist == true) {
+                return Positioned(
+                  right: 16,
+                  bottom: 15,
+                  child: TouchableOpacity(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => const CreatePullPointScreen()));
+                    },
+                    child: Container(
+                      height: 60,
+                      width: 60,
+                      decoration: const BoxDecoration(shape: BoxShape.circle, gradient: AppGradients.main),
+                      child: const Center(child: AppTitle("+PP", textColor: AppColors.textOnColors)),
+                    ),
+                  ),
+                );
+              }
+            }
+            return const SizedBox.shrink();
+          },
         ),
 
         // // filters button

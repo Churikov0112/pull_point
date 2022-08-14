@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pull_point/presentation/auth/ui/screens/wanna_be_artist_screen/wanna_be_artist_screen.dart';
 import 'package:pull_point/presentation/ui_kit/ui_kit.dart';
 import '../../../blocs/blocs.dart';
 
@@ -39,17 +40,12 @@ class _EnterUserDataScreenState extends State<EnterUserDataScreen> {
               ),
             ),
             Form(
-              // autovalidateMode: AutovalidateMode.onUserInteraction,
               child: AppTextFormField(
                 autofocus: true,
                 keyboardType: TextInputType.text,
                 hintText: "username",
                 maxLines: 1,
-                errorText: !isEmpty
-                    // ? isValid
-                    ? null
-                    : "Введите username",
-                // : null,
+                errorText: !isEmpty ? null : "Введите username",
                 controller: usernameEditingController,
                 onEditingComplete: () {
                   setState(() {
@@ -57,10 +53,15 @@ class _EnterUserDataScreenState extends State<EnterUserDataScreen> {
                       isEmpty = false;
                     }
                     if (!isEmpty) {
-                      // Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => const HomePage()));
-                      context
-                          .read<AuthBloc>()
-                          .add(AuthEventRegister(id: widget.userId, email: widget.email, username: usernameEditingController.text));
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) => WannaBeArtistScreen(
+                            userId: widget.userId,
+                            username: usernameEditingController.text,
+                            email: widget.email,
+                          ),
+                        ),
+                      );
                     }
                     FocusScope.of(context).unfocus();
                   });

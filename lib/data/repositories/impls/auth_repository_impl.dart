@@ -73,25 +73,49 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
   }
 
   @override
-  Future<UserModel?> register({
+  Future<UserModel?> updateUser({
     required int id,
     required String email,
     required String username,
+    required bool wannaBeArtist,
   }) async {
     final response = await http.put(
-      Uri.parse("http://www.pullpoint.ru:2022/auth/register"),
+      Uri.parse("http://www.pullpoint.ru:2022/auth/update_user"),
       body: jsonEncode({"id": id, "username": username, "phone": email}),
       headers: {
         "Accept": "application/json",
         "content-type": "application/json",
       },
     );
+
+    final UserModel user;
+
     if (response.statusCode == 200) {
-      final UserModel user = UserModel(id: id, email: email, username: username);
-      userBox.put("user", user);
-      final result = userBox.get('user');
-      print("user: $result");
-      return user;
+      if (wannaBeArtist) {
+        final iAmArtistResponse = await http.post(
+          Uri.parse("http://www.pullpoint.ru:2022/auth/i_am_artist/$id"),
+          headers: {
+            "Accept": "application/json",
+            "content-type": "application/json",
+          },
+        );
+
+        if (iAmArtistResponse.statusCode == 200) {
+          user = UserModel(id: id, email: email, username: username, isArtist: true);
+        } else {
+          user = UserModel(id: id, email: email, username: username, isArtist: false);
+        }
+        userBox.put("user", user);
+        final result = userBox.get('user');
+        print("user: $result");
+        return user;
+      } else {
+        user = UserModel(id: id, email: email, username: username, isArtist: false);
+        userBox.put("user", user);
+        final result = userBox.get('user');
+        print("user: $result");
+        return user;
+      }
     } else {
       return null;
     }

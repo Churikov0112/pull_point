@@ -37,11 +37,13 @@ class AuthEventRegister extends AuthEvent {
   final int id;
   final String email;
   final String username;
+  final bool wannaBeArtist;
 
   const AuthEventRegister({
     required this.id,
     required this.email,
     required this.username,
+    required this.wannaBeArtist,
   });
 }
 
