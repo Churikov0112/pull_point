@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:pull_point/presentation/map/ui/screens/create_pp_screen.dart';
+import 'package:pull_point/presentation/map/ui/screens/create_pull_point/create_pp_screen.dart';
 import 'package:pull_point/presentation/map/ui/screens/map/marker_layer_widget/metro_stations_layer_widget.dart';
 
 import '../../../../auth/blocs/blocs.dart';

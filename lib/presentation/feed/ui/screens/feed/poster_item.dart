@@ -99,7 +99,7 @@ class PosterItemV2 extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           SizedBox(width: mediaqQuery.size.width / 2, child: AppTitle(pullPoint.title)),
-                          SizedBox(width: mediaqQuery.size.width / 2, child: AppText(pullPoint.artists.first.name)),
+                          SizedBox(width: mediaqQuery.size.width / 2, child: AppText(pullPoint.owner.name)),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -196,23 +196,23 @@ class PosterItemV2 extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          ClipRRect(
-                            borderRadius: const BorderRadius.all(Radius.circular(100)),
-                            child: pullPoint.artists.first.avatar != null
-                                ? Image.network(
-                                    pullPoint.artists.first.avatar!,
-                                    height: 40,
-                                    width: 40,
-                                    fit: BoxFit.cover,
-                                  )
-                                : Container(
-                                    height: 40,
-                                    width: 40,
-                                    decoration: const BoxDecoration(shape: BoxShape.circle, color: AppColors.primary),
-                                  ),
-                          ),
-                          const SizedBox(width: 8),
-                          AppText(pullPoint.artists.first.name, textColor: AppColors.textOnColors),
+                          // ClipRRect(
+                          //   borderRadius: const BorderRadius.all(Radius.circular(100)),
+                          //   child: pullPoint.artists.first.avatar != null
+                          //       ? Image.network(
+                          //           pullPoint.artists.first.avatar!,
+                          //           height: 40,
+                          //           width: 40,
+                          //           fit: BoxFit.cover,
+                          //         )
+                          //       : Container(
+                          //           height: 40,
+                          //           width: 40,
+                          //           decoration: const BoxDecoration(shape: BoxShape.circle, color: AppColors.primary),
+                          //         ),
+                          // ),
+                          // const SizedBox(width: 8),
+                          AppText(pullPoint.owner.name, textColor: AppColors.textOnColors),
                         ],
                       ),
                     ),

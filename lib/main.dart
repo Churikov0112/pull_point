@@ -31,15 +31,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // чтобы в двух местах использовать один объект
+    final PullPointsRepositoryInterface pullPointsRepository = PullPointsRepositoryImpl();
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
             create: (context) => AuthBloc(authRepositoryImpl: AuthRepositoryImpl(userBox: userBox))..add(const AuthEventCheckAccoutLocally())),
         BlocProvider<HomeBloc>(create: (context) => HomeBloc()),
-        BlocProvider<PullPointsBloc>(create: (context) => PullPointsBloc(repository: PullPointsRepositoryImpl())),
+        BlocProvider<PullPointsBloc>(create: (context) => PullPointsBloc(repository: pullPointsRepository)),
         BlocProvider<MapFiltersBloc>(create: (context) => MapFiltersBloc(mapFiltersRepository: MapFiltersRepositoryImpl())),
+        BlocProvider<FeedFiltersBloc>(create: (context) => FeedFiltersBloc(feedFiltersRepository: FeedFiltersRepositoryImpl())),
         BlocProvider<CategoriesBloc>(create: (context) => CategoriesBloc(categoriesRepository: CategoriesRepositoryImpl())),
         BlocProvider<SubcategoriesBloc>(create: (context) => SubcategoriesBloc(categoriesRepository: CategoriesRepositoryImpl())),
+        BlocProvider<CreatePullPointBloc>(create: (context) => CreatePullPointBloc(pullPointsRepository: pullPointsRepository)),
 
         // BlocProvider<PersonSearchBloc>(create: (context) => sl<PersonSearchBloc>()),
       ],

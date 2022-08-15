@@ -4,7 +4,10 @@ class PullPointModel {
   final int id;
   final String title;
   final String description;
+  final CategoryModel category;
+  final List<SubcategoryModel> subcategories;
   final Geo geo;
+  final ArtistModel owner;
   final List<ArtistModel> artists;
   final DateTime startsAt;
   final DateTime endsAt;
@@ -14,11 +17,14 @@ class PullPointModel {
   const PullPointModel({
     required this.id,
     required this.title,
+    required this.description,
+    required this.category,
+    required this.subcategories,
     required this.geo,
     required this.startsAt,
     required this.endsAt,
+    required this.owner,
     required this.artists,
-    required this.description,
     required this.nearestMetroStations,
     this.posterUrl,
   });
@@ -28,14 +34,19 @@ class PullPointModel {
       id: source['id'],
       title: source['name'],
       description: source['description'],
-      geo: Geo.fromJson(source['geo']),
-      startsAt: DateTime.fromMillisecondsSinceEpoch(source['start'] * 1000),
-      endsAt: DateTime.fromMillisecondsSinceEpoch(source['end'] * 1000),
+      geo: Geo(latLng: LatLng(source['latitude'], source['longitude'])),
+      startsAt: DateTime.parse(source['startTime']),
+      endsAt: DateTime.parse(source['endTime']),
+      owner: ArtistModel.fromJson(source['owner']),
       artists: [
         for (final artist in source['artists']) ArtistModel.fromJson(artist),
       ],
-      posterUrl: source['posterUrl'],
-      nearestMetroStations: MetroStations.getNearestMetroStations(latLng: Geo.fromJson(source['geo']).latLng),
+      category: CategoryModel.fromJson(source['category']),
+      subcategories: [
+        for (final subcat in source['subcategories']) SubcategoryModel.fromJson(subcat),
+      ],
+      // posterUrl: source['posterUrl'],
+      nearestMetroStations: MetroStations.getNearestMetroStations(latLng: LatLng(source['latitude'], source['longitude'])),
     );
   }
 }

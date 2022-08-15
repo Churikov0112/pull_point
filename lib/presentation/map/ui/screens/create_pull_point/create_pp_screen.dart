@@ -2,9 +2,10 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
-import '../../../../domain/models/models.dart';
-import '../../../ui_kit/ui_kit.dart';
-import '../../blocs/blocs.dart';
+import '../../../../../domain/models/models.dart';
+import '../../../../auth/blocs/blocs.dart';
+import '../../../../ui_kit/ui_kit.dart';
+import '../../../blocs/blocs.dart';
 import 'pick_location_screen.dart';
 
 class CreatePullPointScreen extends StatefulWidget {
@@ -307,36 +308,80 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
 
                   const SizedBox(height: 32),
 
-                  LongButton(
-                    backgroundGradient: AppGradients.main,
-                    child: const AppText("Далее", textColor: Colors.white),
-                    onTap: () {
-                      if (pickedLocation == null) {
-                        BotToast.showText(text: "Вы не выбрали место");
-                        return;
-                      }
-                      if (titleEditingController.text.isEmpty) {
-                        BotToast.showText(text: "Вы не ввели название");
-                        return;
-                      }
-                      if (descriptionEditingController.text.isEmpty) {
-                        BotToast.showText(text: "Вы не ввели описание");
-                        return;
-                      }
-                      if (pickedStartDate == null || pickedEndDate == null) {
-                        BotToast.showText(text: "Вы не выбрали дату");
-                        return;
-                      }
-                      if (pickedStartTime == null || pickedEndTime == null) {
-                        BotToast.showText(text: "Вы не выбрали время");
-                        return;
-                      }
-                      if (pickedCategory == null) {
-                        BotToast.showText(text: "Вы не выбрали категорию");
-                        return;
-                      }
-                      Navigator.of(context).pop();
-                    },
+                  BlocBuilder<CreatePullPointBloc, CreatePullPointState>(
+                    builder: (context, state) => LongButton(
+                      backgroundGradient: AppGradients.main,
+                      child: (state is CreatePullPointStateLoading) ? const LoadingIndicator() : const AppText("Далее", textColor: Colors.white),
+                      onTap: () {
+                        if (pickedLocation == null) {
+                          BotToast.showText(text: "Вы не выбрали место");
+                          return;
+                        }
+                        if (titleEditingController.text.isEmpty) {
+                          BotToast.showText(text: "Вы не ввели название");
+                          return;
+                        }
+                        if (descriptionEditingController.text.isEmpty) {
+                          BotToast.showText(text: "Вы не ввели описание");
+                          return;
+                        }
+                        if (pickedStartDate == null || pickedEndDate == null) {
+                          BotToast.showText(text: "Вы не выбрали дату");
+                          return;
+                        }
+                        if (pickedStartTime == null || pickedEndTime == null) {
+                          BotToast.showText(text: "Вы не выбрали время");
+                          return;
+                        }
+                        if (pickedCategory == null) {
+                          BotToast.showText(text: "Вы не выбрали категорию");
+                          return;
+                        }
+
+                        final authState = context.read<AuthBloc>().state;
+                        if (authState is AuthStateAuthorized) {
+                          context.read<CreatePullPointBloc>().add(
+                                CreatePullPointEventCreate(
+                                  name: titleEditingController.text,
+                                  description: descriptionEditingController.text,
+                                  ownerId: authState.user.id,
+                                  latitude: pickedLocation!.latitude,
+                                  longitude: pickedLocation!.longitude,
+                                  startTime: DateTime(
+                                    pickedStartDate!.year,
+                                    pickedStartDate!.month,
+                                    pickedStartDate!.day,
+                                    pickedStartTime!.hour,
+                                    pickedStartTime!.minute,
+                                  ),
+                                  endTime: DateTime(
+                                    pickedEndDate!.year,
+                                    pickedEndDate!.month,
+                                    pickedEndDate!.day,
+                                    pickedEndTime!.hour,
+                                    pickedEndTime!.minute,
+                                  ),
+                                  categoryId: pickedCategory!.id,
+                                  subcategoryIds: [for (final subcat in pickedSubcategories) subcat.id],
+                                ),
+                              );
+                          if (state is CreatePullPointStateCreated) {
+                            Navigator.of(context).pop();
+                            context.read<PullPointsBloc>().add(const LoadDataEvent());
+                            return;
+                          }
+                          if (state is CreatePullPointStateFailed) {
+                            BotToast.showText(text: "Не удалось создать pull point");
+                            return;
+                          }
+                        } else {
+                          BotToast.showText(text: "Необходимо авторизоваться");
+                          return;
+                        }
+
+                        // Navigator.of(context).pop();
+                      },
+                    ),
                   ),
 
                   const SizedBox(height: 32),

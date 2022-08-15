@@ -8,11 +8,4 @@ class Geo {
     required this.latLng,
     this.address,
   });
-
-  static Geo fromJson(dynamic source) {
-    return Geo(
-      latLng: LatLng(source['latitude'], source['longitude']),
-      address: source['address'],
-    );
-  }
 }
