@@ -46,7 +46,8 @@ class PullPointModel {
         for (final subcat in source['subcategories']) SubcategoryModel.fromJson(subcat),
       ],
       // posterUrl: source['posterUrl'],
-      nearestMetroStations: MetroStations.getNearestMetroStations(latLng: LatLng(source['latitude'], source['longitude'])),
+      nearestMetroStations:
+          MetroStations.getNearestMetroStations(latLng: LatLng(source['latitude'], source['longitude'])),
     );
   }
 }

@@ -36,7 +36,10 @@ class PullPointBottomSheetContent extends StatelessWidget {
           children: [
             Text(
               _isActive(pp: pullPoint) ? "Выступление уже идет" : "Выступление еще не началось",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: _isActive(pp: pullPoint) ? Colors.green : Colors.red),
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: _isActive(pp: pullPoint) ? Colors.green : Colors.red),
             ),
             const SizedBox(height: 16),
             Column(
@@ -75,7 +78,7 @@ class PullPointBottomSheetContent extends StatelessWidget {
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
-                Text(pullPoint.artists.first.description),
+                Text(pullPoint.owner.description ?? "-"),
                 const SizedBox(height: 16),
               ],
             ),
@@ -87,8 +90,6 @@ class PullPointBottomSheetContent extends StatelessWidget {
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
-                Text("Место: ${pullPoint.geo.address}"),
-                const SizedBox(height: 8),
                 Text("Время: ${DateFormat('HH:mm').format(pullPoint.startsAt)}"),
                 const SizedBox(height: 8),
                 Row(
@@ -97,7 +98,8 @@ class PullPointBottomSheetContent extends StatelessWidget {
                     const Text("Метро: "),
                     Column(
                       children: [
-                        for (final metro in MetroStations.getNearestMetroStations(latLng: pullPoint.geo.latLng)) Text(metro.title),
+                        for (final metro in MetroStations.getNearestMetroStations(latLng: pullPoint.geo.latLng))
+                          Text(metro.title),
                       ],
                     ),
                   ],

@@ -14,7 +14,6 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
       if (allPullPoints.isEmpty) {
         final response = await http.get(Uri.parse("${BackendConfig.baseUrl}/guest/pull_points"));
         String source = const Utf8Decoder().convert(response.bodyBytes);
-        print(source);
 
         final decodedResponse = jsonDecode(source);
 
@@ -42,7 +41,7 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
     required int categoryId,
     List<int>? subcategoryIds,
   }) async {
-    print(DateFormat("dd.MM.yyyy:HH.mm").format(startTime));
+    print("ownerId: $ownerId");
     final response = await http.post(
       Uri.parse("${BackendConfig.baseUrl}/artist/pull_point"),
       body: jsonEncode(

@@ -25,7 +25,7 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
   }) async {
     try {
       final response = await http.post(
-        Uri.parse("${BackendConfig.baseUrl}/auth/sendToken"),
+        Uri.parse("${BackendConfig.baseUrl}/auth/token"),
         body: jsonEncode({"phone": email}),
         headers: {
           "Accept": "application/json",
@@ -81,7 +81,7 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
     required bool wannaBeArtist,
   }) async {
     final response = await http.put(
-      Uri.parse("${BackendConfig.baseUrl}/auth/update_user"),
+      Uri.parse("${BackendConfig.baseUrl}/auth"),
       body: jsonEncode({"id": id, "username": username, "phone": email}),
       headers: {
         "Accept": "application/json",

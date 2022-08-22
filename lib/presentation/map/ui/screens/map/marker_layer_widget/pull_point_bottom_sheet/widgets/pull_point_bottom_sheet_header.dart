@@ -41,7 +41,7 @@ class PullPointBottomSheetHeader extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      pullPoint.artists.first.name,
+                      pullPoint.owner.name ?? "-",
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w400,

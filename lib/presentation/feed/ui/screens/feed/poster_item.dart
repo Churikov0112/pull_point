@@ -99,7 +99,7 @@ class PosterItemV2 extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           SizedBox(width: mediaqQuery.size.width / 2, child: AppTitle(pullPoint.title)),
-                          SizedBox(width: mediaqQuery.size.width / 2, child: AppText(pullPoint.owner.name)),
+                          SizedBox(width: mediaqQuery.size.width / 2, child: AppText(pullPoint.owner.name ?? "-")),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -212,7 +212,7 @@ class PosterItemV2 extends StatelessWidget {
                           //         ),
                           // ),
                           // const SizedBox(width: 8),
-                          AppText(pullPoint.owner.name, textColor: AppColors.textOnColors),
+                          AppText(pullPoint.owner.name ?? "-", textColor: AppColors.textOnColors),
                         ],
                       ),
                     ),
