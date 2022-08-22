@@ -13,13 +13,13 @@ class UserModel {
   final String email;
 
   @HiveField(3)
-  final bool isArtist;
+  final bool? isArtist;
 
   const UserModel({
     required this.id,
     required this.username,
     required this.email,
-    required this.isArtist,
+    this.isArtist,
   });
 
   static UserModel fromJson(dynamic source) {
