@@ -1,7 +1,9 @@
 import '../../models/models.dart';
 
 abstract class PullPointsRepositoryInterface {
-  Future<List<PullPointModel>> getPullPoints();
+  Future<List<PullPointModel>> getPullPoints({
+    required bool needUpdate,
+  });
 
   Future<bool> createPullPoint({
     required String name,

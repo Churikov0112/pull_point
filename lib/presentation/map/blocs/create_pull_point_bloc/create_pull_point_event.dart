@@ -30,3 +30,5 @@ class CreatePullPointEventCreate extends CreatePullPointEvent {
     this.subcategoryIds,
   });
 }
+
+class CreatePullPointEventReset extends CreatePullPointEvent {}

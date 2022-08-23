@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter/material.dart' show CircularProgressIndicator, Colors, FloatingActionButton, Icons, MaterialPageRoute;
+import 'package:flutter/material.dart'
+    show CircularProgressIndicator, Colors, FloatingActionButton, Icons, MaterialPageRoute;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
@@ -162,7 +163,8 @@ class _MapScreenState extends State<MapScreen> {
                   bottom: 15,
                   child: TouchableOpacity(
                     onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => const CreatePullPointScreen()));
+                      Navigator.of(context).push(
+                          MaterialPageRoute<void>(builder: (BuildContext context) => const CreatePullPointScreen()));
                     },
                     child: Container(
                       height: 60,

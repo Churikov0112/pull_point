@@ -17,6 +17,9 @@ class SelectPullPointEvent extends PullPointsEvent {
   const SelectPullPointEvent({
     required this.selectedPullPointId,
   });
+
+  @override
+  List<Object> get props => [selectedPullPointId];
 }
 
 class UnselectPullPointEvent extends PullPointsEvent {

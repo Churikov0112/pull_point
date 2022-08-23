@@ -9,18 +9,29 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
   List<PullPointModel> allPullPoints = [];
 
   @override
-  Future<List<PullPointModel>> getPullPoints() async {
+  Future<List<PullPointModel>> getPullPoints({
+    required bool needUpdate,
+  }) async {
     try {
-      if (allPullPoints.isEmpty) {
+      if (needUpdate) {
+        // загружаем в л/бом случае
         final response = await http.get(Uri.parse("${BackendConfig.baseUrl}/guest/pull_points"));
         String source = const Utf8Decoder().convert(response.bodyBytes);
-
         final decodedResponse = jsonDecode(source);
-
         allPullPoints.clear();
-
         for (final element in decodedResponse) {
           allPullPoints.add(PullPointModel.fromJson(element));
+        }
+      } else {
+        // загружаем только в случае отсутствия пулл поинтов
+        if (allPullPoints.isEmpty) {
+          final response = await http.get(Uri.parse("${BackendConfig.baseUrl}/guest/pull_points"));
+          String source = const Utf8Decoder().convert(response.bodyBytes);
+          final decodedResponse = jsonDecode(source);
+          allPullPoints.clear();
+          for (final element in decodedResponse) {
+            allPullPoints.add(PullPointModel.fromJson(element));
+          }
         }
       }
     } catch (e) {

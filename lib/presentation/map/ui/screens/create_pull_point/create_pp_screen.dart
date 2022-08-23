@@ -2,6 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:pull_point/presentation/feed/blocs/blocs.dart';
 import '../../../../../domain/models/models.dart';
 import '../../../../auth/blocs/blocs.dart';
 import '../../../../ui_kit/ui_kit.dart';
@@ -31,16 +32,17 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
 
   List<SubcategoryModel> pickedSubcategories = [];
 
-  // getSubcategoryItems({required int pickedCategoryId}) {
-  //   List<MultiSelectItem<SubcategoryModel>> items = Categories.getSubcategoriesOfCategory(categoryId: pickedCategoryId)
-  //       .map((subcat) => MultiSelectItem<SubcategoryModel>(subcat, subcat.name))
-  //       .toList();
-  //   if (items.isNotEmpty) return items;
-  //   return null;
-  // }
+  Future<void> closePage() async {
+    await Future.delayed(Duration.zero, () {
+      context.read<PullPointsBloc>().add(const LoadDataEvent());
+      context.read<CreatePullPointBloc>().add(CreatePullPointEventReset());
+      Navigator.pop(context);
+    });
+  }
 
   @override
   void initState() {
+    context.read<CreatePullPointBloc>().add(CreatePullPointEventReset());
     context.read<CategoriesBloc>().add(const CategoriesEventLoad());
     super.initState();
   }
@@ -80,7 +82,8 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: const SizedBox.square(dimension: 24, child: Center(child: Icon(Icons.arrow_back_ios_new, size: 20))),
+                          child: const SizedBox.square(
+                              dimension: 24, child: Center(child: Icon(Icons.arrow_back_ios_new, size: 20))),
                         ),
                         const SizedBox(width: 8),
                         const GradientText(
@@ -100,12 +103,14 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                   TouchableOpacity(
                     onPressed: () async {
                       Navigator.of(context).push(MaterialPageRoute<void>(
-                          builder: (BuildContext context) => PickLocationScreen(onSubmit: updateLocation, initialCenter: pickedLocation)));
+                          builder: (BuildContext context) =>
+                              PickLocationScreen(onSubmit: updateLocation, initialCenter: pickedLocation)));
                     },
                     child: Container(
                       width: mediaQuery.size.width,
                       height: 100,
-                      decoration: const BoxDecoration(color: AppColors.backgroundCard, borderRadius: BorderRadius.all(Radius.circular(12))),
+                      decoration: const BoxDecoration(
+                          color: AppColors.backgroundCard, borderRadius: BorderRadius.all(Radius.circular(12))),
                       child: Center(
                         child: Text(pickedLocation == null
                             ? "Выбрать место проведения 📍"
@@ -152,7 +157,8 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                         text: "Дата начала",
                       ),
                       const SizedBox(width: 16),
-                      if (pickedStartDate != null) Text("${pickedStartDate!.day}.${pickedStartDate!.month}.${pickedStartDate!.year}"),
+                      if (pickedStartDate != null)
+                        Text("${pickedStartDate!.day}.${pickedStartDate!.month}.${pickedStartDate!.year}"),
                     ],
                   ),
 
@@ -174,7 +180,8 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                         text: "Дата конца",
                       ),
                       const SizedBox(width: 16),
-                      if (pickedEndDate != null) Text("${pickedEndDate!.day}.${pickedEndDate!.month}.${pickedStartDate!.year}"),
+                      if (pickedEndDate != null)
+                        Text("${pickedEndDate!.day}.${pickedEndDate!.month}.${pickedStartDate!.year}"),
                     ],
                   ),
 
@@ -190,7 +197,8 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                             initialTime: TimeOfDay.now(),
                             initialEntryMode: TimePickerEntryMode.input,
                             builder: (BuildContext context, Widget? child) {
-                              return MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
+                              return MediaQuery(
+                                  data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
                             },
                           );
                           if (result != null) setState(() => pickedStartTime = result);
@@ -214,7 +222,8 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                             initialTime: TimeOfDay.now(),
                             initialEntryMode: TimePickerEntryMode.input,
                             builder: (BuildContext context, Widget? child) {
-                              return MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
+                              return MediaQuery(
+                                  data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
                             },
                           );
                           if (result != null) setState(() => pickedEndTime = result);
@@ -247,7 +256,9 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                                     gradient: pickedCategory?.id == cat.id ? AppGradients.main : AppGradients.first,
                                     onPressed: () {
                                       setState(() => pickedCategory = cat);
-                                      context.read<SubcategoriesBloc>().add(SubcategoriesEventLoad(parentCategoryId: cat.id));
+                                      context
+                                          .read<SubcategoriesBloc>()
+                                          .add(SubcategoriesEventLoad(parentCategoryId: cat.id));
                                     },
                                   ),
                               ],
@@ -280,7 +291,8 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                                   for (final cat in state.subcategories)
                                     CategoryChip(
                                       childText: cat.name,
-                                      gradient: pickedSubcategories.contains(cat) ? AppGradients.main : AppGradients.first,
+                                      gradient:
+                                          pickedSubcategories.contains(cat) ? AppGradients.main : AppGradients.first,
                                       onPressed: () {
                                         if (pickedSubcategories.contains(cat)) {
                                           pickedSubcategories.remove(cat);
@@ -309,81 +321,78 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                   const SizedBox(height: 32),
 
                   BlocBuilder<CreatePullPointBloc, CreatePullPointState>(
-                    builder: (context, state) => LongButton(
-                      backgroundGradient: AppGradients.main,
-                      child: (state is CreatePullPointStateLoading) ? const LoadingIndicator() : const AppText("Далее", textColor: Colors.white),
-                      onTap: () {
-                        if (pickedLocation == null) {
-                          BotToast.showText(text: "Вы не выбрали место");
-                          return;
-                        }
-                        if (titleEditingController.text.isEmpty) {
-                          BotToast.showText(text: "Вы не ввели название");
-                          return;
-                        }
-                        if (descriptionEditingController.text.isEmpty) {
-                          BotToast.showText(text: "Вы не ввели описание");
-                          return;
-                        }
-                        if (pickedStartDate == null || pickedEndDate == null) {
-                          BotToast.showText(text: "Вы не выбрали дату");
-                          return;
-                        }
-                        if (pickedStartTime == null || pickedEndTime == null) {
-                          BotToast.showText(text: "Вы не выбрали время");
-                          return;
-                        }
-                        if (pickedCategory == null) {
-                          BotToast.showText(text: "Вы не выбрали категорию");
-                          return;
-                        }
-
-                        final authState = context.read<AuthBloc>().state;
-                        if (authState is AuthStateAuthorized) {
-                          context.read<CreatePullPointBloc>().add(
-                                CreatePullPointEventCreate(
-                                  name: titleEditingController.text,
-                                  description: descriptionEditingController.text,
-                                  ownerId: authState.user.id,
-                                  latitude: pickedLocation!.latitude,
-                                  longitude: pickedLocation!.longitude,
-                                  startTime: DateTime(
-                                    pickedStartDate!.year,
-                                    pickedStartDate!.month,
-                                    pickedStartDate!.day,
-                                    pickedStartTime!.hour,
-                                    pickedStartTime!.minute,
-                                  ),
-                                  endTime: DateTime(
-                                    pickedEndDate!.year,
-                                    pickedEndDate!.month,
-                                    pickedEndDate!.day,
-                                    pickedEndTime!.hour,
-                                    pickedEndTime!.minute,
-                                  ),
-                                  categoryId: pickedCategory!.id,
-                                  subcategoryIds: [for (final subcat in pickedSubcategories) subcat.id],
-                                ),
-                              );
-                          if (state is CreatePullPointStateCreated) {
-                            Navigator.of(context).pop();
-                            context.read<PullPointsBloc>().add(const LoadDataEvent());
+                    builder: (context, state) {
+                      if (state is CreatePullPointStateCreated) {
+                        closePage();
+                      }
+                      return LongButton(
+                        backgroundGradient: AppGradients.main,
+                        child: (state is CreatePullPointStateLoading)
+                            ? const LoadingIndicator()
+                            : const AppText("Далее", textColor: Colors.white),
+                        onTap: () {
+                          if (pickedLocation == null) {
+                            BotToast.showText(text: "Вы не выбрали место");
                             return;
                           }
-                          if (state is CreatePullPointStateFailed) {
-                            BotToast.showText(text: "Не удалось создать pull point");
+                          if (titleEditingController.text.isEmpty) {
+                            BotToast.showText(text: "Вы не ввели название");
                             return;
                           }
-                        } else {
-                          BotToast.showText(text: "Необходимо авторизоваться");
-                          return;
-                        }
+                          if (descriptionEditingController.text.isEmpty) {
+                            BotToast.showText(text: "Вы не ввели описание");
+                            return;
+                          }
+                          if (pickedStartDate == null || pickedEndDate == null) {
+                            BotToast.showText(text: "Вы не выбрали дату");
+                            return;
+                          }
+                          if (pickedStartTime == null || pickedEndTime == null) {
+                            BotToast.showText(text: "Вы не выбрали время");
+                            return;
+                          }
+                          if (pickedCategory == null) {
+                            BotToast.showText(text: "Вы не выбрали категорию");
+                            return;
+                          }
 
-                        // Navigator.of(context).pop();
-                      },
-                    ),
+                          final authState = context.read<AuthBloc>().state;
+                          if (authState is AuthStateAuthorized) {
+                            context.read<CreatePullPointBloc>().add(
+                                  CreatePullPointEventCreate(
+                                    name: titleEditingController.text,
+                                    description: descriptionEditingController.text,
+                                    ownerId: authState.user.id,
+                                    latitude: pickedLocation!.latitude,
+                                    longitude: pickedLocation!.longitude,
+                                    startTime: DateTime(
+                                      pickedStartDate!.year,
+                                      pickedStartDate!.month,
+                                      pickedStartDate!.day,
+                                      pickedStartTime!.hour,
+                                      pickedStartTime!.minute,
+                                    ),
+                                    endTime: DateTime(
+                                      pickedEndDate!.year,
+                                      pickedEndDate!.month,
+                                      pickedEndDate!.day,
+                                      pickedEndTime!.hour,
+                                      pickedEndTime!.minute,
+                                    ),
+                                    categoryId: pickedCategory!.id,
+                                    subcategoryIds: [for (final subcat in pickedSubcategories) subcat.id],
+                                  ),
+                                );
+                          } else {
+                            BotToast.showText(text: "Необходимо авторизоваться");
+                            return;
+                          }
+
+                          // Navigator.of(context).pop();
+                        },
+                      );
+                    },
                   ),
-
                   const SizedBox(height: 32),
                 ],
               ),

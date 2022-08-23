@@ -17,6 +17,9 @@ class LoadedState extends PullPointsState {
   const LoadedState({
     required this.pullPoints,
   });
+
+  @override
+  List<Object> get props => [pullPoints];
 }
 
 class SelectedState extends PullPointsState {
@@ -27,6 +30,9 @@ class SelectedState extends PullPointsState {
     required this.selectedPullPoint,
     required this.otherPullPoints,
   });
+
+  @override
+  List<Object> get props => [otherPullPoints, selectedPullPoint];
 }
 
 class FailedState extends PullPointsState {
@@ -35,4 +41,7 @@ class FailedState extends PullPointsState {
   const FailedState({
     required this.errorMessage,
   });
+
+  @override
+  List<Object> get props => [errorMessage];
 }
