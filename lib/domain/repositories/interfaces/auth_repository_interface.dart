@@ -19,5 +19,13 @@ abstract class AuthRepositoryInterface {
     required bool wannaBeArtist,
   });
 
+  Future<ArtistModel?> updateArtist({
+    required int userId,
+    required String name,
+    required String description,
+    required int categoryId,
+    required List<int> subcategoriesIds,
+  });
+
   Future<void> logout();
 }

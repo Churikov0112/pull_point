@@ -16,9 +16,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   })  : _authRepositoryInterface = authRepositoryImpl,
         super(const AuthStateUnauthorized()) {
     on<AuthEventCheckAccoutLocally>(_checkAccountLocally);
+    on<AuthEventOpenEmailPage>(_openEmailPage);
     on<AuthEventSendCode>(_sendVerificationCode);
     on<AuthEventLogin>(_login);
-    on<AuthEventRegister>(_register);
+    on<AuthEventRegisterUser>(_registerUser);
+    on<AuthEventRegisterArtist>(_registerArtist);
     on<AuthEventLogout>(_logout);
     on<AuthEventContinueAsGuest>(_continueAsGuest);
   }
@@ -26,6 +28,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _continueAsGuest(AuthEventContinueAsGuest event, Emitter<AuthState> emit) async {
     emit(const AuthStateGuest());
     BotToast.showText(text: "Вы продолжили как гость. Некоторые функции будут недоступны");
+  }
+
+  Future<void> _openEmailPage(AuthEventOpenEmailPage event, Emitter<AuthState> emit) async {
+    emit(AuthStateEnterEmailPageOpened(email: event.email));
   }
 
   Future<void> _checkAccountLocally(AuthEventCheckAccoutLocally event, Emitter<AuthState> emit) async {
@@ -45,7 +51,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthStateCodeSent(email: event.email));
     } else {
       BotToast.showText(text: "Не удалось отправить проверочный код");
-      emit(const AuthStateUnauthorized());
     }
   }
 
@@ -56,15 +61,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (user.username != null) {
         emit(AuthStateAuthorized(user: user));
       } else {
-        emit(AuthStateCodeVerified(id: user.id, email: user.email, code: event.code, username: user.username));
+        emit(AuthStateCodeVerified(user: user));
       }
     } else {
-      emit(const AuthStateUnauthorized());
       BotToast.showText(text: "Неверный код, попробуйте снова");
     }
   }
 
-  Future<void> _register(AuthEventRegister event, Emitter<AuthState> emit) async {
+  Future<void> _registerUser(AuthEventRegisterUser event, Emitter<AuthState> emit) async {
     emit(const AuthStatePending());
     final user = await _authRepositoryInterface.updateUser(
       id: event.id,
@@ -73,10 +77,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       wannaBeArtist: event.wannaBeArtist,
     );
     if (user != null) {
-      emit(AuthStateAuthorized(user: user));
+      if (event.wannaBeArtist) emit(AuthStateArtistCreating(user: user));
+      if (!event.wannaBeArtist) emit(AuthStateAuthorized(user: user));
     } else {
-      emit(const AuthStateUnauthorized());
-      BotToast.showText(text: "Ошибка регистрации, попробуйте снова");
+      BotToast.showText(text: "Ошибка при создании пользователя");
+    }
+  }
+
+  Future<void> _registerArtist(AuthEventRegisterArtist event, Emitter<AuthState> emit) async {
+    emit(const AuthStatePending());
+    final artist = await _authRepositoryInterface.updateArtist(
+      userId: event.user.id,
+      name: event.name,
+      description: event.description,
+      categoryId: event.categoryId,
+      subcategoriesIds: event.subcategoryIds,
+    );
+    if (artist != null) emit(AuthStateAuthorized(user: event.user));
+    if (artist == null) {
+      BotToast.showText(text: "Ошибка при создании артиста");
     }
   }
 

@@ -15,6 +15,14 @@ class AuthEventCheckAccoutLocally extends AuthEvent {
   const AuthEventCheckAccoutLocally();
 }
 
+class AuthEventOpenEmailPage extends AuthEvent {
+  final String? email;
+
+  const AuthEventOpenEmailPage({
+    this.email,
+  });
+}
+
 class AuthEventSendCode extends AuthEvent {
   final String email;
 
@@ -33,17 +41,33 @@ class AuthEventLogin extends AuthEvent {
   });
 }
 
-class AuthEventRegister extends AuthEvent {
+class AuthEventRegisterUser extends AuthEvent {
   final int id;
   final String email;
   final String username;
   final bool wannaBeArtist;
 
-  const AuthEventRegister({
+  const AuthEventRegisterUser({
     required this.id,
     required this.email,
     required this.username,
     required this.wannaBeArtist,
+  });
+}
+
+class AuthEventRegisterArtist extends AuthEvent {
+  final UserModel user;
+  final String name;
+  final String description;
+  final int categoryId;
+  final List<int> subcategoryIds;
+
+  const AuthEventRegisterArtist({
+    required this.user,
+    required this.name,
+    required this.description,
+    required this.categoryId,
+    required this.subcategoryIds,
   });
 }
 

@@ -15,6 +15,14 @@ class AuthStateUnauthorized extends AuthState {
   const AuthStateUnauthorized();
 }
 
+class AuthStateEnterEmailPageOpened extends AuthState {
+  final String? email;
+
+  const AuthStateEnterEmailPageOpened({
+    this.email,
+  });
+}
+
 class AuthStateCodeSent extends AuthState {
   final String email;
 
@@ -24,16 +32,17 @@ class AuthStateCodeSent extends AuthState {
 }
 
 class AuthStateCodeVerified extends AuthState {
-  final int id;
-  final String email;
-  final String code;
-  final String? username;
+  final UserModel user;
 
   const AuthStateCodeVerified({
-    required this.id,
-    required this.email,
-    required this.code,
-    required this.username,
+    required this.user,
+  });
+}
+
+class AuthStateArtistCreating extends AuthState {
+  final UserModel user;
+  const AuthStateArtistCreating({
+    required this.user,
   });
 }
 

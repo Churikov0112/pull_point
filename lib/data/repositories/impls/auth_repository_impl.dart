@@ -12,6 +12,8 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
   UserModel? user;
   Box<UserModel?> userBox;
 
+  List<ArtistModel> artists = [];
+
   @override
   Future<UserModel?> checkAccountLocally() async {
     final result = userBox.get('user');
@@ -117,6 +119,40 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
         print("user: $result");
         return user;
       }
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Future<ArtistModel?> updateArtist({
+    required int userId,
+    required String name,
+    required String description,
+    required int categoryId,
+    required List<int> subcategoriesIds,
+  }) async {
+    final response = await http.put(
+      Uri.parse("${BackendConfig.baseUrl}/auth/artist"),
+      headers: {
+        "Accept": "application/json",
+        "content-type": "application/json",
+      },
+      body: jsonEncode({
+        "subcategories": subcategoriesIds,
+        "name": name,
+        "description": description,
+        "category": categoryId,
+        "user": userId
+      }),
+    );
+    if (response.statusCode == 200) {
+      String source = const Utf8Decoder().convert(response.bodyBytes);
+      final decodedResponse = jsonDecode(source);
+      print("decodedResponse: $decodedResponse");
+      final ArtistModel artist = ArtistModel.fromJson(decodedResponse);
+      if (artists.isEmpty) artists.add(artist);
+      return artist;
     } else {
       return null;
     }

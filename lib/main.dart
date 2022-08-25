@@ -10,6 +10,7 @@ import 'package:pull_point/presentation/home/home_page.dart';
 import 'data/data.dart';
 import 'domain/domain.dart';
 import 'presentation/auth/blocs/blocs.dart';
+import 'presentation/auth/ui/screens/enter_artist_data_screen/enter_artist_data_screen.dart';
 import 'presentation/feed/blocs/blocs.dart';
 import 'presentation/home/blocs/blocs.dart';
 import 'presentation/map/blocs/blocs.dart';
@@ -37,14 +38,20 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
-            create: (context) => AuthBloc(authRepositoryImpl: AuthRepositoryImpl(userBox: userBox))..add(const AuthEventCheckAccoutLocally())),
+            create: (context) => AuthBloc(authRepositoryImpl: AuthRepositoryImpl(userBox: userBox))
+              ..add(const AuthEventCheckAccoutLocally())),
         BlocProvider<HomeBloc>(create: (context) => HomeBloc()),
         BlocProvider<PullPointsBloc>(create: (context) => PullPointsBloc(repository: pullPointsRepository)),
-        BlocProvider<MapFiltersBloc>(create: (context) => MapFiltersBloc(mapFiltersRepository: MapFiltersRepositoryImpl())),
-        BlocProvider<FeedFiltersBloc>(create: (context) => FeedFiltersBloc(feedFiltersRepository: FeedFiltersRepositoryImpl())),
-        BlocProvider<CategoriesBloc>(create: (context) => CategoriesBloc(categoriesRepository: CategoriesRepositoryImpl())),
-        BlocProvider<SubcategoriesBloc>(create: (context) => SubcategoriesBloc(categoriesRepository: CategoriesRepositoryImpl())),
-        BlocProvider<CreatePullPointBloc>(create: (context) => CreatePullPointBloc(pullPointsRepository: pullPointsRepository)),
+        BlocProvider<MapFiltersBloc>(
+            create: (context) => MapFiltersBloc(mapFiltersRepository: MapFiltersRepositoryImpl())),
+        BlocProvider<FeedFiltersBloc>(
+            create: (context) => FeedFiltersBloc(feedFiltersRepository: FeedFiltersRepositoryImpl())),
+        BlocProvider<CategoriesBloc>(
+            create: (context) => CategoriesBloc(categoriesRepository: CategoriesRepositoryImpl())),
+        BlocProvider<SubcategoriesBloc>(
+            create: (context) => SubcategoriesBloc(categoriesRepository: CategoriesRepositoryImpl())),
+        BlocProvider<CreatePullPointBloc>(
+            create: (context) => CreatePullPointBloc(pullPointsRepository: pullPointsRepository)),
 
         // BlocProvider<PersonSearchBloc>(create: (context) => sl<PersonSearchBloc>()),
       ],
@@ -62,11 +69,15 @@ class MyApp extends StatelessWidget {
         ),
         home: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
-            if (state is AuthStateUnauthorized) return const StartScreen();
-            if (state is AuthStateCodeSent) return Center(child: EnterCodeScreen(email: state.email));
-            if (state is AuthStateCodeVerified) return Center(child: EnterUserDataScreen(userId: state.id, email: state.email));
             if (state is AuthStateAuthorized || state is AuthStateGuest) return const HomePage();
-            return const Center(child: CircularProgressIndicator());
+            return const StartScreen();
+            // if (state is AuthStateCodeVerified) {
+            //   return Center(child: EnterUserDataScreen(userId: state.id, email: state.email));
+            // }
+            // if (state is AuthStateArtistCreating) return Center(child: EnterArtistDataScreen(user: state.user));
+            // if (state is AuthStateCodeSent) return Center(child: EnterCodeScreen(email: state.email));
+
+            // return const Center(child: CircularProgressIndicator());
           },
         ),
         // home: const HomePage(),
