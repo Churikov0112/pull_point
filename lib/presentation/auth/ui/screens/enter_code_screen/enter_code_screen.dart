@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -86,23 +87,25 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
                   ),
                 ),
                 Form(
-                  // autovalidateMode: AutovalidateMode.onUserInteraction,
                   child: AppTextFormField(
                     autofocus: true,
                     keyboardType: TextInputType.emailAddress,
                     hintText: "******",
                     inputFormatters: [LengthLimitingTextInputFormatter(6)],
                     maxLines: 1,
-                    // errorText: (codeEditingController.text == "qwerty" || codeEditingController.text.isEmpty)
-                    //     ? null
-                    //     : "Код неверный",
                     controller: codeEditingController,
-                    onEditingComplete: () async {
-                      context
-                          .read<AuthBloc>()
-                          .add(AuthEventLogin(email: widget.email, code: codeEditingController.text));
-                    },
                   ),
+                ),
+                LongButton(
+                  backgroundGradient: AppGradients.main,
+                  onTap: () {
+                    if (codeEditingController.text.isEmpty) {
+                      BotToast.showText(text: "Вы не ввели код");
+                      return;
+                    }
+                    context.read<AuthBloc>().add(AuthEventLogin(email: widget.email, code: codeEditingController.text));
+                  },
+                  child: const AppButtonText("Далее", textColor: AppColors.textOnColors),
                 ),
               ],
             ),

@@ -39,6 +39,14 @@ class AuthStateCodeVerified extends AuthState {
   });
 }
 
+class AuthStateUsernameInputed extends AuthState {
+  final UserModel user;
+
+  const AuthStateUsernameInputed({
+    required this.user,
+  });
+}
+
 class AuthStateArtistCreating extends AuthState {
   final UserModel user;
   const AuthStateArtistCreating({

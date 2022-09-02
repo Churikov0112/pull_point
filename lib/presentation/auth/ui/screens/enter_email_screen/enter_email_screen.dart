@@ -62,32 +62,24 @@ class _EnterEmailScreenState extends State<EnterEmailScreen> {
                 ),
               ),
               Form(
-                // autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: AppTextFormField(
-                  autofocus: true,
                   keyboardType: TextInputType.emailAddress,
                   hintText: "example@gmail.com",
                   maxLines: 1,
-                  // errorText: !isEmpty
-                  //     ? isValid
-                  //         ? null
-                  //         : "Некорректный email"
-                  //     : null,
                   controller: emailEditingController,
-                  onEditingComplete: () {
-                    setState(() {
-                      isEmpty = false;
-                      isValid = EmailValidator.validate(emailEditingController.text);
-                      if (isValid) {
-                        // Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => const EnterCodeScreen()));
-                        context.read<AuthBloc>().add(AuthEventSendCode(email: emailEditingController.text));
-                      } else {
-                        BotToast.showText(text: "Некорректный email");
-                      }
-                    });
-                    FocusScope.of(context).unfocus();
-                  },
                 ),
+              ),
+              LongButton(
+                backgroundGradient: AppGradients.main,
+                onTap: () {
+                  isValid = EmailValidator.validate(emailEditingController.text);
+                  if (!isValid) {
+                    BotToast.showText(text: "Введите корректный Email");
+                    return;
+                  }
+                  context.read<AuthBloc>().add(AuthEventSendCode(email: emailEditingController.text));
+                },
+                child: const AppButtonText("Отправить код", textColor: AppColors.textOnColors),
               ),
             ],
           ),

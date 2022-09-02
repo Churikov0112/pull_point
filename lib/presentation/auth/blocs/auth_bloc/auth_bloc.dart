@@ -17,6 +17,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         super(const AuthStateUnauthorized()) {
     on<AuthEventCheckAccoutLocally>(_checkAccountLocally);
     on<AuthEventOpenEmailPage>(_openEmailPage);
+    on<AuthEventOpenWannaBeArtistPage>(_openWannaBeArtistPage);
     on<AuthEventSendCode>(_sendVerificationCode);
     on<AuthEventLogin>(_login);
     on<AuthEventRegisterUser>(_registerUser);
@@ -32,6 +33,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _openEmailPage(AuthEventOpenEmailPage event, Emitter<AuthState> emit) async {
     emit(AuthStateEnterEmailPageOpened(email: event.email));
+  }
+
+  Future<void> _openWannaBeArtistPage(AuthEventOpenWannaBeArtistPage event, Emitter<AuthState> emit) async {
+    emit(AuthStateUsernameInputed(user: event.user));
   }
 
   Future<void> _checkAccountLocally(AuthEventCheckAccoutLocally event, Emitter<AuthState> emit) async {
@@ -94,9 +99,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       subcategoriesIds: event.subcategoryIds,
     );
     if (artist != null) emit(AuthStateAuthorized(user: event.user));
-    if (artist == null) {
-      BotToast.showText(text: "Ошибка при создании артиста");
-    }
+    if (artist == null) BotToast.showText(text: "Ошибка при создании артиста");
   }
 
   Future<void> _logout(AuthEventLogout event, Emitter<AuthState> emit) async {

@@ -15,6 +15,22 @@ class AuthEventCheckAccoutLocally extends AuthEvent {
   const AuthEventCheckAccoutLocally();
 }
 
+class AuthEventOpenWannaBeArtistPage extends AuthEvent {
+  final UserModel user;
+
+  const AuthEventOpenWannaBeArtistPage({
+    required this.user,
+  });
+}
+
+class AuthEventOpenUpdateArtistPage extends AuthEvent {
+  final UserModel user;
+
+  const AuthEventOpenUpdateArtistPage({
+    required this.user,
+  });
+}
+
 class AuthEventOpenEmailPage extends AuthEvent {
   final String? email;
 

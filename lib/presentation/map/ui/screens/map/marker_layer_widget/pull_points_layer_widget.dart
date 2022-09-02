@@ -66,7 +66,7 @@ class _PullPointsLayerWidgetState extends State<PullPointsLayerWidget> {
               onTap: () {
                 pullPointsBloc.add(const UnselectPullPointEvent());
                 pullPointsBloc.add(SelectPullPointEvent(selectedPullPointId: notselectedPullPoint.id));
-                zoomToSpecificPullPoint(latLng: notselectedPullPoint.geo.latLng);
+                // zoomToSpecificPullPoint(latLng: notselectedPullPoint.geo.latLng);
               },
             ),
           ),
@@ -98,7 +98,7 @@ class _PullPointsLayerWidgetState extends State<PullPointsLayerWidget> {
               onTap: () {
                 pullPointsBloc.add(const UnselectPullPointEvent());
                 pullPointsBloc.add(SelectPullPointEvent(selectedPullPointId: notselectedPullPoint.id));
-                zoomToSpecificPullPoint(latLng: notselectedPullPoint.geo.latLng);
+                // zoomToSpecificPullPoint(latLng: notselectedPullPoint.geo.latLng);
               },
             ),
           ),

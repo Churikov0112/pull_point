@@ -132,8 +132,13 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
     required int categoryId,
     required List<int> subcategoriesIds,
   }) async {
+    print("userId: $userId");
+    print("name: $name");
+    print("description: $description");
+    print("categoryId: $categoryId");
+    print("subcategoriesIds: $subcategoriesIds");
     final response = await http.put(
-      Uri.parse("${BackendConfig.baseUrl}/auth/artist"),
+      Uri.parse("${BackendConfig.baseUrl}/artist"),
       headers: {
         "Accept": "application/json",
         "content-type": "application/json",
@@ -146,6 +151,7 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
         "user": userId
       }),
     );
+    print(response.statusCode);
     if (response.statusCode == 200) {
       String source = const Utf8Decoder().convert(response.bodyBytes);
       final decodedResponse = jsonDecode(source);

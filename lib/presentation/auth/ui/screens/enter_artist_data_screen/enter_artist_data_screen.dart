@@ -28,14 +28,6 @@ class __EnterArtistDataScreenState extends State<EnterArtistDataScreen> {
   @override
   void initState() {
     context.read<CategoriesBloc>().add(const CategoriesEventLoad());
-    context.read<AuthBloc>().add(
-          AuthEventRegisterUser(
-            id: widget.user.id,
-            email: widget.user.email,
-            username: widget.user.username ?? '-',
-            wannaBeArtist: true,
-          ),
-        );
     super.initState();
   }
 

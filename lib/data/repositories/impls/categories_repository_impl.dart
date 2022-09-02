@@ -10,6 +10,7 @@ class CategoriesRepositoryImpl extends CategoriesRepositoryInterface {
   Future<List<CategoryModel>> getCategories() async {
     try {
       if (categories.isEmpty) {
+        categories.clear();
         final response = await http.get(Uri.parse("${BackendConfig.baseUrl}/category/main"));
         String source = const Utf8Decoder().convert(response.bodyBytes);
         print(source);
