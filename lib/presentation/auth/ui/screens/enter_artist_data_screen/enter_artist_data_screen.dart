@@ -95,7 +95,10 @@ class __EnterArtistDataScreenState extends State<EnterArtistDataScreen> {
                                   childText: cat.name,
                                   gradient: pickedCategory?.id == cat.id ? AppGradients.main : AppGradients.first,
                                   onPressed: () {
-                                    setState(() => pickedCategory = cat);
+                                    setState(() {
+                                      pickedCategory = cat;
+                                      pickedSubcategories.clear();
+                                    });
                                     context
                                         .read<SubcategoriesBloc>()
                                         .add(SubcategoriesEventLoad(parentCategoryId: cat.id));
