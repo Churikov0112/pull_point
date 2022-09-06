@@ -20,7 +20,6 @@ class PullPointsBloc extends Bloc<PullPointsEvent, PullPointsState> {
 
   Future<void> _loadData(LoadDataEvent event, Emitter<PullPointsState> emit) async {
     try {
-      print("loading...");
       emit(LoadingState());
       final pullPoints = await _repository.getPullPoints(needUpdate: true);
       emit(LoadedState(pullPoints: pullPoints));

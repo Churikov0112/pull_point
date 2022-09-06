@@ -25,10 +25,11 @@ class _EnterUserDataScreenState extends State<EnterUserDataScreen> {
     required UserModel user,
   }) async {
     await Future.delayed(Duration.zero, () {
-      Navigator.of(context).push(
+      Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute<void>(
           builder: (BuildContext context) => WannaBeArtistScreen(user: user),
         ),
+        (Route<dynamic> route) => false,
       );
     });
   }
@@ -36,67 +37,59 @@ class _EnterUserDataScreenState extends State<EnterUserDataScreen> {
   @override
   Widget build(BuildContext context) {
     // final mediaQuery = MediaQuery.of(context);
-    return BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, state) {
-        if (state is AuthStateUsernameInputed) {
-          _goToWannaBeArtistScreen(
-            user: UserModel(
-              id: widget.user.id,
-              username: usernameEditingController.text,
-              email: widget.user.email,
-              isArtist: false, // потом это может измениться
-            ),
-          );
-        }
-        return Scaffold(
-          backgroundColor: AppColors.backgroundPage,
-          body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const GradientText(
-                  gradient: AppGradients.main,
-                  src: Text(
-                    "Как вас величать?",
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          if (state is AuthStateUsernameInputed) _goToWannaBeArtistScreen(user: state.user);
+
+          return Scaffold(
+            backgroundColor: AppColors.backgroundPage,
+            body: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const GradientText(
+                    gradient: AppGradients.main,
+                    src: Text(
+                      "Как вас величать?",
+                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+                    ),
                   ),
-                ),
-                Form(
-                  child: AppTextFormField(
-                    autofocus: true,
+                  AppTextFormField(
                     keyboardType: TextInputType.text,
                     hintText: "username",
                     maxLines: 1,
                     controller: usernameEditingController,
                   ),
-                ),
-                LongButton(
-                  backgroundGradient: AppGradients.main,
-                  onTap: () {
-                    if (usernameEditingController.text.isEmpty) {
-                      BotToast.showText(text: "Введите имя пользователя");
-                      return;
-                    }
+                  LongButton(
+                    backgroundGradient: AppGradients.main,
+                    onTap: () {
+                      if (usernameEditingController.text.isEmpty) {
+                        BotToast.showText(text: "Введите имя пользователя");
+                        return;
+                      }
 
-                    context.read<AuthBloc>().add(
-                          AuthEventOpenWannaBeArtistPage(
-                            user: UserModel(
-                              id: widget.user.id,
-                              username: usernameEditingController.text,
-                              email: widget.user.email,
-                              isArtist: false, // потом это может измениться
+                      context.read<AuthBloc>().add(
+                            AuthEventOpenWannaBeArtistPage(
+                              user: UserModel(
+                                id: widget.user.id,
+                                username: usernameEditingController.text,
+                                email: widget.user.email,
+                                isArtist: false, // потом это может измениться
+                              ),
                             ),
-                          ),
-                        );
-                  },
-                  child: const AppButtonText("Создать", textColor: AppColors.textOnColors),
-                ),
-              ],
+                          );
+                    },
+                    child: const AppButtonText("Создать", textColor: AppColors.textOnColors),
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

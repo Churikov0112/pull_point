@@ -52,55 +52,58 @@ class _WannaBeArtistScreenState extends State<WannaBeArtistScreen> {
       builder: (context, state) {
         if (state is AuthStateAuthorized) _goToHomePage();
         if (state is AuthStateArtistCreating) _goToArtistRegisterScreen(user: state.user);
-        return Scaffold(
-          backgroundColor: AppColors.backgroundPage,
-          body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const GradientText(
-                  gradient: AppGradients.main,
-                  src: Text(
-                    "Вы артист или зритель? Артисты могут создавать выступления и получать пожертвования.",
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: Scaffold(
+            backgroundColor: AppColors.backgroundPage,
+            body: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const GradientText(
+                    gradient: AppGradients.main,
+                    src: Text(
+                      "Вы артист или зритель? Артисты могут создавать выступления и получать пожертвования.",
+                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+                    ),
                   ),
-                ),
-                Column(
-                  children: [
-                    LongButton(
-                      backgroundColor: AppColors.primary.withOpacity(0.1),
-                      onTap: () {
-                        context.read<AuthBloc>().add(
-                              AuthEventRegisterUser(
-                                id: widget.user.id,
-                                email: widget.user.email,
-                                username: widget.user.username ?? "-",
-                                wannaBeArtist: true,
-                              ),
-                            );
-                      },
-                      child: const AppButtonText("Я артист", textColor: AppColors.primary),
-                    ),
-                    const SizedBox(height: 16),
-                    LongButton(
-                      backgroundGradient: AppGradients.main,
-                      onTap: () {
-                        context.read<AuthBloc>().add(
-                              AuthEventRegisterUser(
-                                id: widget.user.id,
-                                email: widget.user.email,
-                                username: widget.user.username ?? "-",
-                                wannaBeArtist: false,
-                              ),
-                            );
-                        // Navigator.of(context).pop();
-                      },
-                      child: const AppButtonText("Я зритель", textColor: AppColors.textOnColors),
-                    ),
-                  ],
-                )
-              ],
+                  Column(
+                    children: [
+                      LongButton(
+                        backgroundGradient: AppGradients.first,
+                        onTap: () {
+                          context.read<AuthBloc>().add(
+                                AuthEventRegisterUser(
+                                  id: widget.user.id,
+                                  email: widget.user.email,
+                                  username: widget.user.username ?? "-",
+                                  wannaBeArtist: false,
+                                ),
+                              );
+                          // Navigator.of(context).pop();
+                        },
+                        child: const AppButtonText("Я зритель", textColor: AppColors.textOnColors),
+                      ),
+                      const SizedBox(height: 16),
+                      LongButton(
+                        backgroundGradient: AppGradients.main,
+                        onTap: () {
+                          context.read<AuthBloc>().add(
+                                AuthEventRegisterUser(
+                                  id: widget.user.id,
+                                  email: widget.user.email,
+                                  username: widget.user.username ?? "-",
+                                  wannaBeArtist: true,
+                                ),
+                              );
+                        },
+                        child: const AppButtonText("Я артист", textColor: AppColors.textOnColors),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         );

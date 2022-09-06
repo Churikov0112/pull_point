@@ -9,7 +9,6 @@ class AppTextFormField extends StatelessWidget {
     this.errorText,
     this.keyboardType,
     this.maxLines,
-    this.autofocus,
     this.onEditingComplete,
     this.inputFormatters,
     Key? key,
@@ -17,7 +16,6 @@ class AppTextFormField extends StatelessWidget {
 
   final TextInputType? keyboardType;
   final int? maxLines;
-  final bool? autofocus;
   final String? hintText;
   final String? errorText;
   final TextEditingController? controller;
@@ -30,7 +28,6 @@ class AppTextFormField extends StatelessWidget {
       onEditingComplete: onEditingComplete,
       controller: controller,
       keyboardType: keyboardType,
-      autofocus: autofocus ?? false,
       maxLines: maxLines,
       inputFormatters: inputFormatters,
       decoration: InputDecoration(

@@ -32,40 +32,41 @@ class StartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, state) {
-        if (state is AuthStateAuthorized) _goToHomePage(context);
-        if (state is AuthStateEnterEmailPageOpened) _goToEnterEmailPage(context);
-        return Scaffold(
-          body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                LongButton(
-                  onTap: () {
-                    context.read<AuthBloc>().add(const AuthEventOpenEmailPage());
-
-                    Navigator.of(context)
-                        .push(MaterialPageRoute<void>(builder: (BuildContext context) => const EnterEmailScreen()));
-                  },
-                  backgroundGradient: AppGradients.main,
-                  child: const AppText("Авторизоваться", textColor: AppColors.textOnColors),
-                ),
-                const SizedBox(height: 16),
-                LongButton(
-                  onTap: () {
-                    // Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => const HomePage()));
-                    context.read<AuthBloc>().add(const AuthEventContinueAsGuest());
-                  },
-                  backgroundColor: AppColors.primary.withOpacity(0.1),
-                  child: const AppText("Войти как гость"),
-                ),
-              ],
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          if (state is AuthStateAuthorized) _goToHomePage(context);
+          if (state is AuthStateEnterEmailPageOpened) _goToEnterEmailPage(context);
+          return Scaffold(
+            body: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  LongButton(
+                    onTap: () {
+                      context.read<AuthBloc>().add(const AuthEventOpenEmailPage());
+                      // Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => const EnterEmailScreen()));
+                    },
+                    backgroundGradient: AppGradients.main,
+                    child: const AppText("Авторизоваться", textColor: AppColors.textOnColors),
+                  ),
+                  const SizedBox(height: 16),
+                  LongButton(
+                    onTap: () {
+                      // Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => const HomePage()));
+                      context.read<AuthBloc>().add(const AuthEventContinueAsGuest());
+                    },
+                    backgroundColor: AppColors.primary.withOpacity(0.1),
+                    child: const AppText("Войти как гость"),
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
