@@ -122,7 +122,7 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                       CategoryChip(
                         gradient: endTime == null ? AppGradients.slave : AppGradients.main,
                         textColor: endTime == null ? AppColors.text : AppColors.textOnColors,
-                        childText: endTime == null ? "Выбрать время конца" : "с ${endTime!.hour}:${endTime!.minute}",
+                        childText: endTime == null ? "Выбрать время конца" : "до ${endTime!.hour}:${endTime!.minute}",
                         onPressed: () async {
                           if (endTime == null) {
                             final result = await showTimePicker(
