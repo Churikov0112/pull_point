@@ -1,61 +1,15 @@
-import 'package:flutter/material.dart' show CircularProgressIndicator, Colors, DateTimeRange, FloatingActionButton, Icons, MaterialPageRoute;
+import 'package:flutter/material.dart' show CircularProgressIndicator, Colors, FloatingActionButton, Icons, MaterialPageRoute;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:pull_point/presentation/feed/ui/screens/feed/poster_item.dart';
+import 'package:pull_point/presentation/static_methods/static_methods.dart';
 import '../../../../../domain/domain.dart';
 import '../../../../map/blocs/blocs.dart';
 import '../../../../ui_kit/ui_kit.dart';
 import '../../../blocs/blocs.dart';
 import '../screens.dart';
-
-List<PullPointModel> filterPullPointsByDate({
-  required List<PullPointModel> pullPoints,
-  required DateTimeRange dateRange,
-}) {
-  final List<PullPointModel> filteredPullPoints = [];
-  for (final pp in pullPoints) {
-    if (pp.startsAt.isAfter(dateRange.start) && pp.endsAt.isBefore(dateRange.end)) {
-      filteredPullPoints.add(pp);
-    }
-  }
-  return filteredPullPoints;
-}
-
-List<PullPointModel> filterPullPointsByTime({
-  required List<PullPointModel> pullPoints,
-  required TimeRange timeRange,
-}) {
-  final List<PullPointModel> filteredPullPoints = [];
-  for (final pp in pullPoints) {
-    if (pp.startsAt.hour >= timeRange.start.hour) {
-      if (pp.startsAt.minute >= timeRange.start.minute) {
-        if (pp.endsAt.hour <= timeRange.end.hour) {
-          if (pp.startsAt.minute <= timeRange.end.minute) {
-            filteredPullPoints.add(pp);
-          }
-        }
-      }
-    }
-  }
-  return filteredPullPoints;
-}
-
-List<PullPointModel> filterPullPointsByNearestMetro({
-  required List<PullPointModel> pullPoints,
-  required List<MetroStationModel> selectedMetroStations,
-}) {
-  final List<PullPointModel> filteredPullPoints = [];
-  for (final pp in pullPoints) {
-    for (final metro in selectedMetroStations) {
-      if (pp.nearestMetroStations.contains(metro) && !filteredPullPoints.contains(pp)) {
-        filteredPullPoints.add(pp);
-      }
-    }
-  }
-  return filteredPullPoints;
-}
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({Key? key}) : super(key: key);
@@ -120,24 +74,18 @@ class _FeedScreenState extends State<FeedScreen> {
                         // фильтрация пулл поинтов перед отрисовкой
                         if (filtersState is FeedFiltersFilteredState) {
                           loadedPullPoints = pullPointsState.pullPoints;
-                          if ((filtersState.filters['date'] as DateFilter?) != null) {
-                            loadedPullPoints = filterPullPointsByDate(
-                              pullPoints: loadedPullPoints,
-                              dateRange: (filtersState.filters['date'] as DateFilter).dateRange,
-                            );
-                          }
-                          if ((filtersState.filters['time'] as TimeFilter?) != null) {
-                            loadedPullPoints = filterPullPointsByTime(
-                              pullPoints: loadedPullPoints,
-                              timeRange: (filtersState.filters['time'] as TimeFilter).timeRange,
-                            );
-                          }
-                          if ((filtersState.filters['metro'] as NearestMetroFilter?) != null) {
-                            loadedPullPoints = filterPullPointsByNearestMetro(
-                              pullPoints: loadedPullPoints,
-                              selectedMetroStations: (filtersState.filters['metro'] as NearestMetroFilter).selectedMetroStations,
-                            );
-                          }
+                          loadedPullPoints = StaticMethods.filterPullPointsByDate(
+                            pullPoints: loadedPullPoints,
+                            dateFilter: filtersState.filters['date'] as DateFilter?,
+                          );
+                          loadedPullPoints = StaticMethods.filterPullPointsByTime(
+                            pullPoints: loadedPullPoints,
+                            timeFilter: filtersState.filters['time'] as TimeFilter?,
+                          );
+                          loadedPullPoints = StaticMethods.filterPullPointsByNearestMetro(
+                            pullPoints: loadedPullPoints,
+                            nearestMetroFilter: filtersState.filters['metro'] as NearestMetroFilter?,
+                          );
                         }
                         return Stack(
                           children: [

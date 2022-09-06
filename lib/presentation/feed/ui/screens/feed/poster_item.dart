@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -8,49 +6,8 @@ import 'package:latlong2/latlong.dart';
 import '../../../../../domain/models/models.dart';
 import '../../../../home/blocs/blocs.dart';
 import '../../../../map/blocs/blocs.dart';
+import '../../../../static_methods/static_methods.dart';
 import '../../../../ui_kit/ui_kit.dart';
-
-bool _isActive(PullPointModel pp) {
-  if (pp.startsAt.isBefore(DateTime.now()) && pp.endsAt.isAfter(DateTime.now())) {
-    return true;
-  }
-  return false;
-}
-
-double _degreesToRadians(degrees) {
-  return degrees * pi / 180;
-}
-
-double _distanceInKmBetweenEarthCoordinates(lat1, lon1, lat2, lon2) {
-  var earthRadiusKm = 6371;
-
-  var dLat = _degreesToRadians(lat2 - lat1);
-  var dLon = _degreesToRadians(lon2 - lon1);
-
-  lat1 = _degreesToRadians(lat1);
-  lat2 = _degreesToRadians(lat2);
-
-  var a = sin(dLat / 2) * sin(dLat / 2) + sin(dLon / 2) * sin(dLon / 2) * cos(lat1) * cos(lat2);
-  var c = 2 * atan2(sqrt(a), sqrt(1 - a));
-  return earthRadiusKm * c;
-}
-
-Color _getColorByMetroLine(MetroLines line) {
-  switch (line) {
-    case MetroLines.firstRed:
-      return Colors.red;
-    case MetroLines.secondBlue:
-      return Colors.blue;
-    case MetroLines.thirdGreen:
-      return Colors.green;
-    case MetroLines.fourthOrange:
-      return Colors.deepOrange;
-    case MetroLines.fifthPurple:
-      return Colors.deepPurple;
-    default:
-      return Colors.transparent;
-  }
-}
 
 class PosterItemV2 extends StatelessWidget {
   final PullPointModel pullPoint;
@@ -107,13 +64,13 @@ class PosterItemV2 extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   AppText(
-                                    _isActive(pullPoint) ? "Уже идет" : "Еще не началось",
-                                    textColor: _isActive(pullPoint) ? AppColors.success : AppColors.error,
+                                    StaticMethods.isPullPointGoingNow(pullPoint) ? "Уже идет" : "Еще не началось",
+                                    textColor: StaticMethods.isPullPointGoingNow(pullPoint) ? AppColors.success : AppColors.error,
                                   ),
                                   if (userLocation != null) const SizedBox(width: 12),
                                   if (userLocation != null)
                                     AppText(
-                                        "${_distanceInKmBetweenEarthCoordinates(pullPoint.geo.latLng.latitude, pullPoint.geo.latLng.longitude, userLocation!.latitude, userLocation!.longitude).toStringAsFixed(1)} км"),
+                                        "${StaticMethods.distanceInKmBetweenEarthCoordinates(pullPoint.geo.latLng.latitude, pullPoint.geo.latLng.longitude, userLocation!.latitude, userLocation!.longitude).toStringAsFixed(1)} км"),
                                 ],
                               )
                             ],
@@ -153,7 +110,7 @@ class PosterItemV2 extends StatelessWidget {
                         ),
                       for (final metroStation in pullPoint.nearestMetroStations)
                         CategoryChip(
-                          backgroundColor: _getColorByMetroLine(metroStation.line),
+                          backgroundColor: StaticMethods.getColorByMetroLine(metroStation.line),
                           childText: metroStation.title,
                           onPressed: () {},
                         ),
@@ -161,7 +118,7 @@ class PosterItemV2 extends StatelessWidget {
                   ),
                 ),
 
-                if (_isActive(pullPoint))
+                if (StaticMethods.isPullPointGoingNow(pullPoint))
                   Column(
                     children: [
                       const SizedBox(height: 16),

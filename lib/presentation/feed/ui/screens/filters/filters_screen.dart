@@ -1,11 +1,14 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:pull_point/data/repositories/mock/metro_stations.dart';
 
 import '../../../../../domain/domain.dart';
+import '../../../../static_methods/static_methods.dart';
 import '../../../../ui_kit/ui_kit.dart';
 import '../../../blocs/blocs.dart';
+import 'widgets/widgets.dart';
 
 class FeedFiltersScreen extends StatefulWidget {
   const FeedFiltersScreen({Key? key}) : super(key: key);
@@ -18,8 +21,8 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
   late FeedFiltersBloc feedFiltersBloc;
 
   DateTimeRange? dateRange;
-  TimeOfDay? start;
-  TimeOfDay? end;
+  TimeOfDay? startTime;
+  TimeOfDay? endTime;
   List<MetroStationModel> metroStations = [];
 
   // проверить на наличие фильтров
@@ -29,19 +32,17 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
     if (feedFiltersBloc.state is FeedFiltersFilteredState) {
       FeedFiltersFilteredState state = feedFiltersBloc.state as FeedFiltersFilteredState;
       dateRange = (state.filters['date'] as DateFilter?)?.dateRange;
-      start = (state.filters['time'] as TimeFilter?)?.timeRange.start;
-      end = (state.filters['time'] as TimeFilter?)?.timeRange.end;
+      startTime = (state.filters['time'] as TimeFilter?)?.timeRange.start;
+      endTime = (state.filters['time'] as TimeFilter?)?.timeRange.end;
       metroStations = (state.filters['metro'] as NearestMetroFilter?)?.selectedMetroStations ?? [];
     }
     super.initState();
   }
 
-  final _items = MetroStations.getAllMetroStations().map((station) => MultiSelectItem<MetroStationModel>(station, station.title)).toList();
-
   void _resetAll() {
     dateRange = null;
-    start = null;
-    end = null;
+    startTime = null;
+    endTime = null;
     metroStations = [];
     setState(() {});
   }
@@ -52,6 +53,7 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Фильтры"),
+        backgroundColor: AppColors.primary,
         actions: [
           TouchableOpacity(
             onPressed: _resetAll,
@@ -66,110 +68,181 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    ChipWidget(
-                      onPressed: () async {
-                        final result = await showDateRangePicker(
-                          context: context,
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime.now().add(const Duration(days: 7)),
-                        );
-                        if (result != null) setState(() => dateRange = result);
-                      },
-                      text: "Дата (range)",
-                    ),
-                    if (dateRange != null)
-                      Text("с ${dateRange!.start.day}.${dateRange!.start.month} до ${dateRange!.end.day}.${dateRange!.end.month}"),
-                  ],
-                ),
+                const SizedBox(height: 16),
+                const AppTitle("Дата"),
                 const SizedBox(height: 8),
-                Row(
-                  children: [
-                    ChipWidget(
-                      onPressed: () async {
-                        final result = await showTimePicker(
-                          context: context,
-                          initialTime: TimeOfDay.now(),
-                          initialEntryMode: TimePickerEntryMode.input,
-                          builder: (BuildContext context, Widget? child) {
-                            return MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
-                          },
-                        );
-                        if (result != null) setState(() => start = result);
-                      },
-                      text: "Время (start)",
-                    ),
-                    if (start != null) Text("с ${start!.hour}:${start!.minute}"),
-                  ],
+                CategoryChip(
+                  gradient: dateRange == null ? AppGradients.slave : AppGradients.main,
+                  textColor: dateRange == null ? AppColors.text : AppColors.textOnColors,
+                  childText: dateRange == null
+                      ? "Выбрать дату начала и дату конца"
+                      : "с ${DateFormat("dd.MM.yyyy").format(dateRange!.start)} до ${DateFormat("dd.MM.yyyy").format(dateRange!.end)}",
+                  onPressed: () async {
+                    if (dateRange == null) {
+                      final result = await showDateRangePicker(
+                        context: context,
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime.now().add(const Duration(days: 7)),
+                      );
+                      if (result != null) setState(() => dateRange = result);
+                    } else {
+                      setState(() => dateRange = null);
+                    }
+                  },
                 ),
+                const SizedBox(height: 24),
+                const AppTitle("Время"),
                 const SizedBox(height: 8),
-                Row(
-                  children: [
-                    ChipWidget(
-                      onPressed: () async {
-                        final result = await showTimePicker(
-                          context: context,
-                          initialTime: TimeOfDay.now(),
-                          initialEntryMode: TimePickerEntryMode.input,
-                          builder: (BuildContext context, Widget? child) {
-                            return MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
-                          },
-                        );
-                        if (result != null) setState(() => end = result);
-                      },
-                      text: "Время (end)",
-                    ),
-                    if (end != null) Text("до ${end!.hour}:${end!.minute}"),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    ChipWidget(
-                      onPressed: () async {
-                        dynamic result;
-                        await showDialog(
-                          context: context,
-                          builder: (ctx) {
-                            return MultiSelectDialog(
-                              items: _items,
-                              initialValue: metroStations,
-                              searchable: true,
-                              listType: MultiSelectListType.CHIP,
-                              onConfirm: (values) {
-                                result = values;
-                                if (result != null) setState(() => metroStations = result);
+                SizedBox(
+                  width: mediaQuery.size.width,
+                  child: Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      CategoryChip(
+                        gradient: startTime == null ? AppGradients.slave : AppGradients.main,
+                        textColor: startTime == null ? AppColors.text : AppColors.textOnColors,
+                        childText: startTime == null ? "Выбрать время начала" : "с ${startTime!.hour}:${startTime!.minute}",
+                        onPressed: () async {
+                          if (startTime == null) {
+                            final result = await showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay.now(),
+                              initialEntryMode: TimePickerEntryMode.input,
+                              builder: (BuildContext context, Widget? child) {
+                                return MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
                               },
                             );
-                          },
-                        );
-                      },
-                      text: "Ближайшие станции метро (несколько)",
-                    ),
-                  ],
-                ),
-                if (metroStations.isNotEmpty)
-                  Column(
-                    children: [
-                      for (final station in metroStations) Text(station.title),
+                            if (result != null) setState(() => startTime = result);
+                          } else {
+                            setState(() => startTime = null);
+                          }
+                        },
+                      ),
+                      CategoryChip(
+                        gradient: endTime == null ? AppGradients.slave : AppGradients.main,
+                        textColor: endTime == null ? AppColors.text : AppColors.textOnColors,
+                        childText: endTime == null ? "Выбрать время конца" : "с ${startTime!.hour}:${startTime!.minute}",
+                        onPressed: () async {
+                          if (endTime == null) {
+                            final result = await showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay.now(),
+                              initialEntryMode: TimePickerEntryMode.input,
+                              builder: (BuildContext context, Widget? child) {
+                                return MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
+                              },
+                            );
+                            if (result != null) setState(() => endTime = result);
+                          } else {
+                            setState(() => endTime = null);
+                          }
+                        },
+                      ),
                     ],
                   ),
+                ),
+                const SizedBox(height: 24),
+                const AppTitle("Метро"),
+                const SizedBox(height: 8),
+
+                SizedBox(
+                  width: mediaQuery.size.width,
+                  child: Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      // if (metroStations.isEmpty)
+                      CategoryChip(
+                        gradient: AppGradients.slave,
+                        textColor: AppColors.text,
+                        childText: "Выбрать ближайшие станции метро",
+                        onPressed: () async {
+                          await showDialog(
+                            context: context,
+                            builder: (ctx) {
+                              return MetroMultiselect(
+                                allMetroStations: MetroStations.getAllMetroStations(),
+                                selectedMetroStations: metroStations,
+                                onConfirmSelect: (selectedStations) {
+                                  print(selectedStations.length);
+                                  setState(() => metroStations = selectedStations);
+                                  print(metroStations.length);
+                                },
+                              );
+                              // MultiSelectDialog(
+                              //   separateSelectedItems: true,
+                              //   items: _items,
+                              //   initialValue: metroStations,
+                              //   searchable: true,
+                              //   listType: MultiSelectListType.CHIP,
+                              //   onConfirm: (values) {
+                              //     result = values;
+                              //     if (result != null) setState(() => metroStations = result);
+                              //   },
+                              // );
+                            },
+                          );
+                        },
+                      ),
+                      for (final metro in metroStations)
+                        CategoryChip(
+                          backgroundColor: StaticMethods.getColorByMetroLine(metro.line),
+                          textColor: AppColors.textOnColors,
+                          childText: metro.title,
+                          onPressed: () async {
+                            setState(() => metroStations.removeWhere((element) => element.id == metro.id));
+                          },
+                        ),
+                    ],
+                  ),
+                ),
+                // Row(
+                //   children: [
+                //     ChipWidget(
+                //       onPressed: () async {
+                //         dynamic result;
+                //         await showDialog(
+                //           context: context,
+                //           builder: (ctx) {
+                //             return MultiSelectDialog(
+                //               items: _items,
+                //               initialValue: metroStations,
+                //               searchable: true,
+                //               listType: MultiSelectListType.CHIP,
+                //               onConfirm: (values) {
+                //                 result = values;
+                //                 if (result != null) setState(() => metroStations = result);
+                //               },
+                //             );
+                //           },
+                //         );
+                //       },
+                //       text: "Выбрать ближайшие станции метро",
+                //     ),
+                //   ],
+                // ),
+                // if (metroStations.isNotEmpty)
+                //   Column(
+                //     children: [
+                //       for (final station in metroStations) Text(station.title),
+                //     ],
+                //   ),
                 const SizedBox(height: 32),
-                TouchableOpacity(
-                  onPressed: () {
-                    if (start != null && end == null) {
+                LongButton(
+                  onTap: () {
+                    if (startTime != null && endTime == null) {
                       BotToast.showText(text: "Вы не выбрали верхнюю границу времени");
                       return;
                     }
-                    if (start == null && end != null) {
+                    if (startTime == null && endTime != null) {
                       BotToast.showText(text: "Вы не выбрали нижнюю границу времени");
                       return;
                     }
                     feedFiltersBloc.add(
                       SetFeedFiltersEvent(
                         filters: {
-                          "time": (start != null && end != null) ? TimeFilter(timeRange: TimeRange(start: start!, end: end!)) : null,
+                          "time": (startTime != null && endTime != null) ? TimeFilter(timeRange: TimeRange(start: startTime!, end: endTime!)) : null,
                           "date": dateRange != null ? DateFilter(dateRange: dateRange!) : null,
                           "metro": metroStations.isNotEmpty ? NearestMetroFilter(selectedMetroStations: metroStations) : null,
                         },
@@ -177,17 +250,8 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                     );
                     Navigator.of(context).pop();
                   },
-                  child: Container(
-                    width: mediaQuery.size.width,
-                    decoration: const BoxDecoration(
-                      color: Colors.blueAccent,
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                      child: Center(child: Text("Применить", style: TextStyle(color: Colors.white))),
-                    ),
-                  ),
+                  backgroundGradient: AppGradients.main,
+                  child: const Text("Применить", style: TextStyle(color: Colors.white)),
                 ),
               ],
             ),

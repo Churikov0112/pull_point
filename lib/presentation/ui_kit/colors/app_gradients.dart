@@ -9,6 +9,15 @@ class AppGradients {
       Color.fromRGBO(240, 0, 0, 1),
     ],
   );
+
+  static const slave = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      Color.fromRGBO(0, 0, 0, 0.1),
+      Color.fromRGBO(0, 0, 0, 0.1),
+    ],
+  );
   static const first = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
