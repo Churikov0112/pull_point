@@ -18,6 +18,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEventCheckAccoutLocally>(_checkAccountLocally);
     on<AuthEventOpenEmailPage>(_openEmailPage);
     on<AuthEventOpenWannaBeArtistPage>(_openWannaBeArtistPage);
+    on<AuthEventOpenUpdateArtistPage>(_openUpdateArtistPage);
     on<AuthEventSendCode>(_sendVerificationCode);
     on<AuthEventLogin>(_login);
     on<AuthEventRegisterUser>(_registerUser);
@@ -37,6 +38,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _openWannaBeArtistPage(AuthEventOpenWannaBeArtistPage event, Emitter<AuthState> emit) async {
     emit(AuthStateUsernameInputed(user: event.user));
+  }
+
+  Future<void> _openUpdateArtistPage(AuthEventOpenUpdateArtistPage event, Emitter<AuthState> emit) async {
+    emit(AuthStateArtistCreating(user: event.user));
   }
 
   Future<void> _checkAccountLocally(AuthEventCheckAccoutLocally event, Emitter<AuthState> emit) async {
@@ -75,15 +80,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _registerUser(AuthEventRegisterUser event, Emitter<AuthState> emit) async {
     emit(const AuthStatePending());
-    final user = await _authRepositoryInterface.updateUser(
-      id: event.id,
-      email: event.email,
-      username: event.username,
-      wannaBeArtist: event.wannaBeArtist,
-    );
+    final user = await _authRepositoryInterface.updateUser(userInput: event.user);
     if (user != null) {
-      if (event.wannaBeArtist) emit(AuthStateArtistCreating(user: user));
-      if (!event.wannaBeArtist) emit(AuthStateAuthorized(user: user));
+      emit(AuthStateAuthorized(user: user));
     } else {
       BotToast.showText(text: "Ошибка при создании пользователя");
     }
@@ -91,6 +90,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _registerArtist(AuthEventRegisterArtist event, Emitter<AuthState> emit) async {
     emit(const AuthStatePending());
+    final user = await _authRepositoryInterface.updateUser(userInput: event.user);
+    final iAmArtist = await _authRepositoryInterface.iAmArtist(userInput: event.user);
     final artist = await _authRepositoryInterface.updateArtist(
       userId: event.user.id,
       name: event.name,
@@ -98,7 +99,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       categoryId: event.categoryId,
       subcategoriesIds: event.subcategoryIds,
     );
-    if (artist != null) emit(AuthStateAuthorized(user: event.user));
+
+    if (user != null && iAmArtist && artist != null) emit(AuthStateAuthorized(user: event.user));
     if (artist == null) BotToast.showText(text: "Ошибка при создании артиста");
   }
 

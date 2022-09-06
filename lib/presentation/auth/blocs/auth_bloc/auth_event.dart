@@ -7,14 +7,17 @@ abstract class AuthEvent extends Equatable {
   List<Object> get props => [];
 }
 
+// проходите на главную сраницу неавторизованным
 class AuthEventContinueAsGuest extends AuthEvent {
   const AuthEventContinueAsGuest();
 }
 
+// проверка наличия юзера локально
 class AuthEventCheckAccoutLocally extends AuthEvent {
   const AuthEventCheckAccoutLocally();
 }
 
+// открыть WannaBeArtistPage
 class AuthEventOpenWannaBeArtistPage extends AuthEvent {
   final UserModel user;
 
@@ -23,6 +26,7 @@ class AuthEventOpenWannaBeArtistPage extends AuthEvent {
   });
 }
 
+// открыть EnterArtistDataPage
 class AuthEventOpenUpdateArtistPage extends AuthEvent {
   final UserModel user;
 
@@ -31,6 +35,7 @@ class AuthEventOpenUpdateArtistPage extends AuthEvent {
   });
 }
 
+// открыть EnterEmailPage
 class AuthEventOpenEmailPage extends AuthEvent {
   final String? email;
 
@@ -39,6 +44,7 @@ class AuthEventOpenEmailPage extends AuthEvent {
   });
 }
 
+// отправить код подтверждения на почту
 class AuthEventSendCode extends AuthEvent {
   final String email;
 
@@ -47,6 +53,7 @@ class AuthEventSendCode extends AuthEvent {
   });
 }
 
+// проверить введенный юзером код на верность
 class AuthEventLogin extends AuthEvent {
   final String email;
   final String code;
@@ -57,20 +64,16 @@ class AuthEventLogin extends AuthEvent {
   });
 }
 
+// создание нового пользователя (если он НЕ хочет быть артистом)
 class AuthEventRegisterUser extends AuthEvent {
-  final int id;
-  final String email;
-  final String username;
-  final bool wannaBeArtist;
+  final UserModel user;
 
   const AuthEventRegisterUser({
-    required this.id,
-    required this.email,
-    required this.username,
-    required this.wannaBeArtist,
+    required this.user,
   });
 }
 
+// создание нового артиста
 class AuthEventRegisterArtist extends AuthEvent {
   final UserModel user;
   final String name;
@@ -87,6 +90,7 @@ class AuthEventRegisterArtist extends AuthEvent {
   });
 }
 
+// выход из аккаунта, удаление данных из локальной БД
 class AuthEventLogout extends AuthEvent {
   const AuthEventLogout();
 }

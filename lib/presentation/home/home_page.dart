@@ -56,11 +56,8 @@ class _HomePageState extends State<HomePage> {
           if (state is TabSelectedState) {
             return Scaffold(
               bottomNavigationBar: BottomNavigationBar(
-                // showSelectedLabels: false,
-                // showUnselectedLabels: false,
                 type: BottomNavigationBarType.fixed,
                 selectedItemColor: AppColors.primary,
-                // unselectedItemColor: Colors.grey,
                 unselectedFontSize: 0,
                 selectedFontSize: 0,
                 currentIndex: state.tabIndex,

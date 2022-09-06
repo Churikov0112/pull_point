@@ -26,9 +26,7 @@ class _EnterUserDataScreenState extends State<EnterUserDataScreen> {
   }) async {
     await Future.delayed(Duration.zero, () {
       Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute<void>(
-          builder: (BuildContext context) => WannaBeArtistScreen(user: user),
-        ),
+        MaterialPageRoute<void>(builder: (BuildContext context) => WannaBeArtistScreen(user: user)),
         (Route<dynamic> route) => false,
       );
     });

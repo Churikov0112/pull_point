@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pull_point/presentation/auth/ui/screens/wanna_be_artist_screen/wanna_be_artist_screen.dart';
 import 'package:pull_point/presentation/ui_kit/ui_kit.dart';
 import '../../../../../domain/models/models.dart';
 import '../../../../home/home_page.dart';
@@ -20,6 +21,7 @@ class EnterArtistDataScreen extends StatefulWidget {
 }
 
 class __EnterArtistDataScreenState extends State<EnterArtistDataScreen> {
+  late UserModel user;
   final TextEditingController artistNameEditingController = TextEditingController();
   final TextEditingController artistDescriptionEditingController = TextEditingController();
   CategoryModel? pickedCategory;
@@ -27,6 +29,7 @@ class __EnterArtistDataScreenState extends State<EnterArtistDataScreen> {
 
   @override
   void initState() {
+    user = widget.user;
     context.read<CategoriesBloc>().add(const CategoriesEventLoad());
     super.initState();
   }
@@ -42,14 +45,31 @@ class __EnterArtistDataScreenState extends State<EnterArtistDataScreen> {
     });
   }
 
+  Future<void> _goToWannaBeArtistScreen({required UserModel user}) async {
+    await Future.delayed(Duration.zero, () {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) => WannaBeArtistScreen(user: user),
+        ),
+        (Route<dynamic> route) => false,
+      );
+    });
+  }
+
+  Future<bool> _onWillPop() async {
+    context.read<AuthBloc>().add(AuthEventOpenWannaBeArtistPage(user: user));
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    // final mediaQuery = MediaQuery.of(context);
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: _onWillPop,
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           if (state is AuthStateAuthorized) _goToHomePage();
+          if (state is AuthStateUsernameInputed) _goToWannaBeArtistScreen(user: state.user);
+
           return Scaffold(
             backgroundColor: AppColors.backgroundPage,
             body: Padding(
@@ -178,7 +198,7 @@ class __EnterArtistDataScreenState extends State<EnterArtistDataScreen> {
                       }
                       context.read<AuthBloc>().add(
                             AuthEventRegisterArtist(
-                              user: widget.user,
+                              user: UserModel(id: widget.user.id, username: widget.user.username, email: widget.user.email, isArtist: true),
                               name: artistNameEditingController.text,
                               description: artistDescriptionEditingController.text,
                               categoryId: pickedCategory!.id,

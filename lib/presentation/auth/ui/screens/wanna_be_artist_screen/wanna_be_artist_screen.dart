@@ -73,15 +73,7 @@ class _WannaBeArtistScreenState extends State<WannaBeArtistScreen> {
                       LongButton(
                         backgroundGradient: AppGradients.first,
                         onTap: () {
-                          context.read<AuthBloc>().add(
-                                AuthEventRegisterUser(
-                                  id: widget.user.id,
-                                  email: widget.user.email,
-                                  username: widget.user.username ?? "-",
-                                  wannaBeArtist: false,
-                                ),
-                              );
-                          // Navigator.of(context).pop();
+                          context.read<AuthBloc>().add(AuthEventRegisterUser(user: widget.user));
                         },
                         child: const AppButtonText("Я зритель", textColor: AppColors.textOnColors),
                       ),
@@ -89,14 +81,7 @@ class _WannaBeArtistScreenState extends State<WannaBeArtistScreen> {
                       LongButton(
                         backgroundGradient: AppGradients.main,
                         onTap: () {
-                          context.read<AuthBloc>().add(
-                                AuthEventRegisterUser(
-                                  id: widget.user.id,
-                                  email: widget.user.email,
-                                  username: widget.user.username ?? "-",
-                                  wannaBeArtist: true,
-                                ),
-                              );
+                          context.read<AuthBloc>().add(AuthEventOpenUpdateArtistPage(user: widget.user));
                         },
                         child: const AppButtonText("Я артист", textColor: AppColors.textOnColors),
                       ),
