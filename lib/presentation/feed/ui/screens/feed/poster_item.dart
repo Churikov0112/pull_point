@@ -98,8 +98,8 @@ class PosterItemV2 extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          SizedBox(width: mediaqQuery.size.width / 2, child: AppTitle(pullPoint.title)),
-                          SizedBox(width: mediaqQuery.size.width / 2, child: AppText(pullPoint.owner.name ?? "-")),
+                          AppTitle(pullPoint.title),
+                          AppText(pullPoint.owner.name ?? "-"),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -110,7 +110,7 @@ class PosterItemV2 extends StatelessWidget {
                                     _isActive(pullPoint) ? "Уже идет" : "Еще не началось",
                                     textColor: _isActive(pullPoint) ? AppColors.success : AppColors.error,
                                   ),
-                                  if (userLocation != null) const SizedBox(width: 16),
+                                  if (userLocation != null) const SizedBox(width: 12),
                                   if (userLocation != null)
                                     AppText(
                                         "${_distanceInKmBetweenEarthCoordinates(pullPoint.geo.latLng.latitude, pullPoint.geo.latLng.longitude, userLocation!.latitude, userLocation!.longitude).toStringAsFixed(1)} км"),
