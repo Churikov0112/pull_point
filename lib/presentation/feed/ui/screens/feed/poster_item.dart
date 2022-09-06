@@ -140,16 +140,21 @@ class PosterItemV2 extends StatelessWidget {
                     spacing: 8,
                     runSpacing: 8,
                     children: [
-                      for (int i = 0; i < pullPoint.nearestMetroStations.length; i++)
-                        CategoryChip(
-                          backgroundColor: _getColorByMetroLine(pullPoint.nearestMetroStations[i].line),
-                          childText: pullPoint.nearestMetroStations[i].title,
-                          onPressed: () {},
-                        ),
-                      for (int i = 0; i < 5; i++)
+                      CategoryChip(
+                        gradient: AppGradients.main,
+                        childText: pullPoint.category.name,
+                        onPressed: () {},
+                      ),
+                      for (final subcategory in pullPoint.subcategories)
                         CategoryChip(
                           gradient: AppGradients.first,
-                          childText: "some some",
+                          childText: subcategory.name,
+                          onPressed: () {},
+                        ),
+                      for (final metroStation in pullPoint.nearestMetroStations)
+                        CategoryChip(
+                          backgroundColor: _getColorByMetroLine(metroStation.line),
+                          childText: metroStation.title,
                           onPressed: () {},
                         ),
                     ],
