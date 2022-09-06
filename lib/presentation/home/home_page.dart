@@ -49,57 +49,60 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) {
-        if (state is TabSelectedState) {
-          return Scaffold(
-            bottomNavigationBar: BottomNavigationBar(
-              // showSelectedLabels: false,
-              // showUnselectedLabels: false,
-              type: BottomNavigationBarType.fixed,
-              selectedItemColor: AppColors.primary,
-              // unselectedItemColor: Colors.grey,
-              unselectedFontSize: 0,
-              selectedFontSize: 0,
-              currentIndex: state.tabIndex,
-              onTap: (index) => _onItemTapped(index),
-              items: <BottomNavigationBarItem>[
-                const BottomNavigationBarItem(
-                  icon: Icon(Icons.place_outlined),
-                  activeIcon: Icon(Icons.place),
-                  label: 'Карта',
-                ),
-                const BottomNavigationBarItem(
-                  icon: Icon(Icons.feed_outlined),
-                  activeIcon: Icon(Icons.feed),
-                  label: 'Афиши',
-                ),
-                BottomNavigationBarItem(
-                  icon: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: const BoxDecoration(shape: BoxShape.circle, gradient: AppGradients.main),
-                    child: const Center(child: Icon(Icons.qr_code, size: 20, color: AppColors.iconsOnColors)),
-                  ), // Icon(Icons.qr_code_2),
-                  label: 'QR',
-                ),
-                const BottomNavigationBarItem(
-                  icon: Icon(Icons.star_border_outlined),
-                  activeIcon: Icon(Icons.star),
-                  label: 'Избранное',
-                ),
-                const BottomNavigationBarItem(
-                  icon: Icon(Icons.person_outline),
-                  activeIcon: Icon(Icons.person),
-                  label: 'Профиль',
-                ),
-              ],
-            ),
-            body: Center(child: _currentScreen(index: state.tabIndex)),
-          );
-        }
-        return const SizedBox.shrink();
-      },
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          if (state is TabSelectedState) {
+            return Scaffold(
+              bottomNavigationBar: BottomNavigationBar(
+                // showSelectedLabels: false,
+                // showUnselectedLabels: false,
+                type: BottomNavigationBarType.fixed,
+                selectedItemColor: AppColors.primary,
+                // unselectedItemColor: Colors.grey,
+                unselectedFontSize: 0,
+                selectedFontSize: 0,
+                currentIndex: state.tabIndex,
+                onTap: (index) => _onItemTapped(index),
+                items: <BottomNavigationBarItem>[
+                  const BottomNavigationBarItem(
+                    icon: Icon(Icons.place_outlined),
+                    activeIcon: Icon(Icons.place),
+                    label: 'Карта',
+                  ),
+                  const BottomNavigationBarItem(
+                    icon: Icon(Icons.feed_outlined),
+                    activeIcon: Icon(Icons.feed),
+                    label: 'Афиши',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Container(
+                      height: 40,
+                      width: 40,
+                      decoration: const BoxDecoration(shape: BoxShape.circle, gradient: AppGradients.main),
+                      child: const Center(child: Icon(Icons.qr_code, size: 20, color: AppColors.iconsOnColors)),
+                    ), // Icon(Icons.qr_code_2),
+                    label: 'QR',
+                  ),
+                  const BottomNavigationBarItem(
+                    icon: Icon(Icons.star_border_outlined),
+                    activeIcon: Icon(Icons.star),
+                    label: 'Избранное',
+                  ),
+                  const BottomNavigationBarItem(
+                    icon: Icon(Icons.person_outline),
+                    activeIcon: Icon(Icons.person),
+                    label: 'Профиль',
+                  ),
+                ],
+              ),
+              body: Center(child: _currentScreen(index: state.tabIndex)),
+            );
+          }
+          return const SizedBox.shrink();
+        },
+      ),
     );
   }
 }

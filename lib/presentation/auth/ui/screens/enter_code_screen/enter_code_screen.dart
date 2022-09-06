@@ -15,10 +15,12 @@ import '../enter_email_screen/enter_email_screen.dart';
 class EnterCodeScreen extends StatefulWidget {
   const EnterCodeScreen({
     required this.email,
+    required this.cameFrom,
     Key? key,
   }) : super(key: key);
 
   final String email;
+  final CameFrom cameFrom;
 
   @override
   State<EnterCodeScreen> createState() => _EnterCodeScreenState();
@@ -50,7 +52,7 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
   Future<void> _goToEnterEmailScreen() async {
     await Future.delayed(Duration.zero, () {
       Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute<void>(builder: (BuildContext context) => const EnterEmailScreen()),
+        MaterialPageRoute<void>(builder: (BuildContext context) => EnterEmailScreen(cameFrom: widget.cameFrom)),
         (Route<dynamic> route) => false,
       );
     });

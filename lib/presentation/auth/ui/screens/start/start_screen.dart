@@ -24,7 +24,7 @@ class StartScreen extends StatelessWidget {
     await Future.delayed(Duration.zero, () {
       Navigator.of(context).push(
         MaterialPageRoute<void>(
-          builder: (BuildContext context) => const EnterEmailScreen(),
+          builder: (BuildContext context) => const EnterEmailScreen(cameFrom: CameFrom.start),
         ),
       );
     });
@@ -36,7 +36,7 @@ class StartScreen extends StatelessWidget {
       onWillPop: () async => false,
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
-          if (state is AuthStateAuthorized) _goToHomePage(context);
+          if (state is AuthStateAuthorized || state is AuthStateGuest) _goToHomePage(context);
           if (state is AuthStateEnterEmailPageOpened) _goToEnterEmailPage(context);
           return Scaffold(
             body: Padding(
@@ -59,7 +59,7 @@ class StartScreen extends StatelessWidget {
                       context.read<AuthBloc>().add(const AuthEventContinueAsGuest());
                     },
                     backgroundColor: AppColors.primary.withOpacity(0.1),
-                    child: const AppText("Войти как гость"),
+                    child: const AppText("Продолжить как гость"),
                   ),
                 ],
               ),

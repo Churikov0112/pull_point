@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/presentation/auth/ui/screens/enter_code_screen/enter_code_screen.dart';
 import 'package:pull_point/presentation/ui_kit/ui_kit.dart';
 
+import '../../../../home/home_page.dart';
 import '../../../blocs/blocs.dart';
 import '../start/start_screen.dart';
 
@@ -20,8 +21,15 @@ String? validateEmail(String? value) {
   }
 }
 
+enum CameFrom { start, guest }
+
 class EnterEmailScreen extends StatefulWidget {
-  const EnterEmailScreen({Key? key}) : super(key: key);
+  const EnterEmailScreen({
+    required this.cameFrom,
+    Key? key,
+  }) : super(key: key);
+
+  final CameFrom cameFrom;
 
   @override
   State<EnterEmailScreen> createState() => _EnterEmailScreenState();
@@ -33,14 +41,18 @@ class _EnterEmailScreenState extends State<EnterEmailScreen> {
   bool isValid = false;
 
   Future<bool> _onWillPop() async {
-    context.read<AuthBloc>().add(const AuthEventLogout());
+    if (widget.cameFrom == CameFrom.start) context.read<AuthBloc>().add(const AuthEventLogout());
+    if (widget.cameFrom == CameFrom.guest) {
+      context.read<AuthBloc>().add(const AuthEventContinueAsGuest());
+    }
+
     return false;
   }
 
   Future<void> _goToEnterCodeScreen() async {
     await Future.delayed(Duration.zero, () {
       Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute<void>(builder: (BuildContext context) => EnterCodeScreen(email: emailEditingController.text)),
+        MaterialPageRoute<void>(builder: (BuildContext context) => EnterCodeScreen(email: emailEditingController.text, cameFrom: widget.cameFrom)),
         (Route<dynamic> route) => false,
       );
     });
@@ -55,6 +67,15 @@ class _EnterEmailScreenState extends State<EnterEmailScreen> {
     });
   }
 
+  Future<void> _goToHomePage() async {
+    await Future.delayed(Duration.zero, () {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute<void>(builder: (BuildContext context) => const HomePage()),
+        (Route<dynamic> route) => false,
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // final mediaQuery = MediaQuery.of(context);
@@ -64,6 +85,7 @@ class _EnterEmailScreenState extends State<EnterEmailScreen> {
         builder: (context, state) {
           if (state is AuthStateCodeSent) _goToEnterCodeScreen();
           if (state is AuthStateUnauthorized) _goToStartScreen();
+          if (state is AuthStateGuest) _goToHomePage();
           return Scaffold(
             backgroundColor: AppColors.backgroundPage,
             body: Padding(

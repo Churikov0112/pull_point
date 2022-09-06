@@ -54,8 +54,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData.light().copyWith(backgroundColor: AppColors.primary),
         home: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
-            if (state is AuthStateAuthorized || state is AuthStateGuest) return const HomePage();
-            if (state is AuthStatePending) return const Center(child: CircularProgressIndicator());
+            if (state is AuthStateAuthorized) return const HomePage();
             return const StartScreen();
           },
         ),
