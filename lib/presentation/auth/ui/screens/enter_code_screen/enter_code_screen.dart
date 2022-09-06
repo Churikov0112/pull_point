@@ -106,6 +106,7 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
                         BotToast.showText(text: "Вы не ввели код");
                         return;
                       }
+                      FocusScope.of(context).unfocus();
                       context.read<AuthBloc>().add(AuthEventLogin(email: widget.email, code: codeEditingController.text));
                     },
                     child: const AppButtonText("Далее", textColor: AppColors.textOnColors),

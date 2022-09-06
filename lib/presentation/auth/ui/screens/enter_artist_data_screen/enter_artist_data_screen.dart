@@ -196,6 +196,7 @@ class __EnterArtistDataScreenState extends State<EnterArtistDataScreen> {
                         BotToast.showText(text: "Выберите категорию");
                         return;
                       }
+                      FocusScope.of(context).unfocus();
                       context.read<AuthBloc>().add(
                             AuthEventRegisterArtist(
                               user: UserModel(id: widget.user.id, username: widget.user.username, email: widget.user.email, isArtist: true),
