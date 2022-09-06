@@ -19,16 +19,11 @@ class FeedFiltersBloc extends Bloc<FeedFiltersEvent, FeedFiltersState> {
 
   void _setFilters(SetFeedFiltersEvent event, Emitter<FeedFiltersState> emit) {
     final feedFilters = _feedFiltersRepository.saveFeedFilters(filters: event.filters);
-    emit(FeedFiltersFilteredState(
-      dateTimeFilter: feedFilters.first as DateTimeFilter,
-      nearestMetroFilter: feedFilters.length > 1 ? feedFilters[1] as NearestMetroFilter : null,
-    ));
+    emit(FeedFiltersFilteredState(filters: feedFilters));
   }
 
   void _resetFilters(ResetFeedFiltersEvent event, Emitter<FeedFiltersState> emit) {
-    final defaultDateTimeFilter = _feedFiltersRepository.resetFeedFilters();
-    emit(FeedFiltersFilteredState(
-      dateTimeFilter: defaultDateTimeFilter as DateTimeFilter,
-    ));
+    final defaultFilters = _feedFiltersRepository.resetFeedFilters();
+    emit(FeedFiltersFilteredState(filters: defaultFilters));
   }
 }

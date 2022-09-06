@@ -2,24 +2,24 @@ import '../../../domain/models/models.dart';
 import '../../../domain/repositories/repositories.dart';
 
 class FeedFiltersRepositoryImpl extends FeedFiltersRepositoryInterface {
-  List<AbstractFilter> activeFilters = [];
+  Map<String, AbstractFilter?> activeFilters = {};
 
   @override
-  List<AbstractFilter> getActiveFeedFilters() {
+  Map<String, AbstractFilter?> getActiveFeedFilters() {
     return activeFilters;
   }
 
   @override
-  List<AbstractFilter> saveFeedFilters({
-    required List<AbstractFilter> filters,
+  Map<String, AbstractFilter?> saveFeedFilters({
+    required Map<String, AbstractFilter?> filters,
   }) {
     activeFilters = filters;
     return activeFilters;
   }
 
   @override
-  AbstractFilter resetFeedFilters() {
+  Map<String, AbstractFilter?> resetFeedFilters() {
     activeFilters.clear();
-    return activeFilters.first;
+    return activeFilters;
   }
 }

@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
     // чтобы в двух местах использовать один объект
     final AuthRepositoryInterface authRepositoryImpl = AuthRepositoryImpl(userBox: userBox);
     final PullPointsRepositoryInterface pullPointsRepository = PullPointsRepositoryImpl();
-    final MapFiltersRepositoryInterface mapFiltersRepository = MapFiltersRepositoryImpl();
+    // final MapFiltersRepositoryInterface mapFiltersRepository = MapFiltersRepositoryImpl();
     final FeedFiltersRepositoryInterface feedFiltersRepository = FeedFiltersRepositoryImpl();
     final CategoriesRepositoryInterface categoriesRepository = CategoriesRepositoryImpl();
 
@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<HomeBloc>(create: (context) => HomeBloc()),
         BlocProvider<PullPointsBloc>(create: (context) => PullPointsBloc(repository: pullPointsRepository)),
         BlocProvider<CreatePullPointBloc>(create: (context) => CreatePullPointBloc(pullPointsRepository: pullPointsRepository)),
-        BlocProvider<MapFiltersBloc>(create: (context) => MapFiltersBloc(mapFiltersRepository: mapFiltersRepository)),
+        // BlocProvider<MapFiltersBloc>(create: (context) => MapFiltersBloc(mapFiltersRepository: mapFiltersRepository)),
         BlocProvider<FeedFiltersBloc>(create: (context) => FeedFiltersBloc(feedFiltersRepository: feedFiltersRepository)),
         BlocProvider<CategoriesBloc>(create: (context) => CategoriesBloc(categoriesRepository: categoriesRepository)),
         BlocProvider<SubcategoriesBloc>(create: (context) => SubcategoriesBloc(categoriesRepository: categoriesRepository)),

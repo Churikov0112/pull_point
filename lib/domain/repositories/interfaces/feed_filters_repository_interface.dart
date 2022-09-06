@@ -1,11 +1,11 @@
 import '../../models/models.dart';
 
 abstract class FeedFiltersRepositoryInterface {
-  List<AbstractFilter> getActiveFeedFilters();
+  Map<String, AbstractFilter?> getActiveFeedFilters();
 
-  AbstractFilter resetFeedFilters();
+  Map<String, AbstractFilter?> resetFeedFilters();
 
-  List<AbstractFilter> saveFeedFilters({
-    required List<AbstractFilter> filters,
+  Map<String, AbstractFilter?> saveFeedFilters({
+    required Map<String, AbstractFilter?> filters,
   });
 }

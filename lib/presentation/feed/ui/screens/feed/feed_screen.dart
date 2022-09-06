@@ -117,19 +117,26 @@ class _FeedScreenState extends State<FeedScreen> {
                     List<PullPointModel> loadedPullPoints = pullPointsState.pullPoints;
                     return BlocBuilder<FeedFiltersBloc, FeedFiltersState>(
                       builder: (context, filtersState) {
+                        // фильтрация пулл поинтов перед отрисовкой
                         if (filtersState is FeedFiltersFilteredState) {
                           loadedPullPoints = pullPointsState.pullPoints;
-                          if (filtersState.dateTimeFilter.dateRange != null) {
-                            loadedPullPoints =
-                                filterPullPointsByDate(pullPoints: loadedPullPoints, dateRange: filtersState.dateTimeFilter.dateRange!);
+                          if ((filtersState.filters['date'] as DateFilter?) != null) {
+                            loadedPullPoints = filterPullPointsByDate(
+                              pullPoints: loadedPullPoints,
+                              dateRange: (filtersState.filters['date'] as DateFilter).dateRange,
+                            );
                           }
-                          if (filtersState.dateTimeFilter.timeRange != null) {
-                            loadedPullPoints =
-                                filterPullPointsByTime(pullPoints: loadedPullPoints, timeRange: filtersState.dateTimeFilter.timeRange!);
+                          if ((filtersState.filters['time'] as TimeFilter?) != null) {
+                            loadedPullPoints = filterPullPointsByTime(
+                              pullPoints: loadedPullPoints,
+                              timeRange: (filtersState.filters['time'] as TimeFilter).timeRange,
+                            );
                           }
-                          if (filtersState.nearestMetroFilter != null) {
+                          if ((filtersState.filters['metro'] as NearestMetroFilter?) != null) {
                             loadedPullPoints = filterPullPointsByNearestMetro(
-                                pullPoints: loadedPullPoints, selectedMetroStations: filtersState.nearestMetroFilter!.selectedMetroStations);
+                              pullPoints: loadedPullPoints,
+                              selectedMetroStations: (filtersState.filters['metro'] as NearestMetroFilter).selectedMetroStations,
+                            );
                           }
                         }
                         return Stack(

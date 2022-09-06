@@ -12,14 +12,12 @@ class FeedFiltersInitialState extends FeedFiltersState {
 }
 
 class FeedFiltersFilteredState extends FeedFiltersState {
-  final DateTimeFilter dateTimeFilter;
-  final NearestMetroFilter? nearestMetroFilter;
+  final Map<String, AbstractFilter?> filters;
 
   const FeedFiltersFilteredState({
-    required this.dateTimeFilter,
-    this.nearestMetroFilter,
+    required this.filters,
   });
 
   @override
-  List<Object> get props => [dateTimeFilter];
+  List<Object> get props => [filters];
 }

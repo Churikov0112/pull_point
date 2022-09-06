@@ -8,7 +8,7 @@ abstract class FeedFiltersEvent extends Equatable {
 }
 
 class SetFeedFiltersEvent extends FeedFiltersEvent {
-  final List<AbstractFilter> filters;
+  final Map<String, AbstractFilter?> filters;
 
   const SetFeedFiltersEvent({
     required this.filters,

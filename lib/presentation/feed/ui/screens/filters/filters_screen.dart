@@ -28,10 +28,10 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
     feedFiltersBloc = context.read<FeedFiltersBloc>();
     if (feedFiltersBloc.state is FeedFiltersFilteredState) {
       FeedFiltersFilteredState state = feedFiltersBloc.state as FeedFiltersFilteredState;
-      dateRange = state.dateTimeFilter.dateRange;
-      start = state.dateTimeFilter.timeRange?.start;
-      end = state.dateTimeFilter.timeRange?.end;
-      metroStations = state.nearestMetroFilter?.selectedMetroStations ?? [];
+      dateRange = (state.filters['date'] as DateFilter?)?.dateRange;
+      start = (state.filters['time'] as TimeFilter?)?.timeRange.start;
+      end = (state.filters['time'] as TimeFilter?)?.timeRange.end;
+      metroStations = (state.filters['metro'] as NearestMetroFilter?)?.selectedMetroStations ?? [];
     }
     super.initState();
   }
@@ -166,17 +166,15 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                       BotToast.showText(text: "Вы не выбрали нижнюю границу времени");
                       return;
                     }
-                    if ((start != null && end != null)) {
-                      feedFiltersBloc.add(SetFeedFiltersEvent(filters: [
-                        DateTimeFilter(dateRange: dateRange, timeRange: TimeRange(start: start!, end: end!)),
-                        if (metroStations.isNotEmpty) NearestMetroFilter(selectedMetroStations: metroStations),
-                      ]));
-                    } else {
-                      feedFiltersBloc.add(SetFeedFiltersEvent(filters: [
-                        DateTimeFilter(dateRange: dateRange, timeRange: null),
-                        if (metroStations.isNotEmpty) NearestMetroFilter(selectedMetroStations: metroStations),
-                      ]));
-                    }
+                    feedFiltersBloc.add(
+                      SetFeedFiltersEvent(
+                        filters: {
+                          "time": (start != null && end != null) ? TimeFilter(timeRange: TimeRange(start: start!, end: end!)) : null,
+                          "date": dateRange != null ? DateFilter(dateRange: dateRange!) : null,
+                          "metro": metroStations.isNotEmpty ? NearestMetroFilter(selectedMetroStations: metroStations) : null,
+                        },
+                      ),
+                    );
                     Navigator.of(context).pop();
                   },
                   child: Container(
@@ -187,12 +185,7 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                     ),
                     child: const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                      child: Center(
-                        child: Text(
-                          "Применить",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
+                      child: Center(child: Text("Применить", style: TextStyle(color: Colors.white))),
                     ),
                   ),
                 ),
