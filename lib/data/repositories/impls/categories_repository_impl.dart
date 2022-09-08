@@ -28,20 +28,16 @@ class CategoriesRepositoryImpl extends CategoriesRepositoryInterface {
 
   @override
   Future<List<SubcategoryModel>> getSubcategories({
-    required int parentCategoryId,
+    required List<int> parentCategoryIds,
   }) async {
     final List<SubcategoryModel> subcategories = [];
-    try {
-      final response = await http.get(Uri.parse("${BackendConfig.baseUrl}/category/$parentCategoryId"));
+    for (final id in parentCategoryIds) {
+      final response = await http.get(Uri.parse("${BackendConfig.baseUrl}/category/$id"));
       String source = const Utf8Decoder().convert(response.bodyBytes);
-      print(source);
-
       final decodedResponse = jsonDecode(source);
       for (final element in decodedResponse) {
         subcategories.add(SubcategoryModel.fromJson(element));
       }
-    } catch (e) {
-      print(e);
     }
     return subcategories;
   }

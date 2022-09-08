@@ -248,7 +248,7 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                                     gradient: pickedCategory?.id == cat.id ? AppGradients.main : AppGradients.first,
                                     onPressed: () {
                                       setState(() => pickedCategory = cat);
-                                      context.read<SubcategoriesBloc>().add(SubcategoriesEventLoad(parentCategoryId: cat.id));
+                                      context.read<SubcategoriesBloc>().add(SubcategoriesEventLoad(parentCategoryIds: [cat.id]));
                                     },
                                   ),
                               ],

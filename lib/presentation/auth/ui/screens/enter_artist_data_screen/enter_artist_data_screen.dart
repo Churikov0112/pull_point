@@ -120,7 +120,7 @@ class __EnterArtistDataScreenState extends State<EnterArtistDataScreen> {
                                         pickedCategory = cat;
                                         pickedSubcategories.clear();
                                       });
-                                      context.read<SubcategoriesBloc>().add(SubcategoriesEventLoad(parentCategoryId: cat.id));
+                                      context.read<SubcategoriesBloc>().add(SubcategoriesEventLoad(parentCategoryIds: [cat.id]));
                                     },
                                   ),
                               ],

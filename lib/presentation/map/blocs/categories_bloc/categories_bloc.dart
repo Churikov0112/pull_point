@@ -14,10 +14,15 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
   })  : _categoriesRepository = categoriesRepository,
         super(const CategoriesStateInitial()) {
     on<CategoriesEventLoad>(_load);
+    on<CategoriesEventReset>(_reset);
   }
 
   Future<void> _load(CategoriesEventLoad event, Emitter<CategoriesState> emit) async {
     final categories = await _categoriesRepository.getCategories();
     emit(CategoriesStateLoaded(categories: categories));
+  }
+
+  Future<void> _reset(CategoriesEventReset event, Emitter<CategoriesState> emit) async {
+    emit(const CategoriesStateInitial());
   }
 }

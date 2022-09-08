@@ -10,3 +10,7 @@ abstract class CategoriesEvent extends Equatable {
 class CategoriesEventLoad extends CategoriesEvent {
   const CategoriesEventLoad();
 }
+
+class CategoriesEventReset extends CategoriesEvent {
+  const CategoriesEventReset();
+}

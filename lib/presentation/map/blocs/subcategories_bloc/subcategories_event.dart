@@ -8,9 +8,13 @@ abstract class SubcategoriesEvent extends Equatable {
 }
 
 class SubcategoriesEventLoad extends SubcategoriesEvent {
-  final int parentCategoryId;
+  final List<int> parentCategoryIds;
 
   const SubcategoriesEventLoad({
-    required this.parentCategoryId,
+    required this.parentCategoryIds,
   });
+}
+
+class SubcategoriesEventReset extends SubcategoriesEvent {
+  const SubcategoriesEventReset();
 }

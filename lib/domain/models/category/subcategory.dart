@@ -1,6 +1,6 @@
 part of '../models.dart';
 
-class SubcategoryModel {
+class SubcategoryModel extends Equatable {
   final int id;
   final int parentId;
   final String name;
@@ -18,4 +18,7 @@ class SubcategoryModel {
       parentId: source['parent']['id'],
     );
   }
+
+  @override
+  List<Object?> get props => [id];
 }

@@ -2,7 +2,7 @@ part of '../models.dart';
 
 enum MetroLines { firstRed, secondBlue, thirdGreen, fourthOrange, fifthPurple }
 
-class MetroStationModel {
+class MetroStationModel extends Equatable {
   final int id;
   final String title;
   final LatLng latLng;
@@ -14,4 +14,7 @@ class MetroStationModel {
     required this.latLng,
     required this.line,
   });
+
+  @override
+  List<Object?> get props => [id];
 }

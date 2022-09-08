@@ -1,6 +1,6 @@
 part of '../models.dart';
 
-class CategoryModel {
+class CategoryModel extends Equatable {
   final int id;
   final String name;
 
@@ -15,4 +15,7 @@ class CategoryModel {
       name: source['name'],
     );
   }
+
+  @override
+  List<Object?> get props => [id];
 }

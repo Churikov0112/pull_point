@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:pull_point/data/repositories/mock/metro_stations.dart';
 
 import '../../../../../domain/domain.dart';
+import '../../../../map/blocs/categories_bloc/categories_bloc.dart';
+import '../../../../map/blocs/subcategories_bloc/subcategories_bloc.dart';
 import '../../../../static_methods/static_methods.dart';
 import '../../../../ui_kit/ui_kit.dart';
 import '../../../blocs/blocs.dart';
@@ -24,10 +26,13 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
   TimeOfDay? startTime;
   TimeOfDay? endTime;
   List<MetroStationModel> metroStations = [];
+  List<CategoryModel> pickedCategories = [];
+  List<SubcategoryModel> pickedSubcategories = [];
 
   // проверить на наличие фильтров
   @override
   void initState() {
+    context.read<CategoriesBloc>().add(const CategoriesEventLoad());
     feedFiltersBloc = context.read<FeedFiltersBloc>();
     if (feedFiltersBloc.state is FeedFiltersFilteredState) {
       FeedFiltersFilteredState state = feedFiltersBloc.state as FeedFiltersFilteredState;
@@ -35,7 +40,16 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
       startTime = (state.filters['time'] as TimeFilter?)?.timeRange.start;
       endTime = (state.filters['time'] as TimeFilter?)?.timeRange.end;
       metroStations = (state.filters['metro'] as NearestMetroFilter?)?.selectedMetroStations ?? [];
+      pickedCategories = (state.filters['categories'] as CategoriesFilter?)?.selectedCategories ?? [];
+      pickedSubcategories = (state.filters['categories'] as CategoriesFilter?)?.selectedSubcategories ?? [];
     }
+
+    print(pickedSubcategories.length);
+
+    if (pickedCategories.isNotEmpty) {
+      context.read<SubcategoriesBloc>().add(SubcategoriesEventLoad(parentCategoryIds: pickedCategories.map((e) => e.id).toList()));
+    }
+
     super.initState();
   }
 
@@ -43,8 +57,17 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
     dateRange = null;
     startTime = null;
     endTime = null;
-    metroStations = [];
+    metroStations.clear();
+    pickedCategories.clear();
+    pickedSubcategories.clear();
     setState(() {});
+  }
+
+  @override
+  void deactivate() {
+    context.read<CategoriesBloc>().add(const CategoriesEventReset());
+    context.read<SubcategoriesBloc>().add(const SubcategoriesEventReset());
+    super.deactivate();
   }
 
   @override
@@ -145,14 +168,12 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                 const SizedBox(height: 24),
                 const AppTitle("Метро"),
                 const SizedBox(height: 8),
-
                 SizedBox(
                   width: mediaQuery.size.width,
                   child: Wrap(
                     spacing: 8,
                     runSpacing: 8,
                     children: [
-                      // if (metroStations.isEmpty)
                       CategoryChip(
                         gradient: AppGradients.slave,
                         textColor: AppColors.text,
@@ -165,22 +186,9 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                                 allMetroStations: MetroStations.getAllMetroStations(),
                                 selectedMetroStations: metroStations,
                                 onConfirmSelect: (selectedStations) {
-                                  print(selectedStations.length);
                                   setState(() => metroStations = selectedStations);
-                                  print(metroStations.length);
                                 },
                               );
-                              // MultiSelectDialog(
-                              //   separateSelectedItems: true,
-                              //   items: _items,
-                              //   initialValue: metroStations,
-                              //   searchable: true,
-                              //   listType: MultiSelectListType.CHIP,
-                              //   onConfirm: (values) {
-                              //     result = values;
-                              //     if (result != null) setState(() => metroStations = result);
-                              //   },
-                              // );
                             },
                           );
                         },
@@ -197,38 +205,85 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                     ],
                   ),
                 ),
-                // Row(
-                //   children: [
-                //     ChipWidget(
-                //       onPressed: () async {
-                //         dynamic result;
-                //         await showDialog(
-                //           context: context,
-                //           builder: (ctx) {
-                //             return MultiSelectDialog(
-                //               items: _items,
-                //               initialValue: metroStations,
-                //               searchable: true,
-                //               listType: MultiSelectListType.CHIP,
-                //               onConfirm: (values) {
-                //                 result = values;
-                //                 if (result != null) setState(() => metroStations = result);
-                //               },
-                //             );
-                //           },
-                //         );
-                //       },
-                //       text: "Выбрать ближайшие станции метро",
-                //     ),
-                //   ],
-                // ),
-                // if (metroStations.isNotEmpty)
-                //   Column(
-                //     children: [
-                //       for (final station in metroStations) Text(station.title),
-                //     ],
-                //   ),
-                const SizedBox(height: 32),
+                const SizedBox(height: 24),
+
+                // выбор главной категории
+                BlocBuilder<CategoriesBloc, CategoriesState>(
+                  builder: (context, state) {
+                    if (state is CategoriesStateLoaded) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const AppTitle("Категории"),
+                          const SizedBox(height: 8),
+                          Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: [
+                              for (final cat in state.categories)
+                                CategoryChip(
+                                  childText: cat.name,
+                                  gradient: pickedCategories.contains(cat) ? AppGradients.main : AppGradients.first,
+                                  onPressed: () {
+                                    if (pickedCategories.contains(cat)) {
+                                      pickedCategories.remove(cat);
+                                    } else {
+                                      pickedCategories.add(cat);
+                                    }
+                                    setState(() {});
+
+                                    context
+                                        .read<SubcategoriesBloc>()
+                                        .add(SubcategoriesEventLoad(parentCategoryIds: pickedCategories.map((parentCat) => parentCat.id).toList()));
+                                  },
+                                ),
+                            ],
+                          ),
+                        ],
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+
+                const SizedBox(height: 24),
+
+                // выбор подкатегорий
+                if (pickedCategories.isNotEmpty)
+                  BlocBuilder<SubcategoriesBloc, SubcategoriesState>(
+                    builder: (context, state) {
+                      if (state is SubcategoriesStateLoaded) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const AppTitle("Подкатегории"),
+                            const SizedBox(height: 8),
+                            Wrap(
+                              spacing: 8,
+                              runSpacing: 8,
+                              children: [
+                                for (final cat in state.subcategories)
+                                  CategoryChip(
+                                    childText: cat.name,
+                                    gradient: pickedSubcategories.contains(cat) ? AppGradients.main : AppGradients.first,
+                                    onPressed: () {
+                                      if (pickedSubcategories.contains(cat)) {
+                                        pickedSubcategories.remove(cat);
+                                      } else {
+                                        pickedSubcategories.add(cat);
+                                      }
+                                      setState(() {});
+                                    },
+                                  ),
+                              ],
+                            ),
+                          ],
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    },
+                  ),
+                const SizedBox(height: 24),
                 LongButton(
                   onTap: () {
                     if (startTime != null && endTime == null) {
@@ -245,6 +300,9 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                           "time": (startTime != null && endTime != null) ? TimeFilter(timeRange: TimeRange(start: startTime!, end: endTime!)) : null,
                           "date": dateRange != null ? DateFilter(dateRange: dateRange!) : null,
                           "metro": metroStations.isNotEmpty ? NearestMetroFilter(selectedMetroStations: metroStations) : null,
+                          "categories": pickedCategories.isNotEmpty
+                              ? CategoriesFilter(selectedCategories: pickedCategories, selectedSubcategories: pickedSubcategories)
+                              : null,
                         },
                       ),
                     );

@@ -1,6 +1,6 @@
 part of '../models.dart';
 
-class ArtistModel {
+class ArtistModel extends Equatable {
   final int id;
   final String? name;
   final String? description;
@@ -26,4 +26,7 @@ class ArtistModel {
       ],
     );
   }
+
+  @override
+  List<Object?> get props => [id];
 }

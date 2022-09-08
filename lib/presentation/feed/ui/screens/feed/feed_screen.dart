@@ -86,6 +86,10 @@ class _FeedScreenState extends State<FeedScreen> {
                             pullPoints: loadedPullPoints,
                             nearestMetroFilter: filtersState.filters['metro'] as NearestMetroFilter?,
                           );
+                          loadedPullPoints = StaticMethods.filterPullPointsByCategoriesAndSubcategories(
+                            pullPoints: loadedPullPoints,
+                            categoriesFilter: filtersState.filters['categories'] as CategoriesFilter?,
+                          );
                         }
                         return Stack(
                           children: [

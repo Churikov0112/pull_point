@@ -97,4 +97,35 @@ abstract class StaticMethods {
     }
     return pullPoints;
   }
+
+  static List<PullPointModel> filterPullPointsByCategoriesAndSubcategories({
+    required List<PullPointModel> pullPoints,
+    required CategoriesFilter? categoriesFilter,
+  }) {
+    if (categoriesFilter != null) {
+      final List<PullPointModel> filteredPullPoints = [];
+      for (final category in categoriesFilter.selectedCategories) {
+        for (final pp in pullPoints) {
+          if (pp.category == category) {
+            filteredPullPoints.add(pp);
+          }
+        }
+      }
+
+      if (categoriesFilter.selectedSubcategories.isNotEmpty) {
+        final List<PullPointModel> result = [];
+        for (final subcategory in categoriesFilter.selectedSubcategories) {
+          for (final pp in filteredPullPoints) {
+            if (pp.subcategories.contains(subcategory) && !result.contains(pp)) {
+              result.add(pp);
+            }
+          }
+        }
+        return result;
+      }
+
+      return filteredPullPoints;
+    }
+    return pullPoints;
+  }
 }

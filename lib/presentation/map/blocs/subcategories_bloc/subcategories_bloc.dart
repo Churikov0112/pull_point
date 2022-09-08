@@ -14,10 +14,15 @@ class SubcategoriesBloc extends Bloc<SubcategoriesEvent, SubcategoriesState> {
   })  : _categoriesRepository = categoriesRepository,
         super(const SubcategoriesStateInitial()) {
     on<SubcategoriesEventLoad>(_load);
+    on<SubcategoriesEventReset>(_reset);
   }
 
   Future<void> _load(SubcategoriesEventLoad event, Emitter<SubcategoriesState> emit) async {
-    final subcategories = await _categoriesRepository.getSubcategories(parentCategoryId: event.parentCategoryId);
+    final subcategories = await _categoriesRepository.getSubcategories(parentCategoryIds: event.parentCategoryIds);
     emit(SubcategoriesStateLoaded(subcategories: subcategories));
+  }
+
+  Future<void> _reset(SubcategoriesEventReset event, Emitter<SubcategoriesState> emit) async {
+    emit(const SubcategoriesStateInitial());
   }
 }

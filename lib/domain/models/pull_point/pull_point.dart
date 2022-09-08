@@ -1,6 +1,6 @@
 part of '../models.dart';
 
-class PullPointModel {
+class PullPointModel extends Equatable {
   final int id;
   final String title;
   final String description;
@@ -46,8 +46,10 @@ class PullPointModel {
         for (final subcat in source['subcategories']) SubcategoryModel.fromJson(subcat),
       ],
       // posterUrl: source['posterUrl'],
-      nearestMetroStations:
-          MetroStations.getNearestMetroStations(latLng: LatLng(source['latitude'], source['longitude'])),
+      nearestMetroStations: MetroStations.getNearestMetroStations(latLng: LatLng(source['latitude'], source['longitude'])),
     );
   }
+
+  @override
+  List<Object?> get props => [id];
 }
