@@ -5,12 +5,12 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc() : super(const TabSelectedState(tabIndex: 0)) {
+  HomeBloc() : super(const HomeStateTabSelected(tabIndex: 0)) {
     on<SelectTabEvent>(_selectTab);
   }
 
   Future<void> _selectTab(SelectTabEvent event, Emitter<HomeState> emit) async {
-    emit(const InitialState());
-    emit(TabSelectedState(tabIndex: event.tabIndex));
+    emit(const HomeStateInitial());
+    emit(HomeStateTabSelected(tabIndex: event.tabIndex));
   }
 }

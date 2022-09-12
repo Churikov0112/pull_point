@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/presentation/auth/ui/screens/enter_code_screen/enter_code_screen.dart';
 import 'package:pull_point/presentation/ui_kit/ui_kit.dart';
 
+import '../../../../blocs/blocs.dart';
 import '../../../../home/home_page.dart';
-import '../../../blocs/blocs.dart';
 import '../start/start_screen.dart';
 
 String? validateEmail(String? value) {

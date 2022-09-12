@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/presentation/auth/ui/screens/enter_artist_data_screen/enter_artist_data_screen.dart';
 import 'package:pull_point/presentation/ui_kit/ui_kit.dart';
 import '../../../../../domain/models/user/user.dart';
+import '../../../../blocs/blocs.dart';
 import '../../../../home/home_page.dart';
-import '../../../blocs/blocs.dart';
 
 class WannaBeArtistScreen extends StatefulWidget {
   const WannaBeArtistScreen({

@@ -12,7 +12,7 @@ class PullPointsBloc extends Bloc<PullPointsEvent, PullPointsState> {
   PullPointsBloc({
     required PullPointsRepositoryInterface repository,
   })  : _repository = repository,
-        super(InitialState()) {
+        super(PullPointsStateInitial()) {
     on<LoadDataEvent>(_loadData);
     on<SelectPullPointEvent>(_select);
     on<UnselectPullPointEvent>(_unselect);
@@ -20,11 +20,11 @@ class PullPointsBloc extends Bloc<PullPointsEvent, PullPointsState> {
 
   Future<void> _loadData(LoadDataEvent event, Emitter<PullPointsState> emit) async {
     try {
-      emit(LoadingState());
+      emit(PullPointsStateLoading());
       final pullPoints = await _repository.getPullPoints(needUpdate: true);
-      emit(LoadedState(pullPoints: pullPoints));
+      emit(PullPointsStateLoaded(pullPoints: pullPoints));
     } catch (e) {
-      emit(FailedState(errorMessage: e.toString()));
+      emit(PullPointsStateFailed(errorMessage: e.toString()));
     }
   }
 
@@ -38,18 +38,18 @@ class PullPointsBloc extends Bloc<PullPointsEvent, PullPointsState> {
           otherPullPoints.add(pp);
         }
       }
-      emit(SelectedState(selectedPullPoint: selectedPullPoint, otherPullPoints: otherPullPoints));
+      emit(PullPointsStateSelected(selectedPullPoint: selectedPullPoint, otherPullPoints: otherPullPoints));
     } catch (e) {
-      emit(FailedState(errorMessage: e.toString()));
+      emit(PullPointsStateFailed(errorMessage: e.toString()));
     }
   }
 
   Future<void> _unselect(UnselectPullPointEvent event, Emitter<PullPointsState> emit) async {
     try {
       final pullPoints = await _repository.getPullPoints(needUpdate: false);
-      emit(LoadedState(pullPoints: pullPoints));
+      emit(PullPointsStateLoaded(pullPoints: pullPoints));
     } catch (e) {
-      emit(FailedState(errorMessage: e.toString()));
+      emit(PullPointsStateFailed(errorMessage: e.toString()));
     }
   }
 }

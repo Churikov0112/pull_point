@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/presentation/auth/ui/screens/enter_email_screen/enter_email_screen.dart';
-
-import '../../../../../auth/blocs/auth_bloc/auth_bloc.dart';
+import '../../../../../blocs/blocs.dart';
 import '../../../../../ui_kit/ui_kit.dart';
 
 class GuestContent extends StatelessWidget {

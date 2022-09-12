@@ -4,8 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../../../../domain/models/models.dart';
-import '../../../../home/blocs/blocs.dart';
-import '../../../../map/blocs/blocs.dart';
+import '../../../../blocs/blocs.dart';
 import '../../../../static_methods/static_methods.dart';
 import '../../../../ui_kit/ui_kit.dart';
 

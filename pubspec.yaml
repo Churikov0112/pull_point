@@ -39,6 +39,7 @@ dependencies:
 
   # UI
   sliding_up_panel: ^2.0.0+1
+  carousel_slider: ^4.1.1
 
   # toasts
   bot_toast: ^4.0.3

@@ -5,10 +5,10 @@ import 'package:pull_point/presentation/favourites/ui/screens/screens.dart';
 import 'package:pull_point/presentation/qr_reader/ui/screens/qr_reader/qr_reader.dart';
 import 'package:pull_point/presentation/ui_kit/ui_kit.dart';
 
+import '../blocs/blocs.dart';
 import '../feed/feed.dart';
 import '../map/map.dart';
 import '../profile/profile.dart';
-import 'blocs/blocs.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
       onWillPop: () async => false,
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
-          if (state is TabSelectedState) {
+          if (state is HomeStateTabSelected) {
             return Scaffold(
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,

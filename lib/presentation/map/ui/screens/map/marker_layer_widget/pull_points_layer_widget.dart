@@ -5,7 +5,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../../../../../domain/domain.dart';
-import '../../../../blocs/blocs.dart';
+import '../../../../../blocs/blocs.dart';
 import '../markers/markers.dart';
 
 class PullPointsLayerWidget extends StatefulWidget {
@@ -29,13 +29,13 @@ class _PullPointsLayerWidgetState extends State<PullPointsLayerWidget> {
 
     // load data only firstly
     pullPointsBloc = context.read<PullPointsBloc>();
-    if (pullPointsBloc.state is InitialState) {
+    if (pullPointsBloc.state is PullPointsStateInitial) {
       pullPointsBloc.add(const LoadDataEvent());
     }
 
     final state = pullPointsBloc.state;
 
-    if (state is SelectedState) {
+    if (state is PullPointsStateSelected) {
       zoomToSpecificPullPoint(latLng: state.selectedPullPoint.geo.latLng);
     }
   }
@@ -117,7 +117,7 @@ class _PullPointsLayerWidgetState extends State<PullPointsLayerWidget> {
 
   @override
   void deactivate() {
-    if (pullPointsBloc.state is SelectedState) {
+    if (pullPointsBloc.state is PullPointsStateSelected) {
       pullPointsBloc.add(const UnselectPullPointEvent());
     }
     super.deactivate();
@@ -130,9 +130,9 @@ class _PullPointsLayerWidgetState extends State<PullPointsLayerWidget> {
         return GroupLayerWidget(
           options: GroupLayerOptions(
             group: [
-              if (state is LoadedState)
+              if (state is PullPointsStateLoaded)
                 pullPointMarkers(null, state.pullPoints)
-              else if (state is SelectedState)
+              else if (state is PullPointsStateSelected)
                 pullPointMarkers(state.selectedPullPoint, state.otherPullPoints),
             ],
           ),

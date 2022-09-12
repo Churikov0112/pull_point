@@ -4,7 +4,7 @@ import 'package:pull_point/presentation/auth/ui/screens/enter_email_screen/enter
 import 'package:pull_point/presentation/home/home_page.dart';
 import 'package:pull_point/presentation/ui_kit/ui_kit.dart';
 
-import '../../../blocs/blocs.dart';
+import '../../../../blocs/blocs.dart';
 
 class StartScreen extends StatelessWidget {
   const StartScreen({Key? key}) : super(key: key);

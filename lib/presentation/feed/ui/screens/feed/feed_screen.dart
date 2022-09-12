@@ -6,9 +6,8 @@ import 'package:latlong2/latlong.dart';
 import 'package:pull_point/presentation/feed/ui/screens/feed/poster_item.dart';
 import 'package:pull_point/presentation/static_methods/static_methods.dart';
 import '../../../../../domain/domain.dart';
-import '../../../../map/blocs/blocs.dart';
+import '../../../../blocs/blocs.dart';
 import '../../../../ui_kit/ui_kit.dart';
-import '../../../blocs/blocs.dart';
 import '../screens.dart';
 
 class FeedScreen extends StatefulWidget {
@@ -67,7 +66,7 @@ class _FeedScreenState extends State<FeedScreen> {
               SizedBox(height: mediaQuery.padding.top),
               BlocBuilder<PullPointsBloc, PullPointsState>(
                 builder: (context, pullPointsState) {
-                  if (pullPointsState is LoadedState) {
+                  if (pullPointsState is PullPointsStateLoaded) {
                     List<PullPointModel> loadedPullPoints = pullPointsState.pullPoints;
                     return BlocBuilder<FeedFiltersBloc, FeedFiltersState>(
                       builder: (context, filtersState) {
@@ -125,7 +124,7 @@ class _FeedScreenState extends State<FeedScreen> {
                       },
                     );
                   }
-                  if (pullPointsState is LoadingState) {
+                  if (pullPointsState is PullPointsStateLoading) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );

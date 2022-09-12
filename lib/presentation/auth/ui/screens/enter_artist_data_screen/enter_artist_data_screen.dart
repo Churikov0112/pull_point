@@ -4,9 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/presentation/auth/ui/screens/wanna_be_artist_screen/wanna_be_artist_screen.dart';
 import 'package:pull_point/presentation/ui_kit/ui_kit.dart';
 import '../../../../../domain/models/models.dart';
+import '../../../../blocs/blocs.dart';
 import '../../../../home/home_page.dart';
-import '../../../../map/blocs/blocs.dart';
-import '../../../blocs/blocs.dart';
 
 class EnterArtistDataScreen extends StatefulWidget {
   const EnterArtistDataScreen({

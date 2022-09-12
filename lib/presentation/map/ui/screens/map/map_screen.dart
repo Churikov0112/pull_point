@@ -6,10 +6,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:pull_point/presentation/map/ui/screens/create_pull_point/create_pp_screen.dart';
 import 'package:pull_point/presentation/map/ui/screens/map/marker_layer_widget/metro_stations_layer_widget.dart';
-
-import '../../../../auth/blocs/blocs.dart';
+import '../../../../blocs/blocs.dart';
 import '../../../../ui_kit/ui_kit.dart';
-import '../../../blocs/blocs.dart';
 import 'marker_layer_widget/pull_point_bottom_sheet/pull_point_bottom_sheet.dart';
 import 'marker_layer_widget/pull_points_layer_widget.dart';
 
@@ -200,7 +198,7 @@ class _MapScreenState extends State<MapScreen> {
 
         // pp bs
         BlocBuilder<PullPointsBloc, PullPointsState>(builder: (context, state) {
-          if (state is SelectedState) {
+          if (state is PullPointsStateSelected) {
             return PullPointBottomSheet(
               pullPoint: state.selectedPullPoint,
               onClose: () {

@@ -7,14 +7,14 @@ abstract class PullPointsState extends Equatable {
   List<Object> get props => [];
 }
 
-class InitialState extends PullPointsState {}
+class PullPointsStateInitial extends PullPointsState {}
 
-class LoadingState extends PullPointsState {}
+class PullPointsStateLoading extends PullPointsState {}
 
-class LoadedState extends PullPointsState {
+class PullPointsStateLoaded extends PullPointsState {
   final List<PullPointModel> pullPoints;
 
-  const LoadedState({
+  const PullPointsStateLoaded({
     required this.pullPoints,
   });
 
@@ -22,11 +22,11 @@ class LoadedState extends PullPointsState {
   List<Object> get props => [pullPoints];
 }
 
-class SelectedState extends PullPointsState {
+class PullPointsStateSelected extends PullPointsState {
   final List<PullPointModel> otherPullPoints;
   final PullPointModel selectedPullPoint;
 
-  const SelectedState({
+  const PullPointsStateSelected({
     required this.selectedPullPoint,
     required this.otherPullPoints,
   });
@@ -35,10 +35,10 @@ class SelectedState extends PullPointsState {
   List<Object> get props => [otherPullPoints, selectedPullPoint];
 }
 
-class FailedState extends PullPointsState {
+class PullPointsStateFailed extends PullPointsState {
   final String errorMessage;
 
-  const FailedState({
+  const PullPointsStateFailed({
     required this.errorMessage,
   });
 

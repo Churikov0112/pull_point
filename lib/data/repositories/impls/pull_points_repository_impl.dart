@@ -1,9 +1,6 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
-
 import '../../../domain/domain.dart';
-import '../../config/config.dart';
+import '../../http_requests/http_requests.dart';
 
 class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
   List<PullPointModel> allPullPoints = [];
@@ -12,31 +9,28 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
   Future<List<PullPointModel>> getPullPoints({
     required bool needUpdate,
   }) async {
-    try {
-      if (needUpdate) {
-        // загружаем в л/бом случае
-        final response = await http.get(Uri.parse("${BackendConfig.baseUrl}/guest/pull_points"));
+    if (needUpdate) {
+      // загружаем в любом случае
+      final response = await GetPullPointsRequest.send();
+      String source = const Utf8Decoder().convert(response.bodyBytes);
+      final decodedResponse = jsonDecode(source);
+      allPullPoints.clear();
+      for (final element in decodedResponse) {
+        allPullPoints.add(PullPointModel.fromJson(element));
+      }
+    } else {
+      // загружаем только в случае отсутствия пулл поинтов
+      if (allPullPoints.isEmpty) {
+        final response = await GetPullPointsRequest.send();
         String source = const Utf8Decoder().convert(response.bodyBytes);
         final decodedResponse = jsonDecode(source);
         allPullPoints.clear();
         for (final element in decodedResponse) {
           allPullPoints.add(PullPointModel.fromJson(element));
         }
-      } else {
-        // загружаем только в случае отсутствия пулл поинтов
-        if (allPullPoints.isEmpty) {
-          final response = await http.get(Uri.parse("${BackendConfig.baseUrl}/guest/pull_points"));
-          String source = const Utf8Decoder().convert(response.bodyBytes);
-          final decodedResponse = jsonDecode(source);
-          allPullPoints.clear();
-          for (final element in decodedResponse) {
-            allPullPoints.add(PullPointModel.fromJson(element));
-          }
-        }
       }
-    } catch (e) {
-      print(e);
     }
+
     return allPullPoints;
   }
 
@@ -52,28 +46,17 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
     required int categoryId,
     List<int>? subcategoryIds,
   }) async {
-    print("ownerId: $ownerId");
-    final response = await http.post(
-      Uri.parse("${BackendConfig.baseUrl}/artist/pull_point"),
-      body: jsonEncode(
-        {
-          "owner": ownerId,
-          "name": name,
-          "description": description,
-          "latitude": latitude,
-          "longitude": longitude,
-          "startTime": DateFormat("dd.MM.yyyy:HH.mm").format(startTime),
-          "endTime": DateFormat("dd.MM.yyyy:HH.mm").format(endTime),
-          "category": categoryId,
-          "subcategories": subcategoryIds
-        },
-      ),
-      headers: {
-        "Accept": "application/json",
-        "content-type": "application/json",
-      },
+    final response = await CreatePullPointRequest.send(
+      ownerId: ownerId,
+      name: name,
+      description: description,
+      latitude: latitude,
+      longitude: longitude,
+      startTime: startTime,
+      endTime: endTime,
+      categoryId: categoryId,
+      subcategoryIds: subcategoryIds,
     );
-    print('response ${response.body}');
     if (response.statusCode == 200) return true;
     return false;
   }

@@ -5,11 +5,10 @@ import 'package:intl/intl.dart';
 import 'package:pull_point/data/repositories/mock/metro_stations.dart';
 
 import '../../../../../domain/domain.dart';
-import '../../../../map/blocs/categories_bloc/categories_bloc.dart';
-import '../../../../map/blocs/subcategories_bloc/subcategories_bloc.dart';
+
+import '../../../../blocs/blocs.dart';
 import '../../../../static_methods/static_methods.dart';
 import '../../../../ui_kit/ui_kit.dart';
-import '../../../blocs/blocs.dart';
 import 'widgets/widgets.dart';
 
 class FeedFiltersScreen extends StatefulWidget {

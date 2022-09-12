@@ -7,14 +7,14 @@ abstract class HomeState extends Equatable {
   List<Object> get props => [];
 }
 
-class InitialState extends HomeState {
-  const InitialState();
+class HomeStateInitial extends HomeState {
+  const HomeStateInitial();
 }
 
-class TabSelectedState extends HomeState {
+class HomeStateTabSelected extends HomeState {
   final int tabIndex;
 
-  const TabSelectedState({
+  const HomeStateTabSelected({
     required this.tabIndex,
   });
 }

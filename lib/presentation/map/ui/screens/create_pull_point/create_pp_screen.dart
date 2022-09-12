@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
 import '../../../../../domain/models/models.dart';
-import '../../../../auth/blocs/blocs.dart';
+import '../../../../blocs/blocs.dart';
 import '../../../../ui_kit/ui_kit.dart';
-import '../../../blocs/blocs.dart';
 import 'pick_location_screen.dart';
 
 class CreatePullPointScreen extends StatefulWidget {

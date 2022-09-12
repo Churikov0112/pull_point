@@ -1,28 +1,22 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import '../../../domain/domain.dart';
-import '../../config/config.dart';
+import '../../http_requests/http_requests.dart';
 
 class CategoriesRepositoryImpl extends CategoriesRepositoryInterface {
   List<CategoryModel> categories = [];
 
   @override
   Future<List<CategoryModel>> getCategories() async {
-    try {
-      if (categories.isEmpty) {
-        categories.clear();
-        final response = await http.get(Uri.parse("${BackendConfig.baseUrl}/category/main"));
-        String source = const Utf8Decoder().convert(response.bodyBytes);
-        print(source);
-
-        final decodedResponse = jsonDecode(source);
-        for (final element in decodedResponse) {
-          categories.add(CategoryModel.fromJson(element));
-        }
+    if (categories.isEmpty) {
+      categories.clear();
+      final response = await GetCategoriesRequest.send();
+      String source = const Utf8Decoder().convert(response.bodyBytes);
+      final decodedResponse = jsonDecode(source);
+      for (final element in decodedResponse) {
+        categories.add(CategoryModel.fromJson(element));
       }
-    } catch (e) {
-      print(e);
     }
+
     return categories;
   }
 
@@ -32,7 +26,7 @@ class CategoriesRepositoryImpl extends CategoriesRepositoryInterface {
   }) async {
     final List<SubcategoryModel> subcategories = [];
     for (final id in parentCategoryIds) {
-      final response = await http.get(Uri.parse("${BackendConfig.baseUrl}/category/$id"));
+      final response = await GetSubcategoriesRequest.send(categoryId: id);
       String source = const Utf8Decoder().convert(response.bodyBytes);
       final decodedResponse = jsonDecode(source);
       for (final element in decodedResponse) {

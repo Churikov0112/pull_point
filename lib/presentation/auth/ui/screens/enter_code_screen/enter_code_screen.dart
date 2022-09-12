@@ -9,7 +9,7 @@ import 'package:pull_point/presentation/home/home_page.dart';
 import 'package:pull_point/presentation/ui_kit/ui_kit.dart';
 
 import '../../../../../domain/models/user/user.dart';
-import '../../../blocs/blocs.dart';
+import '../../../../blocs/blocs.dart';
 import '../enter_email_screen/enter_email_screen.dart';
 
 class EnterCodeScreen extends StatefulWidget {
