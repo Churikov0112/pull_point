@@ -20,22 +20,8 @@ class _ArtistsScreenState extends State<ArtistsScreen> {
 
   @override
   void initState() {
-    final authState = context.read<AuthBloc>().state;
-    if (authState is AuthStateAuthorized) {
-      if (authState.user.isArtist == true) {
-        context.read<UserArtistsBloc>().add(UserArtistsEventLoad(userId: authState.user.id));
-        final userArtistsState = context.read<UserArtistsBloc>().state;
-        if (userArtistsState is UserArtistsStateSelected) {
-          setInitialIndexBySelectedArtist(
-            allUserArtists: userArtistsState.allUserArtists,
-            selectedArtist: userArtistsState.selectedArtist,
-          );
-        }
-      }
-    }
-
     carouselController = CarouselController();
-
+    updatePage();
     super.initState();
   }
 
@@ -60,6 +46,24 @@ class _ArtistsScreenState extends State<ArtistsScreen> {
       }
     }
     return result;
+  }
+
+  Future<void> updatePage() async {
+    await Future.delayed(Duration.zero, () {
+      final authState = context.read<AuthBloc>().state;
+      if (authState is AuthStateAuthorized) {
+        if (authState.user.isArtist == true) {
+          context.read<UserArtistsBloc>().add(UserArtistsEventLoad(userId: authState.user.id));
+          final userArtistsState = context.read<UserArtistsBloc>().state;
+          if (userArtistsState is UserArtistsStateSelected) {
+            setInitialIndexBySelectedArtist(
+              allUserArtists: userArtistsState.allUserArtists,
+              selectedArtist: userArtistsState.selectedArtist,
+            );
+          }
+        }
+      }
+    });
   }
 
   @override

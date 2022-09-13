@@ -31,12 +31,19 @@ class __AddArtistScreenState extends State<AddArtistScreen> {
     super.initState();
   }
 
+  Future<void> closePage() async {
+    await Future.delayed(Duration.zero, () {
+      context.read<UserArtistsBloc>().add(UserArtistsEventLoad(userId: user.id));
+      Navigator.pop(context);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     return BlocBuilder<AddArtistBloc, AddArtistState>(
       builder: (context, state) {
-        if (state is AddArtistStateCreated) Navigator.of(context).pop();
+        if (state is AddArtistStateCreated) closePage();
 
         return Scaffold(
           backgroundColor: AppColors.backgroundPage,
@@ -183,9 +190,9 @@ class __AddArtistScreenState extends State<AddArtistScreen> {
                         return;
                       }
                       FocusScope.of(context).unfocus();
-                      context.read<AuthBloc>().add(
-                            AuthEventRegisterArtist(
-                              user: user,
+                      context.read<AddArtistBloc>().add(
+                            AddArtistEventCreate(
+                              userInput: user,
                               name: artistNameEditingController.text,
                               description: artistDescriptionEditingController.text,
                               categoryId: pickedCategory!.id,
