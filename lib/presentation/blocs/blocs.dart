@@ -1,3 +1,4 @@
+export 'add_artist_bloc/add_artist_bloc.dart';
 export 'artists_bloc/artists_bloc.dart';
 export 'auth_bloc/auth_bloc.dart';
 export 'categories_bloc/categories_bloc.dart';

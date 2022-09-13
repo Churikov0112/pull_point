@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../../blocs/blocs.dart';
 import '../../../../../ui_kit/ui_kit.dart';
 import '../../artists/artists_screen.dart';
 
@@ -27,13 +29,20 @@ class ArtistInfoWidget extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              AppText("Артист"),
-              SizedBox(height: 8),
-              AppTitle("dummy artist loooooooooooooong name"),
-            ],
+          child: BlocBuilder<UserArtistsBloc, UserArtistsState>(
+            builder: (context, state) {
+              if (state is UserArtistsStateSelected) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const AppText("Артист"),
+                    const SizedBox(height: 8),
+                    AppTitle(state.selectedArtist.name ?? "Упс, мы потеряли ваш юзернейм"),
+                  ],
+                );
+              }
+              return const SizedBox.shrink();
+            },
           ),
         ),
       ),

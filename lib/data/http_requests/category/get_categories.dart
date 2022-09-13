@@ -5,7 +5,7 @@ class GetCategoriesRequest {
   //
   static Future<http.Response> send() async {
     return await http.get(
-      Uri.parse("${BackendConfig.baseUrl}/category/main"),
+      Uri.parse("${BackendConfig.baseUrl}/category"),
     );
   }
 }

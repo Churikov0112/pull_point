@@ -71,27 +71,11 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                 children: [
                   const SizedBox(height: 60),
 
-                  // appbar
-                  SizedBox(
-                    width: mediaQuery.size.width - 32,
-                    child: Row(
-                      children: [
-                        TouchableOpacity(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const SizedBox.square(dimension: 24, child: Center(child: Icon(Icons.arrow_back_ios_new, size: 20))),
-                        ),
-                        const SizedBox(width: 8),
-                        const GradientText(
-                          gradient: AppGradients.main,
-                          src: Text(
-                            "Создание выступления",
-                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                      ],
-                    ),
+                  PullPointAppBar(
+                    title: "Создание выступления",
+                    onBackPressed: () {
+                      Navigator.of(context).pop();
+                    },
                   ),
 
                   const SizedBox(height: 32),

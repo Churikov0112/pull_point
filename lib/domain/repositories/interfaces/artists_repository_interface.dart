@@ -16,7 +16,7 @@ abstract class ArtistsRepositoryInterface {
     required String name,
     required String description,
     required int categoryId,
-    required List<int> subcategoriesIds,
+    required List<int>? subcategoryIds,
   });
 
   Future<bool> updateArtist({
@@ -24,7 +24,7 @@ abstract class ArtistsRepositoryInterface {
     required String name,
     required String description,
     required int categoryId,
-    required List<int> subcategoriesIds,
+    required List<int>? subcategoryIds,
   });
 
   void selectArtist({

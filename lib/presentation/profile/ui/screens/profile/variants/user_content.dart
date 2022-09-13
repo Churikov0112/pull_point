@@ -6,10 +6,26 @@ import '../../../../../blocs/blocs.dart';
 import '../../../../../ui_kit/ui_kit.dart';
 import '../widgets/widgets.dart';
 
-class UserContent extends StatelessWidget {
+class UserContent extends StatefulWidget {
   const UserContent({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<UserContent> createState() => _UserContentState();
+}
+
+class _UserContentState extends State<UserContent> {
+  @override
+  void initState() {
+    final authState = context.read<AuthBloc>().state;
+    if (authState is AuthStateAuthorized) {
+      if (authState.user.isArtist == true) {
+        context.read<UserArtistsBloc>().add(UserArtistsEventLoad(userId: authState.user.id));
+      }
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +44,12 @@ class UserContent extends StatelessWidget {
                 const SizedBox(height: 16),
                 BlocBuilder<UserArtistsBloc, UserArtistsState>(
                   builder: (context, state) {
+                    if (state is UserArtistsStateLoading) return const LoadingIndicator();
                     if (state is UserArtistsStateSelected) return const ArtistInfoWidget();
-                    return const LoadingIndicator();
+                    return const SizedBox.shrink();
                   },
                 ),
+                // const ArtistInfoWidget(),
                 const SizedBox(height: 16),
                 LongButton(
                   backgroundGradient: AppGradients.main,

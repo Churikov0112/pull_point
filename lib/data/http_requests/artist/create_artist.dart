@@ -11,7 +11,7 @@ class CreateArtistRequest {
     required int userId,
     required List<int>? subcategoriesIds,
   }) async {
-    return await http.put(
+    return await http.post(
       Uri.parse("${BackendConfig.baseUrl}/artist"),
       headers: BackendConfig.baseHeaders,
       body: jsonEncode(
@@ -20,7 +20,7 @@ class CreateArtistRequest {
           "name": name,
           "description": description,
           "category": categoryId,
-          "user": userId,
+          "owner": userId,
         },
       ),
     );

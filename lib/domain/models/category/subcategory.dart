@@ -2,12 +2,10 @@ part of '../models.dart';
 
 class SubcategoryModel extends Equatable {
   final int id;
-  final int parentId;
   final String name;
 
   const SubcategoryModel({
     required this.id,
-    required this.parentId,
     required this.name,
   });
 
@@ -15,7 +13,6 @@ class SubcategoryModel extends Equatable {
     return SubcategoryModel(
       id: source['id'],
       name: source['name'],
-      parentId: source['parent']['id'],
     );
   }
 

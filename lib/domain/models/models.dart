@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:pull_point/data/repositories/mock/metro_stations.dart';
 import 'package:pull_point/domain/models/geo/geo.dart';

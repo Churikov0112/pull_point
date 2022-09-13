@@ -44,20 +44,27 @@ class ArtistsRepositoryImpl extends ArtistsRepositoryInterface {
     required String name,
     required String description,
     required int categoryId,
-    required List<int> subcategoriesIds,
+    required List<int>? subcategoryIds,
   }) async {
     final response = await CreateArtistRequest.send(
       userId: userInput.id,
       name: name,
       description: description,
       categoryId: categoryId,
-      subcategoriesIds: subcategoriesIds,
+      subcategoriesIds: subcategoryIds,
     );
+    print("userId: ${userInput.id}");
+    print("name: $name");
+    print("description: $description");
+    print("categoryId: $categoryId");
+    print("subcategoryIds: $subcategoryIds");
+
     // записываем локально, что юзер - артист
     final UserModel user;
     if (response.statusCode == 200) {
       user = UserModel(id: userInput.id, email: userInput.email, username: userInput.username, isArtist: true);
       String source = const Utf8Decoder().convert(response.bodyBytes);
+
       userArtists.add(ArtistModel.fromJson(jsonDecode(source)));
     } else {
       user = UserModel(id: userInput.id, email: userInput.email, username: userInput.username, isArtist: false);
@@ -74,14 +81,14 @@ class ArtistsRepositoryImpl extends ArtistsRepositoryInterface {
     required String name,
     required String description,
     required int categoryId,
-    required List<int> subcategoriesIds,
+    required List<int>? subcategoryIds,
   }) async {
     final response = await UpdateArtistRequest.send(
       name: name,
       description: description,
       categoryId: categoryId,
       userId: userId,
-      subcategoriesIds: subcategoriesIds,
+      subcategoriesIds: subcategoryIds,
     );
     return response.statusCode == 200;
   }
@@ -97,6 +104,7 @@ class ArtistsRepositoryImpl extends ArtistsRepositoryInterface {
 
   @override
   ArtistModel? getSelectedArtist() {
+    selectedArtist ??= userArtists.first;
     return selectedArtist;
   }
 

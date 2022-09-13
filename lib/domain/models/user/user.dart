@@ -27,7 +27,7 @@ class UserModel {
       id: source['id'],
       username: source['username'],
       email: source['phone'],
-      isArtist: source['artist'],
+      isArtist: source['isArtist'],
     );
   }
 }

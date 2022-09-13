@@ -100,7 +100,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         name: event.name,
         description: event.description,
         categoryId: event.categoryId,
-        subcategoriesIds: event.subcategoryIds,
+        subcategoryIds: event.subcategoryIds,
       );
       if (artistCreated) emit(AuthStateAuthorized(user: event.user));
       if (!artistCreated) BotToast.showText(text: "Ошибка при создании артиста");

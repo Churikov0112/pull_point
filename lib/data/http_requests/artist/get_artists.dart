@@ -10,7 +10,7 @@ class GetArtistsRequest {
     required List<int>? subcategoryIds,
   }) async {
     return await http.post(
-      Uri.parse("${BackendConfig.baseUrl}/artist/filter"),
+      Uri.parse("${BackendConfig.baseUrl}/artist/search"),
       headers: BackendConfig.baseHeaders,
       body: jsonEncode(
         {
