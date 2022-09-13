@@ -21,6 +21,7 @@ class CreatePullPointRequest {
       body: jsonEncode(
         {
           "owner": ownerId,
+          "artists": [],
           "name": name,
           "description": description,
           "latitude": latitude,
