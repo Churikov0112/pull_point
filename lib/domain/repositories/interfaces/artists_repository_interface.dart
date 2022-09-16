@@ -27,6 +27,10 @@ abstract class ArtistsRepositoryInterface {
     required List<int>? subcategoryIds,
   });
 
+  Future<bool> deleteArtist({
+    required int artistId,
+  });
+
   void selectArtist({
     required int artistId,
   });

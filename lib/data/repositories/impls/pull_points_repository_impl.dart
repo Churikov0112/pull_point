@@ -14,10 +14,12 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
       final response = await GetPullPointsRequest.send();
       String source = const Utf8Decoder().convert(response.bodyBytes);
       final decodedResponse = jsonDecode(source);
+      print(decodedResponse);
       allPullPoints.clear();
       for (final element in decodedResponse) {
         allPullPoints.add(PullPointModel.fromJson(element));
       }
+      print(allPullPoints.length);
     } else {
       // загружаем только в случае отсутствия пулл поинтов
       if (allPullPoints.isEmpty) {

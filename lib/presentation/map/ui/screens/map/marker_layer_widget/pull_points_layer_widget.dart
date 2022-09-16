@@ -30,7 +30,7 @@ class _PullPointsLayerWidgetState extends State<PullPointsLayerWidget> {
     // load data only firstly
     pullPointsBloc = context.read<PullPointsBloc>();
     if (pullPointsBloc.state is PullPointsStateInitial) {
-      pullPointsBloc.add(const LoadDataEvent());
+      pullPointsBloc.add(const PullPointsEventLoad());
     }
 
     final state = pullPointsBloc.state;

@@ -16,12 +16,23 @@ class CreatePullPointRequest {
     required int categoryId,
     required List<int>? subcategoryIds,
   }) async {
+    // print({
+    //   "owner": ownerId,
+    //   "artists": [],
+    //   "name": name,
+    //   "description": description,
+    //   "latitude": latitude,
+    //   "longitude": longitude,
+    //   "startTime": DateFormat("dd.MM.yyyy:HH.mm").format(startTime),
+    //   "endTime": DateFormat("dd.MM.yyyy:HH.mm").format(endTime),
+    //   "category": categoryId,
+    //   "subcategories": subcategoryIds
+    // });
     return await http.post(
       Uri.parse("${BackendConfig.baseUrl}/pull_point"),
       body: jsonEncode(
         {
           "owner": ownerId,
-          "artists": [],
           "name": name,
           "description": description,
           "latitude": latitude,
@@ -29,6 +40,7 @@ class CreatePullPointRequest {
           "startTime": DateFormat("dd.MM.yyyy:HH.mm").format(startTime),
           "endTime": DateFormat("dd.MM.yyyy:HH.mm").format(endTime),
           "category": categoryId,
+          "artists": [],
           "subcategories": subcategoryIds
         },
       ),

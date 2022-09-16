@@ -48,6 +48,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<SubcategoriesBloc>(create: (context) => SubcategoriesBloc(categoriesRepository: categoriesRepository)),
         BlocProvider<ArtistsBloc>(create: (context) => ArtistsBloc(artistsRepository: artistsRepository)),
         BlocProvider<AddArtistBloc>(create: (context) => AddArtistBloc(artistsRepository: artistsRepository)),
+        BlocProvider<DeleteArtistBloc>(create: (context) => DeleteArtistBloc(artistsRepository: artistsRepository)),
         BlocProvider<UserArtistsBloc>(create: (context) => UserArtistsBloc(artistsRepository: artistsRepository)),
         // BlocProvider<PersonSearchBloc>(create: (context) => sl<PersonSearchBloc>()),
       ],

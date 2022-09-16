@@ -15,10 +15,10 @@ class CreatePullPointScreen extends StatefulWidget {
 }
 
 class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
-  LatLng? pickedLocation;
-
   final TextEditingController titleEditingController = TextEditingController();
   final TextEditingController descriptionEditingController = TextEditingController();
+
+  LatLng? pickedLocation;
 
   DateTime? pickedStartDate;
   DateTime? pickedEndDate;
@@ -28,11 +28,13 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
 
   CategoryModel? pickedCategory;
 
+  ArtistModel? pickedArtist; // required!!!
+
   List<SubcategoryModel> pickedSubcategories = [];
 
   Future<void> closePage() async {
     await Future.delayed(Duration.zero, () {
-      context.read<PullPointsBloc>().add(const LoadDataEvent());
+      context.read<PullPointsBloc>().add(const PullPointsEventLoad());
       context.read<CreatePullPointBloc>().add(CreatePullPointEventReset());
       Navigator.pop(context);
     });
@@ -40,6 +42,16 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
 
   @override
   void initState() {
+    final authState = context.read<AuthBloc>().state;
+    if (authState is AuthStateAuthorized) {
+      final userArtistsState = context.read<UserArtistsBloc>().state;
+      if (userArtistsState is UserArtistsStateInitial) {
+        context.read<UserArtistsBloc>().add(UserArtistsEventLoad(userId: authState.user.id));
+      }
+      if (userArtistsState is UserArtistsStateSelected) {
+        pickedArtist = userArtistsState.selectedArtist;
+      }
+    }
     context.read<CreatePullPointBloc>().add(CreatePullPointEventReset());
     context.read<CategoriesBloc>().add(const CategoriesEventLoad());
     super.initState();
@@ -118,6 +130,46 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                     controller: descriptionEditingController,
                   ),
 
+                  const SizedBox(height: 16),
+
+                  // выбор главной категории
+                  BlocBuilder<UserArtistsBloc, UserArtistsState>(
+                    builder: (context, state) {
+                      if (state is UserArtistsStateSelected) {
+                        pickedArtist ??= state.selectedArtist;
+                        if (pickedArtist != null) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const AppTitle("Кьл создает выступление?"),
+                              const SizedBox(height: 8),
+                              Wrap(
+                                spacing: 8,
+                                runSpacing: 8,
+                                children: [
+                                  for (final artist in state.allUserArtists)
+                                    CategoryChip(
+                                      childText: artist.name ?? "no_name",
+                                      gradient: pickedArtist!.id == artist.id ? AppGradients.main : AppGradients.first,
+                                      onPressed: () {
+                                        setState(() => pickedArtist = artist);
+                                      },
+                                    ),
+                                ],
+                              ),
+                            ],
+                          );
+                        }
+                      }
+                      if (state is UserArtistsStateLoading) {
+                        return const LoadingIndicator();
+                      }
+                      return const SizedBox.shrink();
+                    },
+                  ),
+
+                  const SizedBox(height: 16),
+                  const AppTitle("Когда пройдет выступление?"),
                   const SizedBox(height: 16),
 
                   // ввод даты начала выступления
@@ -325,6 +377,10 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                             BotToast.showText(text: "Вы не выбрали категорию");
                             return;
                           }
+                          if (pickedArtist == null) {
+                            BotToast.showText(text: "Вы не выбрали артиста");
+                            return;
+                          }
 
                           final authState = context.read<AuthBloc>().state;
                           if (authState is AuthStateAuthorized) {
@@ -332,7 +388,7 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                                   CreatePullPointEventCreate(
                                     name: titleEditingController.text,
                                     description: descriptionEditingController.text,
-                                    ownerId: authState.user.id,
+                                    ownerId: pickedArtist!.id,
                                     latitude: pickedLocation!.latitude,
                                     longitude: pickedLocation!.longitude,
                                     startTime: DateTime(

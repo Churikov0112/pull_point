@@ -13,12 +13,12 @@ class PullPointsBloc extends Bloc<PullPointsEvent, PullPointsState> {
     required PullPointsRepositoryInterface repository,
   })  : _repository = repository,
         super(PullPointsStateInitial()) {
-    on<LoadDataEvent>(_loadData);
+    on<PullPointsEventLoad>(_loadData);
     on<SelectPullPointEvent>(_select);
     on<UnselectPullPointEvent>(_unselect);
   }
 
-  Future<void> _loadData(LoadDataEvent event, Emitter<PullPointsState> emit) async {
+  Future<void> _loadData(PullPointsEventLoad event, Emitter<PullPointsState> emit) async {
     try {
       emit(PullPointsStateLoading());
       final pullPoints = await _repository.getPullPoints(needUpdate: true);

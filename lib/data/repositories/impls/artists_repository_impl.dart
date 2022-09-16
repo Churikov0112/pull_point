@@ -94,6 +94,22 @@ class ArtistsRepositoryImpl extends ArtistsRepositoryInterface {
   }
 
   @override
+  Future<bool> deleteArtist({
+    required int artistId,
+  }) async {
+    final response = await DeleteArtistRequest.send(
+      artistId: artistId,
+    );
+    if (response.statusCode == 200) {
+      userArtists.removeWhere((element) => element.id == artistId);
+      if (selectedArtist?.id == artistId) {
+        selectedArtist = userArtists.first;
+      }
+    }
+    return response.statusCode == 200;
+  }
+
+  @override
   void selectArtist({
     required int artistId,
   }) {

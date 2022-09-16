@@ -36,11 +36,20 @@ class _ArtistsScreenState extends State<ArtistsScreen> {
     }
   }
 
-  List<Widget> buildArtistCards({required List<ArtistModel> artists}) {
+  List<Widget> buildArtistCards({
+    required List<ArtistModel> allUserArtists,
+    required ArtistModel selectedArtist,
+  }) {
     List<Widget> result = [];
-    for (var i = 0; i < artists.length + 1; i++) {
-      if (i != artists.length) {
-        result.add(ArtistCard(artist: artists[i]));
+    for (var i = 0; i < allUserArtists.length + 1; i++) {
+      if (i != allUserArtists.length) {
+        result.add(
+          ArtistCard(
+            artist: allUserArtists[i],
+            deletable: allUserArtists.length > 1,
+            selected: selectedArtist.id == allUserArtists[i].id,
+          ),
+        );
       } else {
         result.add(const AddArtistCard());
       }
@@ -87,9 +96,10 @@ class _ArtistsScreenState extends State<ArtistsScreen> {
                 ),
                 const SizedBox(height: 24),
                 CarouselSlider(
-                  items: buildArtistCards(artists: state.allUserArtists),
+                  items: buildArtistCards(allUserArtists: state.allUserArtists, selectedArtist: state.selectedArtist),
                   carouselController: carouselController,
                   options: CarouselOptions(
+                    initialPage: currentArtistIndex,
                     enlargeCenterPage: true,
                     enableInfiniteScroll: false,
                     aspectRatio: 2.0,

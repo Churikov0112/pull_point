@@ -7,8 +7,8 @@ abstract class PullPointsEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadDataEvent extends PullPointsEvent {
-  const LoadDataEvent();
+class PullPointsEventLoad extends PullPointsEvent {
+  const PullPointsEventLoad();
 }
 
 class SelectPullPointEvent extends PullPointsEvent {

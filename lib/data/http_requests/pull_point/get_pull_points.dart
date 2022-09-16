@@ -6,6 +6,7 @@ class GetPullPointsRequest {
   static Future<http.Response> send() async {
     return await http.get(
       Uri.parse("${BackendConfig.baseUrl}/pull_point"),
+      headers: BackendConfig.baseHeaders,
     );
   }
 }
