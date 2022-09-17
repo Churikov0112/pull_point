@@ -59,6 +59,8 @@ class ArtistsRepositoryImpl extends ArtistsRepositoryInterface {
     print("categoryId: $categoryId");
     print("subcategoryIds: $subcategoryIds");
 
+    print("response.statusCode ${response.statusCode}");
+
     // записываем локально, что юзер - артист
     final UserModel user;
     if (response.statusCode == 200) {

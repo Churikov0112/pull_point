@@ -132,7 +132,7 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
 
                   const SizedBox(height: 16),
 
-                  // выбор главной категории
+                  // выбор артиста
                   BlocBuilder<UserArtistsBloc, UserArtistsState>(
                     builder: (context, state) {
                       if (state is UserArtistsStateSelected) {

@@ -36,6 +36,7 @@ class ArtistInfoWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const AppText("Артист"),
+                    AppText("id: ${state.selectedArtist.id}"),
                     const SizedBox(height: 8),
                     AppTitle(state.selectedArtist.name ?? "Упс, мы потеряли ваш юзернейм"),
                   ],
