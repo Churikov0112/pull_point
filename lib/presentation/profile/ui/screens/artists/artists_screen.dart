@@ -81,61 +81,70 @@ class _ArtistsScreenState extends State<ArtistsScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.backgroundPage,
-      body: BlocBuilder<UserArtistsBloc, UserArtistsState>(
-        builder: (context, state) {
-          if (state is UserArtistsStateSelected) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(height: mediaQuery.padding.top + 24),
-                PullPointAppBar(
-                  title: "Ваши артисты",
-                  onBackPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                const SizedBox(height: 24),
-                CarouselSlider(
-                  items: buildArtistCards(allUserArtists: state.allUserArtists, selectedArtist: state.selectedArtist),
-                  carouselController: carouselController,
-                  options: CarouselOptions(
-                    initialPage: currentArtistIndex,
-                    enlargeCenterPage: true,
-                    enableInfiniteScroll: false,
-                    aspectRatio: 2.0,
-                    onPageChanged: (index, reason) {
-                      setState(() => currentArtistIndex = index);
-                    },
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  for (int i = 0; i < state.allUserArtists.length + 1; i++)
-                    GestureDetector(
-                      onTap: () => carouselController.animateToPage(i),
-                      child: Container(
-                        width: 12.0,
-                        height: 12.0,
-                        margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: (Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black)
-                              .withOpacity(currentArtistIndex == i ? 0.9 : 0.4),
+      body: BlocBuilder<DeleteArtistBloc, DeleteArtistState>(
+        builder: ((context, deleteArtistState) {
+          if (deleteArtistState is DeleteArtistStateDeleted) updatePage();
+
+          return BlocBuilder<AddArtistBloc, AddArtistState>(
+            builder: ((context, addArtistState) {
+              if (addArtistState is AddArtistStateCreated) updatePage();
+
+              return BlocBuilder<UserArtistsBloc, UserArtistsState>(
+                builder: (context, state) {
+                  if (state is UserArtistsStateSelected) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(height: mediaQuery.padding.top + 24),
+                        PullPointAppBar(
+                          title: "Ваши артисты",
+                          onBackPressed: () {
+                            Navigator.of(context).pop();
+                          },
                         ),
-                      ),
-                    ),
-                ]
-                    // state.allUserArtists.asMap().entries.map(
-                    //   (entry) {
-                    //     return
-                    //   },
-                    // ).toList(),
-                    ),
-              ],
-            );
-          }
-          return const SizedBox.shrink();
-        },
+                        const SizedBox(height: 24),
+                        CarouselSlider(
+                          items: buildArtistCards(allUserArtists: state.allUserArtists, selectedArtist: state.selectedArtist),
+                          carouselController: carouselController,
+                          options: CarouselOptions(
+                            initialPage: currentArtistIndex,
+                            enlargeCenterPage: true,
+                            enableInfiniteScroll: false,
+                            aspectRatio: 2.0,
+                            onPageChanged: (index, reason) {
+                              setState(() => currentArtistIndex = index);
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            for (int i = 0; i < state.allUserArtists.length + 1; i++)
+                              GestureDetector(
+                                onTap: () => carouselController.animateToPage(i),
+                                child: Container(
+                                  width: 12.0,
+                                  height: 12.0,
+                                  margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: (Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black)
+                                        .withOpacity(currentArtistIndex == i ? 0.9 : 0.4),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ],
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+              );
+            }),
+          );
+        }),
       ),
     );
   }

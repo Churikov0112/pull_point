@@ -28,6 +28,7 @@ class AddArtistBloc extends Bloc<AddArtistEvent, AddArtistState> {
     if (created) {
       emit(const AddArtistStateCreated());
       BotToast.showText(text: "Артист успешно создан");
+      emit(const AddArtistStateInitial());
     } else {
       BotToast.showText(text: "Не удалось создать Артиста");
       emit(const AddArtistStateInitial());
