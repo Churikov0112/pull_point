@@ -53,13 +53,13 @@ class ArtistsRepositoryImpl extends ArtistsRepositoryInterface {
       categoryId: categoryId,
       subcategoriesIds: subcategoryIds,
     );
-    print("userId: ${userInput.id}");
-    print("name: $name");
-    print("description: $description");
-    print("categoryId: $categoryId");
-    print("subcategoryIds: $subcategoryIds");
+    // print("userId: ${userInput.id}");
+    // print("name: $name");
+    // print("description: $description");
+    // print("categoryId: $categoryId");
+    // print("subcategoryIds: $subcategoryIds");
 
-    print("response.statusCode ${response.statusCode}");
+    // print("response.statusCode ${response.statusCode}");
 
     // записываем локально, что юзер - артист
     final UserModel user;
