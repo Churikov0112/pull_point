@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart' show Colors;
 import 'package:flutter/widgets.dart';
+import 'package:pull_point/presentation/ui_kit/colors/colors.dart';
+
 import '../../../../../../../domain/models/models.dart';
-import '../../../../../../ui_kit/ui_kit.dart';
 
 Color _getColorByMetroLine(MetroLines line) {
   switch (line) {
@@ -34,13 +35,22 @@ class MetroStationMarker extends StatelessWidget {
   Widget build(BuildContext context) {
     if (zoom > 12) {
       return Container(
-        height: 12,
-        width: 12,
+        height: 24,
+        width: 24,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: _getColorByMetroLine(metro.line).withOpacity(0.8),
         ),
-        child: const Center(child: AppSubtitle2("м", textColor: AppColors.textOnColors)),
+        child: Padding(
+          padding: const EdgeInsets.all(4),
+          child: Center(
+            child: Image.asset(
+              "assets/raster/images/metro_logo.png",
+              color: AppColors.textOnColors,
+            ),
+            // AppSubtitle2("м", textColor: AppColors.textOnColors),
+          ),
+        ),
       );
     } else {
       return const SizedBox.shrink();

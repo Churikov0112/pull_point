@@ -64,7 +64,9 @@ class PosterItemV2 extends StatelessWidget {
                                 children: [
                                   AppText(
                                     StaticMethods.isPullPointGoingNow(pullPoint) ? "Уже идет" : "Еще не началось",
-                                    textColor: StaticMethods.isPullPointGoingNow(pullPoint) ? AppColors.success : AppColors.error,
+                                    textColor: StaticMethods.isPullPointGoingNow(pullPoint)
+                                        ? AppColors.success
+                                        : AppColors.error,
                                   ),
                                   if (userLocation != null) const SizedBox(width: 12),
                                   if (userLocation != null)
@@ -97,7 +99,7 @@ class PosterItemV2 extends StatelessWidget {
                     runSpacing: 8,
                     children: [
                       CategoryChip(
-                        gradient: AppGradients.main,
+                        gradient: AppGradients.first,
                         childText: pullPoint.category.name,
                         onPressed: () {},
                       ),

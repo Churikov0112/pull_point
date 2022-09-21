@@ -24,8 +24,8 @@ class _MetroStationsLayerWidgetState extends State<MetroStationsLayerWidget> {
     for (final metro in metroStations) {
       metroStationsMarkers.add(
         Marker(
-          height: 15,
-          width: 15,
+          height: 24,
+          width: 24,
           point: metro.latLng,
           builder: (context) => MetroStationMarker(
             zoom: widget.mapController.zoom,

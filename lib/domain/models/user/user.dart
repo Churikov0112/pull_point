@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+
 part 'user.g.dart';
 
 @HiveType(typeId: 0)
@@ -15,10 +16,14 @@ class UserModel {
   @HiveField(3)
   final bool? isArtist;
 
+  @HiveField(4)
+  final int balance;
+
   const UserModel({
     required this.id,
     required this.username,
     required this.email,
+    this.balance = 228,
     this.isArtist,
   });
 

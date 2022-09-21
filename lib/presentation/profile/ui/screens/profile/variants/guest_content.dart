@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/presentation/auth/ui/screens/enter_email_screen/enter_email_screen.dart';
+
 import '../../../../../blocs/blocs.dart';
 import '../../../../../ui_kit/ui_kit.dart';
 
@@ -25,9 +26,7 @@ class GuestContent extends StatelessWidget {
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           width: mediaQuery.size.width,
-          decoration: const BoxDecoration(
-            color: AppColors.backgroundPage,
-          ),
+          decoration: const BoxDecoration(color: AppColors.backgroundPage),
           child: BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
               return Center(

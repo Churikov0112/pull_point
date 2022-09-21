@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../../blocs/blocs.dart';
 import '../../../../../ui_kit/ui_kit.dart';
 import '../../artists/artists_screen.dart';
@@ -38,7 +39,30 @@ class ArtistInfoWidget extends StatelessWidget {
                     const AppText("Артист"),
                     AppText("id: ${state.selectedArtist.id}"),
                     const SizedBox(height: 8),
-                    AppTitle(state.selectedArtist.name ?? "Упс, мы потеряли ваш юзернейм"),
+                    AppTitle(state.selectedArtist.name ?? "-"),
+                    const SizedBox(height: 8),
+                    AppText(state.selectedArtist.description ?? "-"),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: mediaQuery.size.width,
+                      child: Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: [
+                          if (state.selectedArtist.category != null)
+                            StaticChip(
+                              gradient: AppGradients.first,
+                              childText: state.selectedArtist.category!.name,
+                            ),
+                          if (state.selectedArtist.subcategories != null)
+                            for (final subcategory in state.selectedArtist.subcategories!)
+                              StaticChip(
+                                gradient: AppGradients.first,
+                                childText: subcategory.name,
+                              ),
+                        ],
+                      ),
+                    ),
                   ],
                 );
               }

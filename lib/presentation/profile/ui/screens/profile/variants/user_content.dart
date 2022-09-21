@@ -42,6 +42,8 @@ class _UserContentState extends State<UserContent> {
                 const SizedBox(height: 100),
                 UserInfoWidget(user: state.user),
                 const SizedBox(height: 16),
+                BalanceInfoWidget(user: state.user),
+                const SizedBox(height: 16),
                 BlocBuilder<UserArtistsBloc, UserArtistsState>(
                   builder: (context, state) {
                     if (state is UserArtistsStateLoading) return const LoadingIndicator();

@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+
 import '../../../../../../domain/models/user/user.dart';
 import '../../../../../ui_kit/ui_kit.dart';
 
@@ -28,12 +29,13 @@ class UserInfoWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const AppText("Пользователь"),
+              AppText("id: ${user.id}"),
               const SizedBox(height: 8),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   AppTitle(user.username ?? "NO USERNAME"),
-                  AppTitle("id: ${user.id}"),
                 ],
               ),
               const SizedBox(height: 8),
