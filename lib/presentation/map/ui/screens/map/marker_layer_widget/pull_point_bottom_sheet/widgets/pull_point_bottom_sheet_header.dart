@@ -21,7 +21,9 @@ class PullPointBottomSheetHeader extends StatelessWidget {
     return Column(
       children: [
         Container(
-          color: Colors.white,
+          // decoration: BoxDecoration(
+          //   color: AppColors.backgroundCard,
+          // ),
           child: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Row(

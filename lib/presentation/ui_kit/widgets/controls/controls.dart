@@ -1,6 +1,7 @@
 export 'appbar/appbar.dart';
-export 'touchable_opacity/touchable_opacity.dart';
-export 'long_button/long_button.dart';
-export 'chip/chip.dart';
 export 'category_chip/category_chip.dart';
+export 'chip/chip.dart';
+export 'chip_with_child/chip_with_child.dart';
+export 'long_button/long_button.dart';
 export 'text_form_field/text_form_field.dart';
+export 'touchable_opacity/touchable_opacity.dart';

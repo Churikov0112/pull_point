@@ -1,9 +1,17 @@
 import 'dart:math';
 import 'dart:ui' show Color;
+
 import 'package:flutter/material.dart' show Colors;
+
 import '../../domain/models/models.dart';
 
 abstract class StaticMethods {
+  static String durationInHoursAndMinutes(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    return "${twoDigits(duration.inHours)} ч $twoDigitMinutes мин";
+  }
+
   static Color getColorByMetroLine(MetroLines line) {
     switch (line) {
       case MetroLines.firstRed:
@@ -40,6 +48,18 @@ abstract class StaticMethods {
       return true;
     }
     return false;
+  }
+
+  static List<PullPointModel> filterPullPointsByNowPlaying({
+    required List<PullPointModel> pullPoints,
+  }) {
+    final List<PullPointModel> filteredPullPoints = [];
+    for (final pp in pullPoints) {
+      if (pp.startsAt.isBefore(DateTime.now())) {
+        filteredPullPoints.add(pp);
+      }
+    }
+    return filteredPullPoints;
   }
 
   static List<PullPointModel> filterPullPointsByDate({

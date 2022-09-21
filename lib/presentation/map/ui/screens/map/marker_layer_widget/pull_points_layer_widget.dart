@@ -6,6 +6,7 @@ import 'package:latlong2/latlong.dart';
 
 import '../../../../../../domain/domain.dart';
 import '../../../../../blocs/blocs.dart';
+import '../../../../../static_methods/static_methods.dart';
 import '../markers/markers.dart';
 
 class PullPointsLayerWidget extends StatefulWidget {
@@ -52,6 +53,7 @@ class _PullPointsLayerWidgetState extends State<PullPointsLayerWidget> {
   ) {
     final List<Marker> pullPointMarkersIfSelected = [];
     final List<Marker> pullPointMarkersIfNotSelected = [];
+
     if (selectedPullPoint != null) {
       for (final notselectedPullPoint in notSelectedPullPoints) {
         pullPointMarkersIfSelected.add(
@@ -131,9 +133,10 @@ class _PullPointsLayerWidgetState extends State<PullPointsLayerWidget> {
           options: GroupLayerOptions(
             group: [
               if (state is PullPointsStateLoaded)
-                pullPointMarkers(null, state.pullPoints)
+                pullPointMarkers(null, StaticMethods.filterPullPointsByNowPlaying(pullPoints: state.pullPoints))
               else if (state is PullPointsStateSelected)
-                pullPointMarkers(state.selectedPullPoint, state.otherPullPoints),
+                pullPointMarkers(state.selectedPullPoint,
+                    StaticMethods.filterPullPointsByNowPlaying(pullPoints: state.otherPullPoints)),
             ],
           ),
         );

@@ -38,21 +38,30 @@ class PosterItemV2 extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Container(
+                    //   height: 112,
+                    //   width: 112,
+                    //   decoration: const BoxDecoration(
+                    //     color: Color.fromRGBO(108, 108, 108, 1),
+                    //     borderRadius: BorderRadius.all(Radius.circular(12)),
+                    //   ),
+                    //   child: const Center(child: Text("Фото")),
+                    // ),
+                    // const SizedBox(width: 16),
                     Container(
                       height: 112,
-                      width: 112,
-                      decoration: const BoxDecoration(
-                        color: Color.fromRGBO(108, 108, 108, 1),
-                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      width: 2,
+                      decoration: BoxDecoration(
+                        color: StaticMethods.isPullPointGoingNow(pullPoint) ? AppColors.success : AppColors.error,
+                        borderRadius: const BorderRadius.all(Radius.circular(12)),
                       ),
-                      child: const Center(child: Text("Фото")),
                     ),
                     const SizedBox(width: 16),
                     SizedBox(
                       height: 112,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           AppTitle(pullPoint.title),
                           AppText(pullPoint.owner.name ?? "-"),
@@ -63,7 +72,9 @@ class PosterItemV2 extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   AppText(
-                                    StaticMethods.isPullPointGoingNow(pullPoint) ? "Уже идет" : "Еще не началось",
+                                    StaticMethods.isPullPointGoingNow(pullPoint)
+                                        ? "Будет идти еще ${StaticMethods.durationInHoursAndMinutes(pullPoint.endsAt.difference(DateTime.now()))}"
+                                        : "Начнется ${DateFormat("dd.MM.yyyy в HH:mm").format(pullPoint.startsAt)}",
                                     textColor: StaticMethods.isPullPointGoingNow(pullPoint)
                                         ? AppColors.success
                                         : AppColors.error,
@@ -89,9 +100,29 @@ class PosterItemV2 extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const AppTitle("Описание"),
+                const SizedBox(height: 8),
                 AppText(pullPoint.description),
                 const SizedBox(height: 16),
-
+                const AppTitle("Артисты"),
+                const SizedBox(height: 8),
+                TouchableOpacity(
+                  onPressed: () {},
+                  child: CategoryChip(
+                    gradient: AppGradients.main,
+                    childText: pullPoint.owner.name ?? "-",
+                    onPressed: () {},
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const AppTitle("Время начала и конца"),
+                const SizedBox(height: 8),
+                AppText("Начало: ${DateFormat("dd.MM.yyyy в HH:mm").format(pullPoint.startsAt)}"),
+                const SizedBox(height: 8),
+                AppText("Конец: ${DateFormat("dd.MM.yyyy в HH:mm").format(pullPoint.endsAt)}"),
+                const SizedBox(height: 16),
+                const AppTitle("Категории"),
+                const SizedBox(height: 8),
                 SizedBox(
                   width: mediaqQuery.size.width,
                   child: Wrap(
@@ -109,16 +140,39 @@ class PosterItemV2 extends StatelessWidget {
                           childText: subcategory.name,
                           onPressed: () {},
                         ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const AppTitle("Метро рядом"),
+                const SizedBox(height: 8),
+                SizedBox(
+                  width: mediaqQuery.size.width,
+                  child: Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
                       for (final metroStation in pullPoint.nearestMetroStations)
-                        CategoryChip(
+                        ChipWithChild(
                           backgroundColor: StaticMethods.getColorByMetroLine(metroStation.line),
-                          childText: metroStation.title,
                           onPressed: () {},
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              AppText(metroStation.title, textColor: AppColors.textOnColors),
+                              const SizedBox(width: 8),
+                              Image.asset(
+                                "assets/raster/images/metro_logo.png",
+                                height: 16,
+                                width: 16,
+                                color: AppColors.iconsOnColors,
+                              ),
+                            ],
+                          ),
                         ),
                     ],
                   ),
                 ),
-
                 if (StaticMethods.isPullPointGoingNow(pullPoint))
                   Column(
                     children: [
@@ -140,49 +194,6 @@ class PosterItemV2 extends StatelessWidget {
                       ),
                     ],
                   ),
-
-                const SizedBox(height: 16),
-                AppText("Начало: ${DateFormat("dd.MM.yyyy в HH:mm").format(pullPoint.startsAt)}"),
-                const SizedBox(height: 16),
-                AppText("Конец: ${DateFormat("dd.MM.yyyy в HH:mm").format(pullPoint.endsAt)}"),
-                const SizedBox(height: 16),
-                TouchableOpacity(
-                  onPressed: () {},
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(16)),
-                      gradient: AppGradients.main,
-                      // color: AppColors.primary,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          // ClipRRect(
-                          //   borderRadius: const BorderRadius.all(Radius.circular(100)),
-                          //   child: pullPoint.artists.first.avatar != null
-                          //       ? Image.network(
-                          //           pullPoint.artists.first.avatar!,
-                          //           height: 40,
-                          //           width: 40,
-                          //           fit: BoxFit.cover,
-                          //         )
-                          //       : Container(
-                          //           height: 40,
-                          //           width: 40,
-                          //           decoration: const BoxDecoration(shape: BoxShape.circle, color: AppColors.primary),
-                          //         ),
-                          // ),
-                          // const SizedBox(width: 8),
-                          AppText(pullPoint.owner.name ?? "-", textColor: AppColors.textOnColors),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-
-                //
               ],
             ),
           ),
