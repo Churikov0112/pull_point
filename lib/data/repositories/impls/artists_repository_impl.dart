@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:hive/hive.dart';
 
 import '../../../domain/domain.dart';
@@ -47,11 +48,11 @@ class ArtistsRepositoryImpl extends ArtistsRepositoryInterface {
     required List<int>? subcategoryIds,
   }) async {
     final response = await CreateArtistRequest.send(
-      userId: userInput.id,
       name: name,
       description: description,
       categoryId: categoryId,
       subcategoriesIds: subcategoryIds,
+      jwt: userBox.get("user")?.accessToken,
     );
     // print("userId: ${userInput.id}");
     // print("name: $name");
@@ -64,12 +65,24 @@ class ArtistsRepositoryImpl extends ArtistsRepositoryInterface {
     // записываем локально, что юзер - артист
     final UserModel user;
     if (response.statusCode == 200) {
-      user = UserModel(id: userInput.id, email: userInput.email, username: userInput.username, isArtist: true);
+      user = UserModel(
+        id: userInput.id,
+        email: userInput.email,
+        username: userInput.username,
+        isArtist: true,
+        accessToken: userBox.get("user")?.accessToken,
+      );
       String source = const Utf8Decoder().convert(response.bodyBytes);
 
       userArtists.add(ArtistModel.fromJson(jsonDecode(source)));
     } else {
-      user = UserModel(id: userInput.id, email: userInput.email, username: userInput.username, isArtist: false);
+      user = UserModel(
+        id: userInput.id,
+        email: userInput.email,
+        username: userInput.username,
+        isArtist: false,
+        accessToken: userBox.get("user")?.accessToken,
+      );
     }
     userBox.put("user", user);
     final result = userBox.get('user');
@@ -79,7 +92,7 @@ class ArtistsRepositoryImpl extends ArtistsRepositoryInterface {
 
   @override
   Future<bool> updateArtist({
-    required int userId,
+    required int artistId,
     required String name,
     required String description,
     required int categoryId,
@@ -89,8 +102,9 @@ class ArtistsRepositoryImpl extends ArtistsRepositoryInterface {
       name: name,
       description: description,
       categoryId: categoryId,
-      userId: userId,
+      artistId: artistId,
       subcategoriesIds: subcategoryIds,
+      jwt: userBox.get("user")?.accessToken,
     );
     return response.statusCode == 200;
   }
@@ -101,6 +115,7 @@ class ArtistsRepositoryImpl extends ArtistsRepositoryInterface {
   }) async {
     final response = await DeleteArtistRequest.send(
       artistId: artistId,
+      jwt: userBox.get("user")?.accessToken,
     );
     if (response.statusCode == 200) {
       userArtists.removeWhere((element) => element.id == artistId);

@@ -17,22 +17,26 @@ class UserModel {
   final bool? isArtist;
 
   @HiveField(4)
-  final int balance;
+  final String? accessToken;
 
   const UserModel({
     required this.id,
     required this.username,
     required this.email,
-    this.balance = 228,
+    this.accessToken,
     this.isArtist,
   });
 
-  static UserModel fromJson(dynamic source) {
+  static UserModel fromJson({
+    dynamic user,
+    dynamic jwt,
+  }) {
     return UserModel(
-      id: source['id'],
-      username: source['username'],
-      email: source['phone'],
-      isArtist: source['isArtist'],
+      id: user['id'],
+      username: user['username'],
+      email: user['phone'],
+      accessToken: jwt,
+      isArtist: user['isArtist'],
     );
   }
 }

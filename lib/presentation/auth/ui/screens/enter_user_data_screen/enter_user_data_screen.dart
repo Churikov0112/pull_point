@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/presentation/auth/ui/screens/wanna_be_artist_screen/wanna_be_artist_screen.dart';
 import 'package:pull_point/presentation/ui_kit/ui_kit.dart';
+
 import '../../../../../domain/models/user/user.dart';
 import '../../../../blocs/blocs.dart';
 
@@ -74,6 +75,7 @@ class _EnterUserDataScreenState extends State<EnterUserDataScreen> {
                               user: UserModel(
                                 id: widget.user.id,
                                 username: usernameEditingController.text,
+                                accessToken: widget.user.accessToken,
                                 email: widget.user.email,
                                 isArtist: false, // потом это может измениться
                               ),

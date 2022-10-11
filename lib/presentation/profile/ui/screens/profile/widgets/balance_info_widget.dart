@@ -27,9 +27,9 @@ class BalanceInfoWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const AppTitle("Баланс"),
-              AppTitle("${user.balance} 🪙"),
+            children: const [
+              AppTitle("Баланс"),
+              AppTitle("100 🪙"),
             ],
           ),
         ),

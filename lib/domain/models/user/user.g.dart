@@ -20,7 +20,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       id: fields[0] as int,
       username: fields[1] as String?,
       email: fields[2] as String,
-      balance: fields[4] as int,
+      accessToken: fields[4] as String?,
       isArtist: fields[3] as bool?,
     );
   }
@@ -38,7 +38,7 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(3)
       ..write(obj.isArtist)
       ..writeByte(4)
-      ..write(obj.balance);
+      ..write(obj.accessToken);
   }
 
   @override

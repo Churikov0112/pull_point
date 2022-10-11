@@ -20,7 +20,7 @@ abstract class ArtistsRepositoryInterface {
   });
 
   Future<bool> updateArtist({
-    required int userId,
+    required int artistId,
     required String name,
     required String description,
     required int categoryId,

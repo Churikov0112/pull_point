@@ -1,5 +1,7 @@
-import 'package:hive/hive.dart';
 import 'dart:convert';
+
+import 'package:hive/hive.dart';
+
 import '../../../domain/domain.dart';
 import '../../http_requests/http_requests.dart';
 
@@ -37,7 +39,10 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
     if (response.statusCode == 200) {
       String source = const Utf8Decoder().convert(response.bodyBytes);
       final decodedResponse = jsonDecode(source);
-      final UserModel user = UserModel.fromJson(decodedResponse["user"]);
+      final UserModel user = UserModel.fromJson(
+        user: decodedResponse["user"],
+        jwt: decodedResponse["jwt"],
+      );
       userBox.put("user", user);
       final result = userBox.get('user');
       return result;
@@ -52,12 +57,18 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
   }) async {
     final response = await CreateUserRequest.send(
       id: userInput.id,
-      username: userInput.username ?? "мы потеряли ваш юзернейм",
+      username: userInput.username ?? "-",
       email: userInput.email,
     );
     final UserModel user;
     if (response.statusCode == 200) {
-      user = UserModel(id: userInput.id, email: userInput.email, username: userInput.username, isArtist: userInput.isArtist);
+      user = UserModel(
+        id: userInput.id,
+        email: userInput.email,
+        username: userInput.username,
+        accessToken: userInput.accessToken,
+        isArtist: userInput.isArtist,
+      );
       userBox.put("user", user);
       final result = userBox.get('user');
       return result;

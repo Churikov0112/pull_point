@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/presentation/auth/ui/screens/wanna_be_artist_screen/wanna_be_artist_screen.dart';
 import 'package:pull_point/presentation/ui_kit/ui_kit.dart';
+
 import '../../../../../domain/models/models.dart';
 import '../../../../blocs/blocs.dart';
 import '../../../../home/home_page.dart';
@@ -119,7 +120,9 @@ class __EnterArtistDataScreenState extends State<EnterArtistDataScreen> {
                                         pickedCategory = cat;
                                         pickedSubcategories.clear();
                                       });
-                                      context.read<SubcategoriesBloc>().add(SubcategoriesEventLoad(parentCategoryIds: [cat.id]));
+                                      context
+                                          .read<SubcategoriesBloc>()
+                                          .add(SubcategoriesEventLoad(parentCategoryIds: [cat.id]));
                                     },
                                   ),
                               ],
@@ -152,7 +155,8 @@ class __EnterArtistDataScreenState extends State<EnterArtistDataScreen> {
                                   for (final cat in state.subcategories)
                                     CategoryChip(
                                       childText: cat.name,
-                                      gradient: pickedSubcategories.contains(cat) ? AppGradients.main : AppGradients.first,
+                                      gradient:
+                                          pickedSubcategories.contains(cat) ? AppGradients.main : AppGradients.first,
                                       onPressed: () {
                                         if (pickedSubcategories.contains(cat)) {
                                           pickedSubcategories.remove(cat);
@@ -198,7 +202,13 @@ class __EnterArtistDataScreenState extends State<EnterArtistDataScreen> {
                       FocusScope.of(context).unfocus();
                       context.read<AuthBloc>().add(
                             AuthEventRegisterArtist(
-                              user: UserModel(id: widget.user.id, username: widget.user.username, email: widget.user.email, isArtist: true),
+                              user: UserModel(
+                                id: widget.user.id,
+                                username: widget.user.username,
+                                email: widget.user.email,
+                                accessToken: widget.user.accessToken,
+                                isArtist: true,
+                              ),
                               name: artistNameEditingController.text,
                               description: artistDescriptionEditingController.text,
                               categoryId: pickedCategory!.id,
