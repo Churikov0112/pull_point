@@ -1,5 +1,5 @@
 abstract class BackendConfig {
-  static const String baseUrl = 'http://pullpoint.ru:2022';
+  static const String baseUrl = 'http://pullpoint.cloud.sdcloud.io';
 
   static const Map<String, String> baseHeaders = {
     "Accept": "application/json",
