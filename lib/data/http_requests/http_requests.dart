@@ -20,3 +20,12 @@ export 'pull_point/get_pull_points.dart';
 export 'user/create_user.dart';
 export 'user/send_code.dart';
 export 'user/verify_code.dart';
+
+// wallet
+export 'wallet/create_wallet.dart';
+export 'wallet/get_wallet.dart';
+
+// finance
+export 'finance/finance_input.dart';
+export 'finance/finance_output.dart';
+export 'finance/finance_transfer.dart';
