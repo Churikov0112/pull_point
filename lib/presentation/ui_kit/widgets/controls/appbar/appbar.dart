@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart' show Icons;
 import 'package:flutter/widgets.dart';
+import 'package:pull_point/presentation/ui_kit/text/subtitle.dart';
+import 'package:pull_point/presentation/ui_kit/text/text.dart';
 
 import '../../../colors/app_gradients.dart';
 import '../../containers/gradient_text/gradient_text.dart';
@@ -29,16 +31,21 @@ class PullPointAppBar extends StatelessWidget {
                 onBackPressed?.call();
                 // Navigator.of(context).pop();
               },
-              child: const SizedBox.square(dimension: 24, child: Center(child: Icon(Icons.arrow_back_ios_new, size: 20))),
+              child:
+                  const SizedBox.square(dimension: 24, child: Center(child: Icon(Icons.arrow_back_ios_new, size: 20))),
             ),
           const SizedBox(width: 8),
-          GradientText(
-            gradient: AppGradients.main,
-            src: Text(
-              title,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
-            ),
+          AppTitle(
+            title,
+            // style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
           ),
+          // GradientText(
+          //   gradient: AppGradients.main,
+          //   src: Text(
+          //     title,
+          //     style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+          //   ),
+          // ),
         ],
       ),
     );

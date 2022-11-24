@@ -36,11 +36,23 @@ class AppTextFormField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
         errorText: errorText,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-        focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.error)),
-        errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.error)),
+        contentPadding: const EdgeInsets.only(left: 16),
+        enabledBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(24)),
+          borderSide: BorderSide(color: AppColors.grey),
+        ),
+        border: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(24)),
+          borderSide: BorderSide(color: AppColors.orange),
+        ),
+        focusedErrorBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(24)),
+          borderSide: BorderSide(color: AppColors.orange),
+        ),
+        errorBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(24)),
+          borderSide: BorderSide(color: AppColors.orange),
+        ),
         filled: true,
         fillColor: AppColors.backgroundCard,
       ),

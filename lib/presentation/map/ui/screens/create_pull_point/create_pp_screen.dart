@@ -71,7 +71,7 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        backgroundColor: AppColors.backgroundPage,
+        backgroundColor: AppColors.backgroundCard,
         // appBar: AppBar(title: const Text("Создание выступления"), backgroundColor: AppColors.primary),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -81,7 +81,7 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 60),
+                  SizedBox(height: mediaQuery.padding.top + 24),
 
                   PullPointAppBar(
                     title: "Создание выступления",
@@ -91,26 +91,6 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                   ),
 
                   const SizedBox(height: 32),
-
-                  // pick location
-                  TouchableOpacity(
-                    onPressed: () async {
-                      Navigator.of(context).push(MaterialPageRoute<void>(
-                          builder: (BuildContext context) => PickLocationScreen(onSubmit: updateLocation, initialCenter: pickedLocation)));
-                    },
-                    child: Container(
-                      width: mediaQuery.size.width,
-                      height: 100,
-                      decoration: const BoxDecoration(color: AppColors.backgroundCard, borderRadius: BorderRadius.all(Radius.circular(12))),
-                      child: Center(
-                        child: Text(pickedLocation == null
-                            ? "Выбрать место проведения 📍"
-                            : "lat: ${pickedLocation!.latitude.toStringAsFixed(4)} , lon: ${pickedLocation!.longitude.toStringAsFixed(4)}"),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
 
                   // ввод названия выступления
                   AppTextFormField(
@@ -128,6 +108,28 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                     hintText: "Описание выступления",
                     maxLines: null,
                     controller: descriptionEditingController,
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // pick location
+                  TouchableOpacity(
+                    onPressed: () async {
+                      Navigator.of(context).push(MaterialPageRoute<void>(
+                          builder: (BuildContext context) =>
+                              PickLocationScreen(onSubmit: updateLocation, initialCenter: pickedLocation)));
+                    },
+                    child: Container(
+                      width: mediaQuery.size.width,
+                      height: 100,
+                      decoration: const BoxDecoration(
+                          color: AppColors.backgroundCard, borderRadius: BorderRadius.all(Radius.circular(12))),
+                      child: Center(
+                        child: Text(pickedLocation == null
+                            ? "Выбрать место проведения 📍"
+                            : "lat: ${pickedLocation!.latitude.toStringAsFixed(4)} , lon: ${pickedLocation!.longitude.toStringAsFixed(4)}"),
+                      ),
+                    ),
                   ),
 
                   const SizedBox(height: 16),
@@ -188,7 +190,8 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                         text: "Дата начала",
                       ),
                       const SizedBox(width: 16),
-                      if (pickedStartDate != null) Text("${pickedStartDate!.day}.${pickedStartDate!.month}.${pickedStartDate!.year}"),
+                      if (pickedStartDate != null)
+                        Text("${pickedStartDate!.day}.${pickedStartDate!.month}.${pickedStartDate!.year}"),
                     ],
                   ),
 
@@ -210,7 +213,8 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                         text: "Дата конца",
                       ),
                       const SizedBox(width: 16),
-                      if (pickedEndDate != null) Text("${pickedEndDate!.day}.${pickedEndDate!.month}.${pickedStartDate!.year}"),
+                      if (pickedEndDate != null)
+                        Text("${pickedEndDate!.day}.${pickedEndDate!.month}.${pickedStartDate!.year}"),
                     ],
                   ),
 
@@ -226,7 +230,8 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                             initialTime: TimeOfDay.now(),
                             initialEntryMode: TimePickerEntryMode.input,
                             builder: (BuildContext context, Widget? child) {
-                              return MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
+                              return MediaQuery(
+                                  data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
                             },
                           );
                           if (result != null) setState(() => pickedStartTime = result);
@@ -250,7 +255,8 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                             initialTime: TimeOfDay.now(),
                             initialEntryMode: TimePickerEntryMode.input,
                             builder: (BuildContext context, Widget? child) {
-                              return MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
+                              return MediaQuery(
+                                  data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
                             },
                           );
                           if (result != null) setState(() => pickedEndTime = result);
@@ -283,7 +289,9 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                                     gradient: pickedCategory?.id == cat.id ? AppGradients.main : AppGradients.first,
                                     onPressed: () {
                                       setState(() => pickedCategory = cat);
-                                      context.read<SubcategoriesBloc>().add(SubcategoriesEventLoad(parentCategoryIds: [cat.id]));
+                                      context
+                                          .read<SubcategoriesBloc>()
+                                          .add(SubcategoriesEventLoad(parentCategoryIds: [cat.id]));
                                     },
                                   ),
                               ],
@@ -316,7 +324,8 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                                   for (final cat in state.subcategories)
                                     CategoryChip(
                                       childText: cat.name,
-                                      gradient: pickedSubcategories.contains(cat) ? AppGradients.main : AppGradients.first,
+                                      gradient:
+                                          pickedSubcategories.contains(cat) ? AppGradients.main : AppGradients.first,
                                       onPressed: () {
                                         if (pickedSubcategories.contains(cat)) {
                                           pickedSubcategories.remove(cat);
@@ -351,7 +360,9 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                       }
                       return LongButton(
                         backgroundGradient: AppGradients.main,
-                        child: (state is CreatePullPointStateLoading) ? const LoadingIndicator() : const AppText("Далее", textColor: Colors.white),
+                        child: (state is CreatePullPointStateLoading)
+                            ? const LoadingIndicator()
+                            : const AppText("Далее", textColor: Colors.white),
                         onTap: () {
                           if (pickedLocation == null) {
                             BotToast.showText(text: "Вы не выбрали место");

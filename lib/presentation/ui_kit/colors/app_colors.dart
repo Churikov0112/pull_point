@@ -12,4 +12,5 @@ class AppColors {
   static const icons = Color.fromRGBO(0, 0, 0, 0.5);
   static const textOnColors = Color.fromRGBO(255, 255, 255, 1);
   static const text = Color.fromRGBO(0, 0, 0, 1);
+  static const grey = Color.fromRGBO(194, 194, 194, 1);
 }
