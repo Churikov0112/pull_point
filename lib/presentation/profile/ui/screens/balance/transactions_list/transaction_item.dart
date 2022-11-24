@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_point/domain/models/models.dart';
-import 'package:pull_point/presentation/ui_kit/colors/app_colors.dart';
-import 'package:pull_point/presentation/ui_kit/text/main_text.dart';
-import 'package:pull_point/presentation/ui_kit/text/subtitle.dart';
 import 'package:pull_point/presentation/ui_kit/ui_kit.dart';
 
 class TransactionItem extends StatelessWidget {
@@ -29,7 +25,6 @@ class TransactionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
     return TouchableOpacity(
       onPressed: () {},
       child: Padding(
@@ -65,23 +60,6 @@ class TransactionItem extends StatelessWidget {
             const Divider(thickness: 1),
           ],
         ),
-      ),
-    );
-    ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-      title: Text(getTransactionTitle()),
-      subtitle: Text(getTransactionDateTime()),
-      trailing: AppSubtitle(
-        transaction.type == TransactionType.input
-            ? "+ ${transaction.sum.toStringAsFixed(0)} 🪙"
-            : transaction.type == TransactionType.output
-                ? "- ${transaction.sum.toStringAsFixed(0)} 🪙"
-                : "- ${transaction.sum.toStringAsFixed(0)} 🪙",
-        textColor: transaction.type == TransactionType.input
-            ? AppColors.success
-            : transaction.type == TransactionType.output
-                ? AppColors.error
-                : AppColors.text,
       ),
     );
   }

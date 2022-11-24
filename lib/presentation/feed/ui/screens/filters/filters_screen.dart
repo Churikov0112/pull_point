@@ -43,10 +43,10 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
       pickedSubcategories = (state.filters['categories'] as CategoriesFilter?)?.selectedSubcategories ?? [];
     }
 
-    print(pickedSubcategories.length);
-
     if (pickedCategories.isNotEmpty) {
-      context.read<SubcategoriesBloc>().add(SubcategoriesEventLoad(parentCategoryIds: pickedCategories.map((e) => e.id).toList()));
+      context
+          .read<SubcategoriesBloc>()
+          .add(SubcategoriesEventLoad(parentCategoryIds: pickedCategories.map((e) => e.id).toList()));
     }
 
     super.initState();
@@ -124,7 +124,8 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                       CategoryChip(
                         gradient: startTime == null ? AppGradients.slave : AppGradients.main,
                         textColor: startTime == null ? AppColors.text : AppColors.textOnColors,
-                        childText: startTime == null ? "Выбрать время начала" : "с ${startTime!.hour}:${startTime!.minute}",
+                        childText:
+                            startTime == null ? "Выбрать время начала" : "с ${startTime!.hour}:${startTime!.minute}",
                         onPressed: () async {
                           if (startTime == null) {
                             final result = await showTimePicker(
@@ -132,7 +133,8 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                               initialTime: TimeOfDay.now(),
                               initialEntryMode: TimePickerEntryMode.input,
                               builder: (BuildContext context, Widget? child) {
-                                return MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
+                                return MediaQuery(
+                                    data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
                               },
                             );
                             if (result != null) setState(() => startTime = result);
@@ -152,7 +154,8 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                               initialTime: TimeOfDay.now(),
                               initialEntryMode: TimePickerEntryMode.input,
                               builder: (BuildContext context, Widget? child) {
-                                return MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
+                                return MediaQuery(
+                                    data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
                               },
                             );
                             if (result != null) setState(() => endTime = result);
@@ -231,9 +234,8 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                                     }
                                     setState(() {});
 
-                                    context
-                                        .read<SubcategoriesBloc>()
-                                        .add(SubcategoriesEventLoad(parentCategoryIds: pickedCategories.map((parentCat) => parentCat.id).toList()));
+                                    context.read<SubcategoriesBloc>().add(SubcategoriesEventLoad(
+                                        parentCategoryIds: pickedCategories.map((parentCat) => parentCat.id).toList()));
                                   },
                                 ),
                             ],
@@ -264,7 +266,8 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                                 for (final cat in state.subcategories)
                                   CategoryChip(
                                     childText: cat.name,
-                                    gradient: pickedSubcategories.contains(cat) ? AppGradients.main : AppGradients.first,
+                                    gradient:
+                                        pickedSubcategories.contains(cat) ? AppGradients.main : AppGradients.first,
                                     onPressed: () {
                                       if (pickedSubcategories.contains(cat)) {
                                         pickedSubcategories.remove(cat);
@@ -296,11 +299,16 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                     feedFiltersBloc.add(
                       SetFeedFiltersEvent(
                         filters: {
-                          "time": (startTime != null && endTime != null) ? TimeFilter(timeRange: TimeRange(start: startTime!, end: endTime!)) : null,
+                          "time": (startTime != null && endTime != null)
+                              ? TimeFilter(timeRange: TimeRange(start: startTime!, end: endTime!))
+                              : null,
                           "date": dateRange != null ? DateFilter(dateRange: dateRange!) : null,
-                          "metro": metroStations.isNotEmpty ? NearestMetroFilter(selectedMetroStations: metroStations) : null,
+                          "metro": metroStations.isNotEmpty
+                              ? NearestMetroFilter(selectedMetroStations: metroStations)
+                              : null,
                           "categories": pickedCategories.isNotEmpty
-                              ? CategoriesFilter(selectedCategories: pickedCategories, selectedSubcategories: pickedSubcategories)
+                              ? CategoriesFilter(
+                                  selectedCategories: pickedCategories, selectedSubcategories: pickedSubcategories)
                               : null,
                         },
                       ),

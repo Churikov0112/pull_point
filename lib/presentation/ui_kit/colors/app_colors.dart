@@ -2,6 +2,7 @@ import 'dart:ui';
 
 class AppColors {
   static const primary = Color.fromRGBO(240, 0, 0, 1);
+  static const orange = Color.fromRGBO(248, 64, 3, 1);
   static const error = Color.fromRGBO(240, 0, 0, 1);
   static const success = Color.fromRGBO(75, 181, 67, 1);
   static const backgroundCard = Color.fromRGBO(251, 251, 251, 1);

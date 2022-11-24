@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_point/presentation/profile/ui/screens/balance/transactions_list/transactions_list.dart';
+import 'package:pull_point/presentation/profile/ui/screens/balance/withdraw_money_section/withdraw_money_section.dart';
 
 import '../../../../ui_kit/ui_kit.dart';
+import 'shop_list/shop_list.dart';
 
 class BalanceScreen extends StatefulWidget {
   const BalanceScreen({super.key});
@@ -27,7 +29,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
             children: [
               SizedBox(height: mediaQuery.padding.top + 24),
               PullPointAppBar(
-                title: "Баланс",
+                title: "Баланс - 100 монет",
                 onBackPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -48,6 +50,8 @@ class _BalanceScreenState extends State<BalanceScreen> {
                 ),
               ),
               if (_groupSliderValue == 0) const TransactionsList(),
+              if (_groupSliderValue == 1) const ShopItemsList(),
+              if (_groupSliderValue == 2) const WithdrawMoneySection(),
             ],
           ),
         ),

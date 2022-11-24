@@ -14,6 +14,7 @@ part 'artist/artist.dart';
 part 'bank_card/bank_card.dart';
 part 'wallet/wallet.dart';
 part 'transaction/transaction.dart';
+part 'shop_item/shop_item.dart';
 
 // pull_point
 part 'pull_point/pull_point.dart';

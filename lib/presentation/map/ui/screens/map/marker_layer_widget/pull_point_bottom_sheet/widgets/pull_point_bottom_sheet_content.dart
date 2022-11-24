@@ -6,14 +6,14 @@ import '../../../../../../../../domain/models/models.dart';
 import '../../../../../../../static_methods/static_methods.dart';
 import '../../../../../../../ui_kit/ui_kit.dart';
 
-bool _isActive({
-  required PullPointModel pp,
-}) {
-  if (pp.startsAt.isBefore(DateTime.now()) && pp.endsAt.isAfter(DateTime.now())) {
-    return true;
-  }
-  return false;
-}
+// bool _isActive({
+//   required PullPointModel pp,
+// }) {
+//   if (pp.startsAt.isBefore(DateTime.now()) && pp.endsAt.isAfter(DateTime.now())) {
+//     return true;
+//   }
+//   return false;
+// }
 
 class PullPointBottomSheetContent extends StatelessWidget {
   const PullPointBottomSheetContent({

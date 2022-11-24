@@ -19,7 +19,6 @@ class LongButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(isDisabled);
     final mediaQuery = MediaQuery.of(context);
     return TouchableOpacity(
       onPressed: (onTap != null && !isDisabled) ? onTap : null,
