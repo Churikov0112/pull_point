@@ -2,6 +2,8 @@ import 'dart:math';
 import 'dart:ui' show Color;
 
 import 'package:flutter/material.dart' show Colors;
+import 'package:latlong2/latlong.dart';
+import 'package:location/location.dart';
 
 import '../../domain/models/models.dart';
 
@@ -147,5 +149,39 @@ abstract class StaticMethods {
       return filteredPullPoints;
     }
     return pullPoints;
+  }
+
+  static Future<LatLng?> getUserLocation() async {
+    Location location = Location();
+
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return null;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        return null;
+      }
+    }
+
+    LatLng? latLng;
+
+    try {
+      locationData = await location.getLocation();
+      latLng = LatLng(locationData.latitude!, locationData.longitude!);
+    } catch (e) {
+      return null;
+    }
+    return latLng;
   }
 }
