@@ -57,7 +57,7 @@ abstract class StaticMethods {
   }) {
     final List<PullPointModel> filteredPullPoints = [];
     for (final pp in pullPoints) {
-      if (pp.startsAt.isBefore(DateTime.now())) {
+      if (pp.startsAt.isBefore(DateTime.now()) && pp.endsAt.isAfter(DateTime.now())) {
         filteredPullPoints.add(pp);
       }
     }
