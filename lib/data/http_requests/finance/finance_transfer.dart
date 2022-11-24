@@ -7,14 +7,14 @@ class FinanceTransferRequest {
   //
   static Future<http.Response> send({
     required String targetArtistName,
-    required double coinsToTransfer,
+    required int sum,
     required String? jwt,
   }) async {
     return await http.post(
       Uri.parse("${BackendConfig.baseUrl}/finance/transfer"),
       body: jsonEncode({
         "artistName": targetArtistName,
-        "sum": coinsToTransfer,
+        "sum": sum,
       }),
       headers: BackendConfig.baseHeadersWithToken(jwt: jwt),
     );

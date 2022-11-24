@@ -6,15 +6,15 @@ import '../backend_config/backend_config.dart';
 class FinanceOutputRequest {
   //
   static Future<http.Response> send({
-    required double coinsToOutput,
-    required String outputCredentials,
+    required int sum,
+    required String outputCardNumber,
     required String? jwt,
   }) async {
     return await http.post(
       Uri.parse("${BackendConfig.baseUrl}/finance/output"),
       body: jsonEncode({
-        "sum": coinsToOutput,
-        "credentials": outputCredentials,
+        "sum": sum,
+        "credentials": outputCardNumber,
       }),
       headers: BackendConfig.baseHeadersWithToken(jwt: jwt),
     );
