@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pull_point/presentation/profile/ui/screens/artists/widgets/artists_carousel/artists_carousel.dart';
+import 'package:pull_point/presentation/profile/ui/screens/artists/widgets/artists_carousel/artists_dots_indicator.dart';
 
 import '../../../../../domain/models/models.dart';
 import '../../../../blocs/blocs.dart';
@@ -103,38 +105,19 @@ class _ArtistsScreenState extends State<ArtistsScreen> {
                           },
                         ),
                         const SizedBox(height: 24),
-                        CarouselSlider(
-                          items: buildArtistCards(allUserArtists: state.allUserArtists, selectedArtist: state.selectedArtist),
+                        ArtistsCarousel(
+                          items: buildArtistCards(
+                              allUserArtists: state.allUserArtists, selectedArtist: state.selectedArtist),
+                          currentIndex: currentArtistIndex,
                           carouselController: carouselController,
-                          options: CarouselOptions(
-                            initialPage: currentArtistIndex,
-                            enlargeCenterPage: true,
-                            enableInfiniteScroll: false,
-                            aspectRatio: 2.0,
-                            onPageChanged: (index, reason) {
-                              setState(() => currentArtistIndex = index);
-                            },
-                          ),
+                          onPageChanged: (index, reason) {
+                            setState(() => currentArtistIndex = index);
+                          },
                         ),
                         const SizedBox(height: 12),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            for (int i = 0; i < state.allUserArtists.length + 1; i++)
-                              GestureDetector(
-                                onTap: () => carouselController.animateToPage(i),
-                                child: Container(
-                                  width: 12.0,
-                                  height: 12.0,
-                                  margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: (Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black)
-                                        .withOpacity(currentArtistIndex == i ? 0.9 : 0.4),
-                                  ),
-                                ),
-                              ),
-                          ],
+                        ArtistsDotIndicator(
+                          length: state.allUserArtists.length,
+                          currentIndex: currentArtistIndex,
                         ),
                       ],
                     );

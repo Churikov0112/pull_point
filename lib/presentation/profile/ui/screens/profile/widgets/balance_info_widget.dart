@@ -1,7 +1,8 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 import '../../../../../../domain/models/user/user.dart';
 import '../../../../../ui_kit/ui_kit.dart';
+import '../../balance/balance_screen.dart';
 
 class BalanceInfoWidget extends StatelessWidget {
   const BalanceInfoWidget({
@@ -16,7 +17,13 @@ class BalanceInfoWidget extends StatelessWidget {
     final mediaQuery = MediaQuery.of(context);
 
     return TouchableOpacity(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) => const BalanceScreen(),
+          ),
+        );
+      },
       child: Container(
         width: mediaQuery.size.width,
         decoration: const BoxDecoration(

@@ -37,7 +37,7 @@ class ArtistInfoWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const AppText("Артист"),
-                    AppText("id: ${state.selectedArtist.id}"),
+                    // AppText("id: ${state.selectedArtist.id}"),
                     const SizedBox(height: 8),
                     AppTitle(state.selectedArtist.name ?? "-"),
                     const SizedBox(height: 8),
@@ -51,7 +51,7 @@ class ArtistInfoWidget extends StatelessWidget {
                         children: [
                           if (state.selectedArtist.category != null)
                             StaticChip(
-                              gradient: AppGradients.first,
+                              gradient: AppGradients.main,
                               childText: state.selectedArtist.category!.name,
                             ),
                           if (state.selectedArtist.subcategories != null)

@@ -29,7 +29,7 @@ class UserInfoWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const AppText("Пользователь"),
-              AppText("id: ${user.id}"),
+              // AppText("id: ${user.id}"),
               const SizedBox(height: 8),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,

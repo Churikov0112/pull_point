@@ -65,9 +65,30 @@ class ArtistCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppTitle(artist.name ?? "-"),
+                AppTitle(artist.name ?? "-", maxLines: 1),
                 const SizedBox(height: 8),
-                AppText(artist.description ?? "-"),
+                AppText(artist.description ?? "-", maxLines: 3),
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: mediaQuery.size.width,
+                  child: Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      if (artist.category != null)
+                        StaticChip(
+                          gradient: AppGradients.main,
+                          childText: artist.category!.name,
+                        ),
+                      if (artist.subcategories != null)
+                        for (final subcategory in artist.subcategories!)
+                          StaticChip(
+                            gradient: AppGradients.first,
+                            childText: subcategory.name,
+                          ),
+                    ],
+                  ),
+                ),
               ],
             ),
             if (deletable)
@@ -91,7 +112,9 @@ class ArtistCard extends StatelessWidget {
                       onPressed: () {
                         final authState = context.read<AuthBloc>().state;
                         if (authState is AuthStateAuthorized) {
-                          context.read<UserArtistsBloc>().add(UserArtistsEventSelect(artistId: artist.id, userId: authState.user.id));
+                          context
+                              .read<UserArtistsBloc>()
+                              .add(UserArtistsEventSelect(artistId: artist.id, userId: authState.user.id));
                         }
                       },
                       child: const AppText("Выбрать"),
