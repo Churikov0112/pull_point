@@ -3,7 +3,7 @@ import '../../models/models.dart';
 abstract class AuthRepositoryInterface {
   Future<UserModel?> checkAccountLocally();
 
-  Future<bool> sendVerificationCode({
+  Future<String?> getVerificationCode({
     required String email,
   });
 

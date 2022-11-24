@@ -52,7 +52,9 @@ class _EnterEmailScreenState extends State<EnterEmailScreen> {
   Future<void> _goToEnterCodeScreen() async {
     await Future.delayed(Duration.zero, () {
       Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute<void>(builder: (BuildContext context) => EnterCodeScreen(email: emailEditingController.text, cameFrom: widget.cameFrom)),
+        MaterialPageRoute<void>(
+            builder: (BuildContext context) =>
+                EnterCodeScreen(email: emailEditingController.text, cameFrom: widget.cameFrom)),
         (Route<dynamic> route) => false,
       );
     });
@@ -85,6 +87,7 @@ class _EnterEmailScreenState extends State<EnterEmailScreen> {
         builder: (context, state) {
           if (state is AuthStateCodeSent) _goToEnterCodeScreen();
           if (state is AuthStateUnauthorized) _goToStartScreen();
+          // if (state is AuthStateAuthorized) _goToHomePage();
           if (state is AuthStateGuest) _goToHomePage();
           return Scaffold(
             backgroundColor: AppColors.backgroundPage,

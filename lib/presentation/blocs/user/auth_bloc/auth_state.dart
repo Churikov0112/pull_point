@@ -25,9 +25,11 @@ class AuthStateEnterEmailPageOpened extends AuthState {
 
 class AuthStateCodeSent extends AuthState {
   final String email;
+  final String code; // TODO delete code
 
   const AuthStateCodeSent({
     required this.email,
+    required this.code, // TODO delete code
   });
 }
 

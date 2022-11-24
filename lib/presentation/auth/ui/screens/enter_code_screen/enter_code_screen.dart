@@ -85,11 +85,22 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
                     child: GradientText(
                       gradient: AppGradients.main,
                       src: Text(
-                        "Введите код, который мы прислали на ${widget.email}",
+                        "Введите код, который мы прислали на ${widget.email})",
                         style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
                       ),
                     ),
                   ),
+                  if (state is AuthStateCodeSent)
+                    SizedBox(
+                      width: mediaQuery.size.width - 32,
+                      child: GradientText(
+                        gradient: AppGradients.main,
+                        src: Text(
+                          "Код: ${state.code}",
+                          style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                    ),
                   Form(
                     child: AppTextFormField(
                       keyboardType: TextInputType.emailAddress,
@@ -107,7 +118,9 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
                         return;
                       }
                       FocusScope.of(context).unfocus();
-                      context.read<AuthBloc>().add(AuthEventLogin(email: widget.email, code: codeEditingController.text));
+                      context
+                          .read<AuthBloc>()
+                          .add(AuthEventLogin(email: widget.email, code: codeEditingController.text));
                     },
                     child: const AppButtonText("Далее", textColor: AppColors.textOnColors),
                   ),

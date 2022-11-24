@@ -59,9 +59,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _sendVerificationCode(AuthEventSendCode event, Emitter<AuthState> emit) async {
     emit(const AuthStatePending());
-    final sent = await _authRepository.sendVerificationCode(email: event.email);
-    if (sent) {
-      emit(AuthStateCodeSent(email: event.email));
+    final code = await _authRepository.getVerificationCode(email: event.email);
+    if (code != null) {
+      emit(AuthStateCodeSent(email: event.email, code: code));
+      // await _login(AuthEventLogin(email: event.email, code: code), emit);
     } else {
       BotToast.showText(text: "Не удалось отправить проверочный код");
     }

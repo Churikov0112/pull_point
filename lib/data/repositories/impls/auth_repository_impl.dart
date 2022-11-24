@@ -19,15 +19,18 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
   }
 
   @override
-  Future<bool> sendVerificationCode({
+  Future<String?> getVerificationCode({
     required String email,
   }) async {
     final response = await SendCodeRequest.send(email: email);
     if (response.statusCode == 200) {
-      return true;
+      String source = const Utf8Decoder().convert(response.bodyBytes);
+      final decodedResponse = jsonDecode(source);
+      return decodedResponse["code"];
     } else {
-      return false;
+      return null;
     }
+
   }
 
   @override
