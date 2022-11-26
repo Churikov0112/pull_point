@@ -98,16 +98,20 @@ class __AddArtistScreenState extends State<AddArtistScreen> {
                               runSpacing: 8,
                               children: [
                                 for (final cat in state.categories)
-                                  CategoryChip(
-                                    childText: cat.name,
-                                    gradient: pickedCategory?.id == cat.id ? AppGradients.main : AppGradients.first,
+                                  TouchableOpacity(
                                     onPressed: () {
                                       setState(() {
                                         pickedCategory = cat;
                                         pickedSubcategories.clear();
                                       });
-                                      context.read<SubcategoriesBloc>().add(SubcategoriesEventLoad(parentCategoryIds: [cat.id]));
+                                      context
+                                          .read<SubcategoriesBloc>()
+                                          .add(SubcategoriesEventLoad(parentCategoryIds: [cat.id]));
                                     },
+                                    child: CategoryChip(
+                                      childText: cat.name,
+                                      gradient: pickedCategory?.id == cat.id ? AppGradients.main : AppGradients.first,
+                                    ),
                                   ),
                               ],
                             ),
@@ -137,9 +141,7 @@ class __AddArtistScreenState extends State<AddArtistScreen> {
                                 runSpacing: 8,
                                 children: [
                                   for (final cat in state.subcategories)
-                                    CategoryChip(
-                                      childText: cat.name,
-                                      gradient: pickedSubcategories.contains(cat) ? AppGradients.main : AppGradients.first,
+                                    TouchableOpacity(
                                       onPressed: () {
                                         if (pickedSubcategories.contains(cat)) {
                                           pickedSubcategories.remove(cat);
@@ -152,6 +154,11 @@ class __AddArtistScreenState extends State<AddArtistScreen> {
                                         }
                                         setState(() {});
                                       },
+                                      child: CategoryChip(
+                                        childText: cat.name,
+                                        gradient:
+                                            pickedSubcategories.contains(cat) ? AppGradients.main : AppGradients.first,
+                                      ),
                                     ),
                                 ],
                               ),

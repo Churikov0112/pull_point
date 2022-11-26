@@ -27,38 +27,38 @@ class TransactionItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return TouchableOpacity(
       onPressed: () {},
-      child: Padding(
-        padding: const EdgeInsets.only(top: 8),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AppSubtitle(getTransactionTitle()),
-                    const SizedBox(height: 8),
-                    AppText(getTransactionDateTime()),
-                  ],
-                ),
-                AppSubtitle(
-                  transaction.type == TransactionType.input
-                      ? "+ ${transaction.sum.toStringAsFixed(0)} 🪙"
-                      : transaction.type == TransactionType.output
-                          ? "- ${transaction.sum.toStringAsFixed(0)} 🪙"
-                          : "- ${transaction.sum.toStringAsFixed(0)} 🪙",
-                  textColor: transaction.type == TransactionType.input
-                      ? AppColors.success
-                      : transaction.type == TransactionType.output
-                          ? AppColors.error
-                          : AppColors.text,
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            const Divider(thickness: 1),
-          ],
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: AppColors.backgroundCard,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppSubtitle(getTransactionTitle()),
+                  const SizedBox(height: 8),
+                  AppText(getTransactionDateTime()),
+                ],
+              ),
+              AppSubtitle(
+                transaction.type == TransactionType.input
+                    ? "+ ${transaction.sum.toStringAsFixed(0)} 🪙"
+                    : transaction.type == TransactionType.output
+                        ? "- ${transaction.sum.toStringAsFixed(0)} 🪙"
+                        : "- ${transaction.sum.toStringAsFixed(0)} 🪙",
+                textColor: transaction.type == TransactionType.input
+                    ? AppColors.success
+                    : transaction.type == TransactionType.output
+                        ? AppColors.error
+                        : AppColors.text,
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -112,9 +112,7 @@ class __EnterArtistDataScreenState extends State<EnterArtistDataScreen> {
                               runSpacing: 8,
                               children: [
                                 for (final cat in state.categories)
-                                  CategoryChip(
-                                    childText: cat.name,
-                                    gradient: pickedCategory?.id == cat.id ? AppGradients.main : AppGradients.first,
+                                  TouchableOpacity(
                                     onPressed: () {
                                       setState(() {
                                         pickedCategory = cat;
@@ -124,6 +122,10 @@ class __EnterArtistDataScreenState extends State<EnterArtistDataScreen> {
                                           .read<SubcategoriesBloc>()
                                           .add(SubcategoriesEventLoad(parentCategoryIds: [cat.id]));
                                     },
+                                    child: CategoryChip(
+                                      childText: cat.name,
+                                      gradient: pickedCategory?.id == cat.id ? AppGradients.main : AppGradients.first,
+                                    ),
                                   ),
                               ],
                             ),
@@ -153,10 +155,7 @@ class __EnterArtistDataScreenState extends State<EnterArtistDataScreen> {
                                 runSpacing: 8,
                                 children: [
                                   for (final cat in state.subcategories)
-                                    CategoryChip(
-                                      childText: cat.name,
-                                      gradient:
-                                          pickedSubcategories.contains(cat) ? AppGradients.main : AppGradients.first,
+                                    TouchableOpacity(
                                       onPressed: () {
                                         if (pickedSubcategories.contains(cat)) {
                                           pickedSubcategories.remove(cat);
@@ -169,6 +168,11 @@ class __EnterArtistDataScreenState extends State<EnterArtistDataScreen> {
                                         }
                                         setState(() {});
                                       },
+                                      child: CategoryChip(
+                                        childText: cat.name,
+                                        gradient:
+                                            pickedSubcategories.contains(cat) ? AppGradients.main : AppGradients.first,
+                                      ),
                                     ),
                                 ],
                               ),

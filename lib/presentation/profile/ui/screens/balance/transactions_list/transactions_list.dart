@@ -33,8 +33,13 @@ class _TransactionsListState extends State<TransactionsList> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 8),
-        for (final transaction in transactions) TransactionItem(transaction: transaction),
+        const SizedBox(height: 16),
+        for (final transaction in transactions)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: TransactionItem(transaction: transaction),
+          ),
+        const SizedBox(height: 16),
       ],
     );
   }

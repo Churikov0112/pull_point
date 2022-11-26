@@ -18,6 +18,7 @@ class PullPointBottomSheetHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     return Column(
       children: [
         Padding(
@@ -29,13 +30,12 @@ class PullPointBottomSheetHeader extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    pullPoint.title,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
+                  SizedBox(
+                    width: mediaQuery.size.width * 0.85,
+                    child: AppTitle(
+                      pullPoint.title,
+                      maxLines: 2,
                     ),
-                    maxLines: 1,
                   ),
                   const SizedBox(height: 4),
                   Text(

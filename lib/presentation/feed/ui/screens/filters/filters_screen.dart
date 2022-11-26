@@ -93,12 +93,7 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                 const SizedBox(height: 16),
                 const AppTitle("Дата"),
                 const SizedBox(height: 8),
-                CategoryChip(
-                  gradient: dateRange == null ? AppGradients.slave : AppGradients.main,
-                  textColor: dateRange == null ? AppColors.text : AppColors.textOnColors,
-                  childText: dateRange == null
-                      ? "Выбрать дату начала и дату конца"
-                      : "с ${DateFormat("dd.MM.yyyy").format(dateRange!.start)} до ${DateFormat("dd.MM.yyyy").format(dateRange!.end)}",
+                TouchableOpacity(
                   onPressed: () async {
                     if (dateRange == null) {
                       final result = await showDateRangePicker(
@@ -111,6 +106,13 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                       setState(() => dateRange = null);
                     }
                   },
+                  child: CategoryChip(
+                    gradient: dateRange == null ? AppGradients.slave : AppGradients.main,
+                    textColor: dateRange == null ? AppColors.text : AppColors.textOnColors,
+                    childText: dateRange == null
+                        ? "Выбрать дату начала и дату конца"
+                        : "с ${DateFormat("dd.MM.yyyy").format(dateRange!.start)} до ${DateFormat("dd.MM.yyyy").format(dateRange!.end)}",
+                  ),
                 ),
                 const SizedBox(height: 24),
                 const AppTitle("Время"),
@@ -121,11 +123,7 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                     spacing: 8,
                     runSpacing: 8,
                     children: [
-                      CategoryChip(
-                        gradient: startTime == null ? AppGradients.slave : AppGradients.main,
-                        textColor: startTime == null ? AppColors.text : AppColors.textOnColors,
-                        childText:
-                            startTime == null ? "Выбрать время начала" : "с ${startTime!.hour}:${startTime!.minute}",
+                      TouchableOpacity(
                         onPressed: () async {
                           if (startTime == null) {
                             final result = await showTimePicker(
@@ -142,11 +140,14 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                             setState(() => startTime = null);
                           }
                         },
+                        child: CategoryChip(
+                          gradient: startTime == null ? AppGradients.slave : AppGradients.main,
+                          textColor: startTime == null ? AppColors.text : AppColors.textOnColors,
+                          childText:
+                              startTime == null ? "Выбрать время начала" : "с ${startTime!.hour}:${startTime!.minute}",
+                        ),
                       ),
-                      CategoryChip(
-                        gradient: endTime == null ? AppGradients.slave : AppGradients.main,
-                        textColor: endTime == null ? AppColors.text : AppColors.textOnColors,
-                        childText: endTime == null ? "Выбрать время конца" : "до ${endTime!.hour}:${endTime!.minute}",
+                      TouchableOpacity(
                         onPressed: () async {
                           if (endTime == null) {
                             final result = await showTimePicker(
@@ -163,6 +164,11 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                             setState(() => endTime = null);
                           }
                         },
+                        child: CategoryChip(
+                          gradient: endTime == null ? AppGradients.slave : AppGradients.main,
+                          textColor: endTime == null ? AppColors.text : AppColors.textOnColors,
+                          childText: endTime == null ? "Выбрать время конца" : "до ${endTime!.hour}:${endTime!.minute}",
+                        ),
                       ),
                     ],
                   ),
@@ -176,10 +182,7 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                     spacing: 8,
                     runSpacing: 8,
                     children: [
-                      CategoryChip(
-                        gradient: AppGradients.slave,
-                        textColor: AppColors.text,
-                        childText: "Выбрать ближайшие станции метро",
+                      TouchableOpacity(
                         onPressed: () async {
                           await showDialog(
                             context: context,
@@ -194,15 +197,22 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                             },
                           );
                         },
+                        child: const CategoryChip(
+                          gradient: AppGradients.slave,
+                          textColor: AppColors.text,
+                          childText: "Выбрать ближайшие станции метро",
+                        ),
                       ),
                       for (final metro in metroStations)
-                        CategoryChip(
-                          backgroundColor: StaticMethods.getColorByMetroLine(metro.line),
-                          textColor: AppColors.textOnColors,
-                          childText: metro.title,
+                        TouchableOpacity(
                           onPressed: () async {
                             setState(() => metroStations.removeWhere((element) => element.id == metro.id));
                           },
+                          child: CategoryChip(
+                            backgroundColor: StaticMethods.getColorByMetroLine(metro.line),
+                            textColor: AppColors.textOnColors,
+                            childText: metro.title,
+                          ),
                         ),
                     ],
                   ),
@@ -223,9 +233,7 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                             runSpacing: 8,
                             children: [
                               for (final cat in state.categories)
-                                CategoryChip(
-                                  childText: cat.name,
-                                  gradient: pickedCategories.contains(cat) ? AppGradients.main : AppGradients.first,
+                                TouchableOpacity(
                                   onPressed: () {
                                     if (pickedCategories.contains(cat)) {
                                       pickedCategories.remove(cat);
@@ -237,6 +245,10 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                                     context.read<SubcategoriesBloc>().add(SubcategoriesEventLoad(
                                         parentCategoryIds: pickedCategories.map((parentCat) => parentCat.id).toList()));
                                   },
+                                  child: CategoryChip(
+                                    childText: cat.name,
+                                    gradient: pickedCategories.contains(cat) ? AppGradients.main : AppGradients.first,
+                                  ),
                                 ),
                             ],
                           ),
@@ -264,10 +276,7 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                               runSpacing: 8,
                               children: [
                                 for (final cat in state.subcategories)
-                                  CategoryChip(
-                                    childText: cat.name,
-                                    gradient:
-                                        pickedSubcategories.contains(cat) ? AppGradients.main : AppGradients.first,
+                                  TouchableOpacity(
                                     onPressed: () {
                                       if (pickedSubcategories.contains(cat)) {
                                         pickedSubcategories.remove(cat);
@@ -276,6 +285,11 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                                       }
                                       setState(() {});
                                     },
+                                    child: CategoryChip(
+                                      childText: cat.name,
+                                      gradient:
+                                          pickedSubcategories.contains(cat) ? AppGradients.main : AppGradients.first,
+                                    ),
                                   ),
                               ],
                             ),

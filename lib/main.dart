@@ -59,7 +59,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         builder: BotToastInit(),
         debugShowCheckedModeBanner: false,
-        theme: ThemeData.light().copyWith(backgroundColor: AppColors.primary),
+        theme: ThemeData.light().copyWith(
+          backgroundColor: AppColors.primary,
+        ),
         home: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
             if (state is AuthStateAuthorized) return const HomePage();

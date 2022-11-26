@@ -10,12 +10,10 @@ class CategoryChip extends StatelessWidget {
   final Color? backgroundColor;
   final bool disabled;
   final String childText;
-  final Function()? onPressed;
 
   const CategoryChip({
     required this.childText,
     this.gradient,
-    this.onPressed,
     this.backgroundColor,
     this.disabled = false,
     this.disabledBackgroundColor = AppColors.icons,
@@ -26,18 +24,15 @@ class CategoryChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
-      onPressed: onPressed,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
-          gradient: !disabled ? gradient : null,
-          color: disabled ? disabledBackgroundColor : backgroundColor,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          child: AppButtonText(childText, textColor: disabled ? disabledTextColor : textColor),
-        ),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(16)),
+        gradient: !disabled ? gradient : null,
+        color: disabled ? disabledBackgroundColor : backgroundColor,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: AppButtonText(childText, textColor: disabled ? disabledTextColor : textColor),
       ),
     );
   }

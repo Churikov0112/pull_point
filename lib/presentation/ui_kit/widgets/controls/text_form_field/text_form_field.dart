@@ -33,6 +33,7 @@ class AppTextFormField extends StatelessWidget {
       keyboardType: keyboardType,
       maxLines: maxLines,
       inputFormatters: inputFormatters,
+      cursorColor: AppColors.orange,
       decoration: InputDecoration(
         hintText: hintText,
         errorText: errorText,
@@ -41,10 +42,15 @@ class AppTextFormField extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(24)),
           borderSide: BorderSide(color: AppColors.grey),
         ),
+        focusedBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(24)),
+          borderSide: BorderSide(color: AppColors.orange),
+        ),
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(24)),
           borderSide: BorderSide(color: AppColors.orange),
         ),
+        focusColor: AppColors.orange,
         focusedErrorBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(24)),
           borderSide: BorderSide(color: AppColors.orange),

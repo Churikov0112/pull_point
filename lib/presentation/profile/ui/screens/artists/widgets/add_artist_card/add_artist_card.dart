@@ -21,7 +21,7 @@ class AddArtistCard extends StatelessWidget {
       child: Container(
         width: mediaQuery.size.width,
         decoration: const BoxDecoration(
-          color: AppColors.surface,
+          color: AppColors.backgroundCard,
           borderRadius: BorderRadius.all(Radius.circular(16)),
         ),
         child: const Padding(

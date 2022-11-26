@@ -82,7 +82,6 @@ class _ArtistsScreenState extends State<ArtistsScreen> {
     final mediaQuery = MediaQuery.of(context);
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundPage,
       body: BlocBuilder<DeleteArtistBloc, DeleteArtistState>(
         builder: ((context, deleteArtistState) {
           if (deleteArtistState is DeleteArtistStateDeleted) updatePage();
@@ -94,32 +93,36 @@ class _ArtistsScreenState extends State<ArtistsScreen> {
               return BlocBuilder<UserArtistsBloc, UserArtistsState>(
                 builder: (context, state) {
                   if (state is UserArtistsStateSelected) {
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(height: mediaQuery.padding.top + 24),
-                        PullPointAppBar(
-                          title: "Ваши артисты",
-                          onBackPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        const SizedBox(height: 24),
-                        ArtistsCarousel(
-                          items: buildArtistCards(
-                              allUserArtists: state.allUserArtists, selectedArtist: state.selectedArtist),
-                          currentIndex: currentArtistIndex,
-                          carouselController: carouselController,
-                          onPageChanged: (index, reason) {
-                            setState(() => currentArtistIndex = index);
-                          },
-                        ),
-                        const SizedBox(height: 12),
-                        ArtistsDotIndicator(
-                          length: state.allUserArtists.length,
-                          currentIndex: currentArtistIndex,
-                        ),
-                      ],
+                    return DecoratedBox(
+                      decoration: const BoxDecoration(color: AppColors.backgroundPage),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(height: mediaQuery.padding.top + 24),
+                          PullPointAppBar(
+                            title: "Ваши артисты",
+                            onBackPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          const SizedBox(height: 24),
+                          ArtistsCarousel(
+                            items: buildArtistCards(
+                                allUserArtists: state.allUserArtists, selectedArtist: state.selectedArtist),
+                            currentIndex: currentArtistIndex,
+                            carouselController: carouselController,
+                            onPageChanged: (index, reason) {
+                              setState(() => currentArtistIndex = index);
+                            },
+                          ),
+                          const SizedBox(height: 12),
+                          ArtistsDotIndicator(
+                            length: state.allUserArtists.length,
+                            currentIndex: currentArtistIndex,
+                          ),
+                          const SizedBox(height: 12),
+                        ],
+                      ),
                     );
                   }
                   return const SizedBox.shrink();

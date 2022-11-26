@@ -110,6 +110,113 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                     controller: descriptionEditingController,
                   ),
 
+                  const SizedBox(height: 40),
+
+                  // const AppTitle("Выберите категорию"),
+
+                  // выбор главной категории
+                  SizedBox(
+                    width: mediaQuery.size.width,
+                    child: BlocBuilder<CategoriesBloc, CategoriesState>(
+                      builder: (context, state) {
+                        if (state is CategoriesStateLoaded) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const AppTitle("Выберите категорию"),
+                              const SizedBox(height: 8),
+                              for (final cat in state.categories)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8),
+                                  child: SizedBox(
+                                    width: mediaQuery.size.width,
+                                    child: MainButton(
+                                      childText: cat.name,
+                                      backgroundColor:
+                                          pickedCategory?.id == cat.id ? AppColors.orange : AppColors.backgroundCard,
+                                      textColor:
+                                          pickedCategory?.id == cat.id ? AppColors.textOnColors : AppColors.orange,
+                                      onPressed: () {
+                                        setState(() => pickedCategory = cat);
+                                        context
+                                            .read<SubcategoriesBloc>()
+                                            .add(SubcategoriesEventLoad(parentCategoryIds: [cat.id]));
+                                      },
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          );
+                        }
+                        if (state is CategoriesStateLoading) {
+                          return const LoadingIndicator();
+                        }
+                        return const SizedBox.shrink();
+                      },
+                    ),
+                  ),
+
+                  const SizedBox(height: 40),
+
+                  const Align(child: AppTitle("Выберите подкатегории (макс.3)")),
+                  const SizedBox(height: 16),
+
+                  // выбор подкатегории
+                  if (pickedCategory != null)
+                    BlocBuilder<SubcategoriesBloc, SubcategoriesState>(
+                      builder: (context, state) {
+                        if (state is SubcategoriesStateLoaded) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Wrap(
+                                spacing: 8,
+                                runSpacing: 8,
+                                children: [
+                                  for (final cat in state.subcategories)
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        MainButton(
+                                          childText: cat.name,
+                                          borderColor: AppColors.blue,
+                                          backgroundColor: pickedSubcategories.contains(cat)
+                                              ? AppColors.blue
+                                              : AppColors.backgroundCard,
+                                          textColor: pickedSubcategories.contains(cat)
+                                              ? AppColors.textOnColors
+                                              : AppColors.blue,
+                                          onPressed: () {
+                                            if (pickedSubcategories.contains(cat)) {
+                                              pickedSubcategories.remove(cat);
+                                            } else {
+                                              if (pickedSubcategories.length < 3) {
+                                                pickedSubcategories.add(cat);
+                                              } else {
+                                                BotToast.showText(text: "Нельзя выбрать больше трех подкатегорий");
+                                              }
+                                            }
+                                            setState(() {});
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                ],
+                              )
+                            ],
+                          );
+                        }
+                        if (state is SubcategoriesStateLoading) {
+                          return const LoadingIndicator();
+                        }
+                        return const SizedBox.shrink();
+                      },
+                    ),
+
+                  const SizedBox(height: 40),
+
+                  const Align(child: AppTitle("Место проведения")),
+
                   const SizedBox(height: 16),
 
                   // pick location
@@ -122,234 +229,163 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                     child: Container(
                       width: mediaQuery.size.width,
                       height: 100,
-                      decoration: const BoxDecoration(
-                          color: AppColors.backgroundCard, borderRadius: BorderRadius.all(Radius.circular(12))),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.orange, width: 1),
+                        color: pickedLocation == null ? AppColors.backgroundCard : AppColors.orange,
+                        borderRadius: const BorderRadius.all(Radius.circular(12)),
+                      ),
                       child: Center(
-                        child: Text(pickedLocation == null
-                            ? "Выбрать место проведения 📍"
-                            : "lat: ${pickedLocation!.latitude.toStringAsFixed(4)} , lon: ${pickedLocation!.longitude.toStringAsFixed(4)}"),
+                        child: AppText(
+                          pickedLocation == null
+                              ? "Выбрать место проведения 📍"
+                              : "широта: ${pickedLocation!.latitude.toStringAsFixed(4)} , долгота: ${pickedLocation!.longitude.toStringAsFixed(4)}",
+                          textColor: pickedLocation == null ? AppColors.orange : AppColors.backgroundCard,
+                        ),
                       ),
                     ),
                   ),
 
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 40),
 
                   // выбор артиста
-                  BlocBuilder<UserArtistsBloc, UserArtistsState>(
-                    builder: (context, state) {
-                      if (state is UserArtistsStateSelected) {
-                        pickedArtist ??= state.selectedArtist;
-                        if (pickedArtist != null) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const AppTitle("Кьл создает выступление?"),
-                              const SizedBox(height: 8),
-                              Wrap(
-                                spacing: 8,
-                                runSpacing: 8,
-                                children: [
-                                  for (final artist in state.allUserArtists)
-                                    CategoryChip(
+                  SizedBox(
+                    width: mediaQuery.size.width,
+                    child: BlocBuilder<UserArtistsBloc, UserArtistsState>(
+                      builder: (context, state) {
+                        if (state is UserArtistsStateSelected) {
+                          pickedArtist ??= state.selectedArtist;
+                          if (pickedArtist != null) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const AppTitle("Кто создает выступление?"),
+                                const SizedBox(height: 8),
+                                for (final artist in state.allUserArtists)
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: MainButton(
                                       childText: artist.name ?? "no_name",
-                                      gradient: pickedArtist!.id == artist.id ? AppGradients.main : AppGradients.first,
+                                      backgroundColor:
+                                          pickedArtist!.id == artist.id ? AppColors.orange : AppColors.backgroundCard,
+                                      textColor:
+                                          pickedArtist!.id == artist.id ? AppColors.textOnColors : AppColors.orange,
                                       onPressed: () {
                                         setState(() => pickedArtist = artist);
                                       },
                                     ),
-                                ],
-                              ),
-                            ],
-                          );
-                        }
-                      }
-                      if (state is UserArtistsStateLoading) {
-                        return const LoadingIndicator();
-                      }
-                      return const SizedBox.shrink();
-                    },
-                  ),
-
-                  const SizedBox(height: 16),
-                  const AppTitle("Когда пройдет выступление?"),
-                  const SizedBox(height: 16),
-
-                  // ввод даты начала выступления
-                  Row(
-                    children: [
-                      ChipWidget(
-                        onPressed: () async {
-                          final result = await showDatePicker(
-                            context: context,
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime.now().add(const Duration(days: 7)),
-                            initialDate: DateTime.now(),
-                          );
-                          if (result != null) setState(() => pickedStartDate = result);
-                        },
-                        text: "Дата начала",
-                      ),
-                      const SizedBox(width: 16),
-                      if (pickedStartDate != null)
-                        Text("${pickedStartDate!.day}.${pickedStartDate!.month}.${pickedStartDate!.year}"),
-                    ],
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  // ввод даты конца выступления
-                  Row(
-                    children: [
-                      ChipWidget(
-                        onPressed: () async {
-                          final result = await showDatePicker(
-                            context: context,
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime.now().add(const Duration(days: 7)),
-                            initialDate: DateTime.now(),
-                          );
-                          if (result != null) setState(() => pickedEndDate = result);
-                        },
-                        text: "Дата конца",
-                      ),
-                      const SizedBox(width: 16),
-                      if (pickedEndDate != null)
-                        Text("${pickedEndDate!.day}.${pickedEndDate!.month}.${pickedStartDate!.year}"),
-                    ],
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  // ввод времени начала выступления
-                  Row(
-                    children: [
-                      ChipWidget(
-                        onPressed: () async {
-                          final result = await showTimePicker(
-                            context: context,
-                            initialTime: TimeOfDay.now(),
-                            initialEntryMode: TimePickerEntryMode.input,
-                            builder: (BuildContext context, Widget? child) {
-                              return MediaQuery(
-                                  data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
-                            },
-                          );
-                          if (result != null) setState(() => pickedStartTime = result);
-                        },
-                        text: "Время начала",
-                      ),
-                      const SizedBox(width: 16),
-                      if (pickedStartTime != null) Text("${pickedStartTime!.hour}:${pickedStartTime!.minute}"),
-                    ],
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  // ввод времени конца выступления
-                  Row(
-                    children: [
-                      ChipWidget(
-                        onPressed: () async {
-                          final result = await showTimePicker(
-                            context: context,
-                            initialTime: TimeOfDay.now(),
-                            initialEntryMode: TimePickerEntryMode.input,
-                            builder: (BuildContext context, Widget? child) {
-                              return MediaQuery(
-                                  data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
-                            },
-                          );
-                          if (result != null) setState(() => pickedEndTime = result);
-                        },
-                        text: "Время конца",
-                      ),
-                      const SizedBox(width: 16),
-                      if (pickedEndTime != null) Text("${pickedEndTime!.hour}:${pickedEndTime!.minute}"),
-                    ],
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  // выбор главной категории
-                  BlocBuilder<CategoriesBloc, CategoriesState>(
-                    builder: (context, state) {
-                      if (state is CategoriesStateLoaded) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const AppTitle("Выберите категорию"),
-                            const SizedBox(height: 8),
-                            Wrap(
-                              spacing: 8,
-                              runSpacing: 8,
-                              children: [
-                                for (final cat in state.categories)
-                                  CategoryChip(
-                                    childText: cat.name,
-                                    gradient: pickedCategory?.id == cat.id ? AppGradients.main : AppGradients.first,
-                                    onPressed: () {
-                                      setState(() => pickedCategory = cat);
-                                      context
-                                          .read<SubcategoriesBloc>()
-                                          .add(SubcategoriesEventLoad(parentCategoryIds: [cat.id]));
-                                    },
                                   ),
                               ],
-                            ),
-                          ],
-                        );
-                      }
-                      if (state is CategoriesStateLoading) {
-                        return const LoadingIndicator();
-                      }
-                      return const SizedBox.shrink();
-                    },
-                  ),
-
-                  // выбор подкатегории
-                  if (pickedCategory != null)
-                    BlocBuilder<SubcategoriesBloc, SubcategoriesState>(
-                      builder: (context, state) {
-                        if (state is SubcategoriesStateLoaded) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 16),
-                              const AppTitle("Выберите подкатегории (макс.3)"),
-                              const SizedBox(height: 8),
-                              Wrap(
-                                spacing: 8,
-                                runSpacing: 8,
-                                children: [
-                                  for (final cat in state.subcategories)
-                                    CategoryChip(
-                                      childText: cat.name,
-                                      gradient:
-                                          pickedSubcategories.contains(cat) ? AppGradients.main : AppGradients.first,
-                                      onPressed: () {
-                                        if (pickedSubcategories.contains(cat)) {
-                                          pickedSubcategories.remove(cat);
-                                        } else {
-                                          if (pickedSubcategories.length < 3) {
-                                            pickedSubcategories.add(cat);
-                                          } else {
-                                            BotToast.showText(text: "Нельзя выбрать больше трех подкатегорий");
-                                          }
-                                        }
-                                        setState(() {});
-                                      },
-                                    ),
-                                ],
-                              ),
-                            ],
-                          );
+                            );
+                          }
                         }
-                        if (state is SubcategoriesStateLoading) {
+                        if (state is UserArtistsStateLoading) {
                           return const LoadingIndicator();
                         }
                         return const SizedBox.shrink();
                       },
                     ),
+                  ),
+
+                  const SizedBox(height: 40),
+                  const Align(child: AppTitle("Когда пройдет выступление?")),
+                  const SizedBox(height: 16),
+
+                  // ввод даты начала и конца выступления
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: MainButton(
+                          childText: pickedStartDate != null
+                              ? "${pickedStartDate!.day}.${pickedStartDate!.month}.${pickedStartDate!.year}"
+                              : "Дата начала",
+                          textColor: pickedStartDate != null ? AppColors.textOnColors : AppColors.orange,
+                          backgroundColor: pickedStartDate != null ? AppColors.orange : AppColors.backgroundCard,
+                          onPressed: () async {
+                            final result = await showDatePicker(
+                              context: context,
+                              firstDate: DateTime.now(),
+                              lastDate: DateTime.now().add(const Duration(days: 7)),
+                              initialDate: DateTime.now(),
+                            );
+                            if (result != null) setState(() => pickedStartDate = result);
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: MainButton(
+                          childText: pickedEndDate != null
+                              ? "${pickedEndDate!.day}.${pickedEndDate!.month}.${pickedEndDate!.year}"
+                              : "Дата конца",
+                          textColor: pickedEndDate != null ? AppColors.textOnColors : AppColors.orange,
+                          backgroundColor: pickedEndDate != null ? AppColors.orange : AppColors.backgroundCard,
+                          onPressed: () async {
+                            final result = await showDatePicker(
+                              context: context,
+                              firstDate: DateTime.now(),
+                              lastDate: DateTime.now().add(const Duration(days: 7)),
+                              initialDate: DateTime.now(),
+                            );
+                            if (result != null) setState(() => pickedEndDate = result);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // ввод времени начала и конца выступления
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: MainButton(
+                          childText: pickedStartTime != null
+                              ? "${pickedStartTime!.hour}:${pickedStartTime!.minute}"
+                              : "Время начала",
+                          textColor: pickedStartTime != null ? AppColors.textOnColors : AppColors.orange,
+                          backgroundColor: pickedStartTime != null ? AppColors.orange : AppColors.backgroundCard,
+                          onPressed: () async {
+                            final result = await showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay.now(),
+                              initialEntryMode: TimePickerEntryMode.input,
+                              builder: (BuildContext context, Widget? child) {
+                                return MediaQuery(
+                                    data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
+                              },
+                            );
+                            if (result != null) setState(() => pickedStartTime = result);
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: MainButton(
+                          childText:
+                              pickedEndTime != null ? "${pickedEndTime!.hour}:${pickedEndTime!.minute}" : "Время конца",
+                          textColor: pickedEndTime != null ? AppColors.textOnColors : AppColors.orange,
+                          backgroundColor: pickedEndTime != null ? AppColors.orange : AppColors.backgroundCard,
+                          onPressed: () async {
+                            final result = await showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay.now(),
+                              initialEntryMode: TimePickerEntryMode.input,
+                              builder: (BuildContext context, Widget? child) {
+                                return MediaQuery(
+                                    data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
+                              },
+                            );
+                            if (result != null) setState(() => pickedEndTime = result);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
 
                   const SizedBox(height: 32),
 
@@ -359,7 +395,7 @@ class _CreatePullPointScreenState extends State<CreatePullPointScreen> {
                         closePage();
                       }
                       return LongButton(
-                        backgroundGradient: AppGradients.main,
+                        backgroundColor: AppColors.orange,
                         child: (state is CreatePullPointStateLoading)
                             ? const LoadingIndicator()
                             : const AppText("Далее", textColor: Colors.white),

@@ -63,7 +63,10 @@ class PosterItemV2 extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          AppTitle(pullPoint.title),
+                          SizedBox(
+                            width: mediaqQuery.size.width - 90,
+                            child: AppTitle(pullPoint.title),
+                          ),
                           AppText(pullPoint.owner.name ?? "-"),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,12 +109,11 @@ class PosterItemV2 extends StatelessWidget {
                 const SizedBox(height: 16),
                 const AppTitle("Артисты"),
                 const SizedBox(height: 8),
-                TouchableOpacity(
-                  onPressed: () {},
+                GestureDetector(
+                  onTap: () {},
                   child: CategoryChip(
                     gradient: AppGradients.main,
                     childText: pullPoint.owner.name ?? "-",
-                    onPressed: () {},
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -129,16 +131,20 @@ class PosterItemV2 extends StatelessWidget {
                     spacing: 8,
                     runSpacing: 8,
                     children: [
-                      CategoryChip(
-                        gradient: AppGradients.first,
-                        childText: pullPoint.category.name,
-                        onPressed: () {},
+                      GestureDetector(
+                        onTap: () {},
+                        child: CategoryChip(
+                          gradient: AppGradients.first,
+                          childText: pullPoint.category.name,
+                        ),
                       ),
                       for (final subcategory in pullPoint.subcategories)
-                        CategoryChip(
-                          gradient: AppGradients.first,
-                          childText: subcategory.name,
-                          onPressed: () {},
+                        GestureDetector(
+                          onTap: () {},
+                          child: CategoryChip(
+                            gradient: AppGradients.first,
+                            childText: subcategory.name,
+                          ),
                         ),
                     ],
                   ),

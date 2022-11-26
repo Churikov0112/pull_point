@@ -41,13 +41,9 @@ class PullPointBottomSheetContent extends StatelessWidget {
             const SizedBox(height: 16),
             const AppTitle("Артисты"),
             const SizedBox(height: 8),
-            TouchableOpacity(
-              onPressed: () {},
-              child: CategoryChip(
-                gradient: AppGradients.main,
-                childText: pullPoint.owner.name ?? "-",
-                onPressed: () {},
-              ),
+            CategoryChip(
+              gradient: AppGradients.main,
+              childText: pullPoint.owner.name ?? "-",
             ),
             const SizedBox(height: 16),
             const AppTitle("Время начала и конца"),
@@ -67,13 +63,11 @@ class PullPointBottomSheetContent extends StatelessWidget {
                   CategoryChip(
                     gradient: AppGradients.first,
                     childText: pullPoint.category.name,
-                    onPressed: () {},
                   ),
                   for (final subcategory in pullPoint.subcategories)
                     CategoryChip(
                       gradient: AppGradients.first,
                       childText: subcategory.name,
-                      onPressed: () {},
                     ),
                 ],
               ),

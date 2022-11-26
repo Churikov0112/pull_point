@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart' show AlertDialog, IconButton, Icons, InputDecoration, TextButton, TextField, UnderlineInputBorder;
+import 'package:flutter/material.dart'
+    show AlertDialog, IconButton, Icons, InputDecoration, TextButton, TextField, UnderlineInputBorder;
 import 'package:flutter/widgets.dart';
 import '../../../../../../../domain/models/models.dart';
 import '../../../../../../static_methods/static_methods.dart';
@@ -30,12 +31,7 @@ class _MetroMultiselectState extends State<MetroMultiselect> {
   final List<MetroStationModel> searchedMetroStations = [];
 
   Widget _buildChipItem(MetroStationModel station) {
-    return CategoryChip(
-      backgroundColor: selectedMetroStations.contains(station)
-          ? StaticMethods.getColorByMetroLine(station.line)
-          : StaticMethods.getColorByMetroLine(station.line).withOpacity(0.5),
-      textColor: AppColors.textOnColors,
-      childText: station.title,
+    return TouchableOpacity(
       onPressed: () async {
         if (!selectedMetroStations.contains(station)) {
           setState(() => selectedMetroStations.add(station));
@@ -43,6 +39,13 @@ class _MetroMultiselectState extends State<MetroMultiselect> {
           setState(() => selectedMetroStations.remove(station));
         }
       },
+      child: CategoryChip(
+        backgroundColor: selectedMetroStations.contains(station)
+            ? StaticMethods.getColorByMetroLine(station.line)
+            : StaticMethods.getColorByMetroLine(station.line).withOpacity(0.5),
+        textColor: AppColors.textOnColors,
+        childText: station.title,
+      ),
     );
   }
 

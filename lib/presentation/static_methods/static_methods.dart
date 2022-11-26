@@ -64,6 +64,18 @@ abstract class StaticMethods {
     return filteredPullPoints;
   }
 
+  static List<PullPointModel> filterPullPointsByNotExpire({
+    required List<PullPointModel> pullPoints,
+  }) {
+    final List<PullPointModel> filteredPullPoints = [];
+    for (final pp in pullPoints) {
+      if (pp.endsAt.isAfter(DateTime.now())) {
+        filteredPullPoints.add(pp);
+      }
+    }
+    return filteredPullPoints;
+  }
+
   static List<PullPointModel> filterPullPointsByDate({
     required List<PullPointModel> pullPoints,
     required DateFilter? dateFilter,

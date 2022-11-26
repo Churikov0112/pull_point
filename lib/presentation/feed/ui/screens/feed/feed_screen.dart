@@ -51,6 +51,10 @@ class _FeedScreenState extends State<FeedScreen> {
                     List<PullPointModel> loadedPullPoints = pullPointsState.pullPoints;
                     return BlocBuilder<FeedFiltersBloc, FeedFiltersState>(
                       builder: (context, filtersState) {
+                        loadedPullPoints = StaticMethods.filterPullPointsByNotExpire(
+                          pullPoints: loadedPullPoints,
+                        );
+
                         // фильтрация пулл поинтов перед отрисовкой
                         if (filtersState is FeedFiltersFilteredState) {
                           loadedPullPoints = pullPointsState.pullPoints;
@@ -69,6 +73,9 @@ class _FeedScreenState extends State<FeedScreen> {
                           loadedPullPoints = StaticMethods.filterPullPointsByCategoriesAndSubcategories(
                             pullPoints: loadedPullPoints,
                             categoriesFilter: filtersState.filters['categories'] as CategoriesFilter?,
+                          );
+                          loadedPullPoints = StaticMethods.filterPullPointsByNotExpire(
+                            pullPoints: loadedPullPoints,
                           );
                         }
                         return Stack(
