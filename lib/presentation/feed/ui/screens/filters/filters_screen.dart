@@ -75,7 +75,7 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Фильтры"),
-        backgroundColor: AppColors.primary,
+        backgroundColor: AppColors.orange,
         actions: [
           TouchableOpacity(
             onPressed: _resetAll,
@@ -299,7 +299,8 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                       return const SizedBox.shrink();
                     },
                   ),
-                const SizedBox(height: 24),
+                const Spacer(),
+                // const SizedBox(height: 24),
                 LongButton(
                   onTap: () {
                     if (startTime != null && endTime == null) {
@@ -329,7 +330,7 @@ class _FeedFiltersScreenState extends State<FeedFiltersScreen> {
                     );
                     Navigator.of(context).pop();
                   },
-                  backgroundGradient: AppGradients.main,
+                  backgroundColor: AppColors.orange,
                   child: const Text("Применить", style: TextStyle(color: Colors.white)),
                 ),
               ],

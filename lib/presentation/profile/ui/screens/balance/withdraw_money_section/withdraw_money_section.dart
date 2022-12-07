@@ -27,7 +27,7 @@ class _WithdrawMoneySectionState extends State<WithdrawMoneySection> {
         FocusScope.of(context).unfocus();
       },
       child: SizedBox(
-        height: mediaQuery.size.height - mediaQuery.padding.top - 24 - 85,
+        height: mediaQuery.size.height - mediaQuery.padding.top - 182,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -37,7 +37,7 @@ class _WithdrawMoneySectionState extends State<WithdrawMoneySection> {
               child: Container(
                   width: mediaQuery.size.width,
                   decoration: BoxDecoration(
-                    color: AppColors.backgroundCard,
+                    color: AppColors.backgroundPage,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Padding(

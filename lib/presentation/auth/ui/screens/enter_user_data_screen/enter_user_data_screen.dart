@@ -43,11 +43,11 @@ class _EnterUserDataScreenState extends State<EnterUserDataScreen> {
           if (state is AuthStateUsernameInputed) _goToWannaBeArtistScreen(user: state.user);
 
           return Scaffold(
-            backgroundColor: AppColors.backgroundPage,
+            backgroundColor: AppColors.backgroundCard,
             body: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const GradientText(
                     gradient: AppGradients.main,
@@ -56,14 +56,16 @@ class _EnterUserDataScreenState extends State<EnterUserDataScreen> {
                       style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
                     ),
                   ),
+                  const SizedBox(height: 16),
                   AppTextFormField(
                     keyboardType: TextInputType.text,
                     hintText: "username",
                     maxLines: 1,
                     controller: usernameEditingController,
                   ),
+                  const SizedBox(height: 16),
                   LongButton(
-                    backgroundGradient: AppGradients.main,
+                    backgroundColor: AppColors.orange,
                     onTap: () {
                       if (usernameEditingController.text.isEmpty) {
                         BotToast.showText(text: "Введите имя пользователя");

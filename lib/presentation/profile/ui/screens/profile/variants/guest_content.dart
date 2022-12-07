@@ -33,7 +33,7 @@ class GuestContent extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: LongButton(
-                    backgroundGradient: AppGradients.main,
+                    backgroundColor: AppColors.orange,
                     child: const AppText("Авторизоваться", textColor: AppColors.textOnColors),
                     onTap: () {
                       context.read<AuthBloc>().add(const AuthEventOpenEmailPage());

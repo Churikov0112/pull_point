@@ -112,7 +112,7 @@ class PullPointBottomSheetContent extends StatelessWidget {
               padding: const EdgeInsets.only(top: 32),
               child: LongButton(
                 onTap: () {},
-                backgroundGradient: AppGradients.main,
+                backgroundColor: AppColors.orange,
                 child: const AppText("Пожертвовать", textColor: AppColors.textOnColors),
               ),
             ),

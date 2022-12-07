@@ -33,10 +33,16 @@ class BalanceInfoWidget extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              AppTitle("Баланс"),
-              AppTitle("100 🪙"),
+            children: [
+              const AppTitle("Баланс"),
+              const Spacer(),
+              const AppTitle("100"),
+              const SizedBox(width: 8),
+              Image.asset(
+                "assets/raster/images/coin.png",
+                height: 20,
+                width: 20,
+              ),
             ],
           ),
         ),

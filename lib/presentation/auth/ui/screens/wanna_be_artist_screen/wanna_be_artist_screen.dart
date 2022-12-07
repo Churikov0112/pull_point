@@ -55,11 +55,11 @@ class _WannaBeArtistScreenState extends State<WannaBeArtistScreen> {
         return WillPopScope(
           onWillPop: () async => false,
           child: Scaffold(
-            backgroundColor: AppColors.backgroundPage,
+            backgroundColor: AppColors.backgroundCard,
             body: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const GradientText(
                     gradient: AppGradients.main,
@@ -68,10 +68,11 @@ class _WannaBeArtistScreenState extends State<WannaBeArtistScreen> {
                       style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
                     ),
                   ),
+                  const SizedBox(height: 32),
                   Column(
                     children: [
                       LongButton(
-                        backgroundGradient: AppGradients.first,
+                        backgroundColor: AppColors.orange.withOpacity(0.5),
                         onTap: () {
                           context.read<AuthBloc>().add(AuthEventRegisterUser(user: widget.user));
                         },
@@ -79,7 +80,7 @@ class _WannaBeArtistScreenState extends State<WannaBeArtistScreen> {
                       ),
                       const SizedBox(height: 16),
                       LongButton(
-                        backgroundGradient: AppGradients.main,
+                        backgroundColor: AppColors.orange,
                         onTap: () {
                           context.read<AuthBloc>().add(AuthEventOpenUpdateArtistPage(user: widget.user));
                         },

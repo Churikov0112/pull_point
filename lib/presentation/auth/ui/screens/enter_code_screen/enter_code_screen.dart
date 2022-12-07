@@ -74,11 +74,11 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
           if (state is AuthStateEnterEmailPageOpened) _goToEnterEmailScreen();
           if (state is AuthStateCodeVerified) _goToUserRegisterScreen(user: state.user);
           return Scaffold(
-            backgroundColor: AppColors.backgroundPage,
+            backgroundColor: AppColors.backgroundCard,
             body: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
                     width: mediaQuery.size.width - 32,
@@ -90,6 +90,7 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 16),
                   if (state is AuthStateCodeSent)
                     SizedBox(
                       width: mediaQuery.size.width - 32,
@@ -101,6 +102,7 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
                         ),
                       ),
                     ),
+                  const SizedBox(height: 16),
                   Form(
                     child: AppTextFormField(
                       keyboardType: TextInputType.emailAddress,
@@ -110,8 +112,9 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
                       controller: codeEditingController,
                     ),
                   ),
+                  const SizedBox(height: 16),
                   LongButton(
-                    backgroundGradient: AppGradients.main,
+                    backgroundColor: AppColors.orange,
                     onTap: () {
                       if (codeEditingController.text.isEmpty) {
                         BotToast.showText(text: "Вы не ввели код");

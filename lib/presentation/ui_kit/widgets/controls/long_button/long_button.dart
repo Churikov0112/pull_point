@@ -5,7 +5,6 @@ class LongButton extends StatelessWidget {
   const LongButton({
     required this.child,
     this.backgroundColor,
-    this.backgroundGradient,
     this.isDisabled = false,
     this.onTap,
     Key? key,
@@ -14,7 +13,6 @@ class LongButton extends StatelessWidget {
   final Widget child;
   final Function()? onTap;
   final Color? backgroundColor;
-  final Gradient? backgroundGradient;
   final bool isDisabled;
 
   @override
@@ -27,15 +25,7 @@ class LongButton extends StatelessWidget {
         width: mediaQuery.size.width,
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(16)),
-          gradient: isDisabled
-              ? LinearGradient(
-                  colors: [
-                    AppColors.primary.withOpacity(0.1),
-                    AppColors.primary.withOpacity(0.1),
-                  ],
-                )
-              : backgroundGradient,
-          color: backgroundColor,
+          color: isDisabled ? AppColors.primary.withOpacity(0.1) : backgroundColor,
         ),
         child: Center(child: child),
       ),

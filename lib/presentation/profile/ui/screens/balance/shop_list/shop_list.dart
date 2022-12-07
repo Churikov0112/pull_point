@@ -21,11 +21,21 @@ class _ShopItemsListState extends State<ShopItemsList> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: 8),
-        for (final shopItem in shopItems) ShopItem(shopItem: shopItem),
-      ],
+    final meduaQuery = MediaQuery.of(context);
+    return SizedBox(
+      height: meduaQuery.size.height,
+      child: Column(
+        children: [
+          const SizedBox(height: 8),
+          for (int i = 0; i < shopItems.length; i++)
+            // for (final shopItem in shopItems)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: ShopItem(shopItem: shopItems[i]),
+            ),
+          const Spacer(),
+        ],
+      ),
     );
   }
 }

@@ -23,13 +23,13 @@ class _BalanceScreenState extends State<BalanceScreen> {
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         width: mediaQuery.size.width,
-        decoration: const BoxDecoration(color: AppColors.backgroundPage),
+        decoration: const BoxDecoration(color: AppColors.backgroundCard),
         child: SingleChildScrollView(
           child: Column(
             children: [
               SizedBox(height: mediaQuery.padding.top + 24),
               PullPointAppBar(
-                title: "Баланс - 100 монет",
+                title: "Менеджер финансов",
                 onBackPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -38,17 +38,41 @@ class _BalanceScreenState extends State<BalanceScreen> {
               SizedBox(
                 width: mediaQuery.size.width,
                 child: CupertinoSlidingSegmentedControl(
+                  thumbColor: AppColors.backgroundCard,
+                  backgroundColor: AppColors.backgroundPage,
                   groupValue: _groupSliderValue,
                   children: const {
-                    0: AppSubtitle("История"),
-                    1: AppSubtitle("Пополнить"),
-                    2: AppSubtitle("Вывести"),
+                    0: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      child: AppSubtitle("История"),
+                    ),
+                    1: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      child: AppSubtitle("Пополнить"),
+                    ),
+                    2: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      child: AppSubtitle("Вывести"),
+                    ),
                   },
                   onValueChanged: (newValue) {
                     setState(() => _groupSliderValue = int.parse(newValue.toString()));
                   },
                 ),
               ),
+              const SizedBox(height: 32),
+              Row(
+                children: [
+                  const AppTitle("Текущий баланс: 100"), // TODO заменить на реальный
+                  const SizedBox(width: 8),
+                  Image.asset(
+                    "assets/raster/images/coin.png",
+                    height: 20,
+                    width: 20,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
               if (_groupSliderValue == 0) const TransactionsList(),
               if (_groupSliderValue == 1) const ShopItemsList(),
               if (_groupSliderValue == 2) const WithdrawMoneySection(),

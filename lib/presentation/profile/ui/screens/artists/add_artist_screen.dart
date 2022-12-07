@@ -175,7 +175,7 @@ class __AddArtistScreenState extends State<AddArtistScreen> {
                   const SizedBox(height: 32),
 
                   LongButton(
-                    backgroundGradient: AppGradients.main,
+                    backgroundColor: AppColors.orange,
                     onTap: () {
                       if (artistNameEditingController.text.isEmpty) {
                         BotToast.showText(text: "Введите имя");

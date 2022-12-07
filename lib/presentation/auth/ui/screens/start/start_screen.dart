@@ -49,7 +49,7 @@ class StartScreen extends StatelessWidget {
                       context.read<AuthBloc>().add(const AuthEventOpenEmailPage());
                       // Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => const EnterEmailScreen()));
                     },
-                    backgroundGradient: AppGradients.main,
+                    backgroundColor: AppColors.orange,
                     child: const AppText("Авторизоваться", textColor: AppColors.textOnColors),
                   ),
                   const SizedBox(height: 16),

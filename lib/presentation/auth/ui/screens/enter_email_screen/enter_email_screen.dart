@@ -90,11 +90,12 @@ class _EnterEmailScreenState extends State<EnterEmailScreen> {
           // if (state is AuthStateAuthorized) _goToHomePage();
           if (state is AuthStateGuest) _goToHomePage();
           return Scaffold(
-            backgroundColor: AppColors.backgroundPage,
+            backgroundColor: AppColors.backgroundCard,
             body: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const GradientText(
                     gradient: AppGradients.main,
@@ -103,6 +104,7 @@ class _EnterEmailScreenState extends State<EnterEmailScreen> {
                       style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
                     ),
                   ),
+                  const SizedBox(height: 16),
                   Form(
                     child: AppTextFormField(
                       keyboardType: TextInputType.emailAddress,
@@ -111,8 +113,9 @@ class _EnterEmailScreenState extends State<EnterEmailScreen> {
                       controller: emailEditingController,
                     ),
                   ),
+                  const SizedBox(height: 16),
                   LongButton(
-                    backgroundGradient: AppGradients.main,
+                    backgroundColor: AppColors.orange,
                     onTap: () {
                       isValid = EmailValidator.validate(emailEditingController.text);
                       if (!isValid) {

@@ -22,6 +22,10 @@ class PosterItemV2 extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaqQuery = MediaQuery.of(context);
 
+    print(pullPoint.startsAt.toLocal());
+    print(DateTime.now().toLocal());
+    print(pullPoint.startsAt.toLocal().isBefore(DateTime.now().toLocal()));
+
     return Padding(
       padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
       child: Container(
@@ -150,35 +154,36 @@ class PosterItemV2 extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                const AppTitle("Метро рядом"),
-                const SizedBox(height: 8),
-                SizedBox(
-                  width: mediaqQuery.size.width,
-                  child: Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: [
-                      for (final metroStation in pullPoint.nearestMetroStations)
-                        ChipWithChild(
-                          backgroundColor: StaticMethods.getColorByMetroLine(metroStation.line),
-                          onPressed: () {},
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              AppText(metroStation.title, textColor: AppColors.textOnColors),
-                              const SizedBox(width: 8),
-                              Image.asset(
-                                "assets/raster/images/metro_logo.png",
-                                height: 16,
-                                width: 16,
-                                color: AppColors.iconsOnColors,
-                              ),
-                            ],
+                if (pullPoint.nearestMetroStations.isNotEmpty) const AppTitle("Метро рядом"),
+                if (pullPoint.nearestMetroStations.isNotEmpty) const SizedBox(height: 8),
+                if (pullPoint.nearestMetroStations.isNotEmpty)
+                  SizedBox(
+                    width: mediaqQuery.size.width,
+                    child: Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        for (final metroStation in pullPoint.nearestMetroStations)
+                          ChipWithChild(
+                            backgroundColor: StaticMethods.getColorByMetroLine(metroStation.line),
+                            onPressed: () {},
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                AppText(metroStation.title, textColor: AppColors.textOnColors),
+                                const SizedBox(width: 8),
+                                Image.asset(
+                                  "assets/raster/images/metro_logo.png",
+                                  height: 16,
+                                  width: 16,
+                                  color: AppColors.iconsOnColors,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
                 if (StaticMethods.isPullPointGoingNow(pullPoint))
                   Column(
                     children: [

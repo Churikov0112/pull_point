@@ -38,7 +38,7 @@ class _UserContentState extends State<UserContent> {
           if (state is AuthStateAuthorized) {
             return Column(
               children: [
-                const SizedBox(height: 100),
+                const SizedBox(height: 50),
                 UserInfoWidget(user: state.user),
                 const SizedBox(height: 16),
                 BalanceInfoWidget(user: state.user),
@@ -51,14 +51,15 @@ class _UserContentState extends State<UserContent> {
                   },
                 ),
                 // const ArtistInfoWidget(),
-                const SizedBox(height: 16),
+                const Spacer(),
                 LongButton(
-                  backgroundGradient: AppGradients.main,
+                  backgroundColor: AppColors.orange,
                   child: const AppText("Выйти", textColor: AppColors.textOnColors),
                   onTap: () {
                     context.read<AuthBloc>().add(const AuthEventLogout());
                   },
                 ),
+                const SizedBox(height: 16),
               ],
             );
           }

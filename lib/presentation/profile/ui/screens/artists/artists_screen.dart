@@ -96,7 +96,6 @@ class _ArtistsScreenState extends State<ArtistsScreen> {
                     return DecoratedBox(
                       decoration: const BoxDecoration(color: AppColors.backgroundPage),
                       child: Column(
-                        mainAxisSize: MainAxisSize.min,
                         children: [
                           SizedBox(height: mediaQuery.padding.top + 24),
                           PullPointAppBar(

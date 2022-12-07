@@ -29,7 +29,7 @@ class TransactionItem extends StatelessWidget {
       onPressed: () {},
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: AppColors.backgroundCard,
+          color: AppColors.backgroundPage,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Padding(
@@ -45,18 +45,29 @@ class TransactionItem extends StatelessWidget {
                   AppText(getTransactionDateTime()),
                 ],
               ),
-              AppSubtitle(
-                transaction.type == TransactionType.input
-                    ? "+ ${transaction.sum.toStringAsFixed(0)} 🪙"
-                    : transaction.type == TransactionType.output
-                        ? "- ${transaction.sum.toStringAsFixed(0)} 🪙"
-                        : "- ${transaction.sum.toStringAsFixed(0)} 🪙",
-                textColor: transaction.type == TransactionType.input
-                    ? AppColors.success
-                    : transaction.type == TransactionType.output
-                        ? AppColors.error
-                        : AppColors.text,
-              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AppSubtitle(
+                    transaction.type == TransactionType.input
+                        ? "+ ${transaction.sum.toStringAsFixed(0)}"
+                        : transaction.type == TransactionType.output
+                            ? "- ${transaction.sum.toStringAsFixed(0)}"
+                            : "- ${transaction.sum.toStringAsFixed(0)}",
+                    textColor: transaction.type == TransactionType.input
+                        ? AppColors.success
+                        : transaction.type == TransactionType.output
+                            ? AppColors.error
+                            : AppColors.text,
+                  ),
+                  const SizedBox(width: 8),
+                  Image.asset(
+                    "assets/raster/images/coin.png",
+                    height: 20,
+                    width: 20,
+                  ),
+                ],
+              )
             ],
           ),
         ),

@@ -32,6 +32,7 @@ class CreatePullPointBloc extends Bloc<CreatePullPointEvent, CreatePullPointStat
     );
     if (created) {
       emit(const CreatePullPointStateCreated());
+      BotToast.showText(text: "Pull Point успешно создан");
     } else {
       BotToast.showText(text: "Не удалось создать Pull Point");
       emit(const CreatePullPointStateInitial());
