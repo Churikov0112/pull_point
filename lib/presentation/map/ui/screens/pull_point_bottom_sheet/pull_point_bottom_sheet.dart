@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pull_point/presentation/map/ui/screens/map/marker_layer_widget/pull_point_bottom_sheet/widgets/pull_point_bottom_sheet_content.dart';
+import 'package:pull_point/presentation/map/ui/screens/pull_point_bottom_sheet/widgets/pull_point_bottom_sheet_content.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-import '../../../../../../../domain/models/models.dart';
+import '../../../../../domain/models/models.dart';
 import 'widgets/widgets.dart';
 
 class PullPointBottomSheet extends StatelessWidget {

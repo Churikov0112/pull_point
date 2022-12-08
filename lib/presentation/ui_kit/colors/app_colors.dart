@@ -18,4 +18,5 @@ class AppColors {
   static const grey = Color.fromRGBO(194, 194, 194, 1);
   static const orange = Color.fromRGBO(248, 64, 3, 1);
   static const blue = Color.fromRGBO(120, 161, 255, 1);
+  static const pink = Color.fromARGB(255, 255, 145, 167);
 }

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart' show Divider, Icons;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../../../domain/models/models.dart';
-import '../../../../../../../blocs/blocs.dart';
-import '../../../../../../../ui_kit/ui_kit.dart';
+import '../../../../../../domain/models/models.dart';
+import '../../../../../blocs/blocs.dart';
+import '../../../../../ui_kit/ui_kit.dart';
 
 class PullPointBottomSheetHeader extends StatelessWidget {
   const PullPointBottomSheetHeader({

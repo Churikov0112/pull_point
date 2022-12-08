@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart' show Colors;
+import 'package:flutter/material.dart' show Colors, MaterialPageRoute;
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:pull_point/presentation/artist/artist_guest_screen.dart';
 
-import '../../../../../../../../domain/models/models.dart';
-import '../../../../../../../static_methods/static_methods.dart';
-import '../../../../../../../ui_kit/ui_kit.dart';
+import '../../../../../../domain/models/models.dart';
+import '../../../../../static_methods/static_methods.dart';
+import '../../../../../ui_kit/ui_kit.dart';
 
 // bool _isActive({
 //   required PullPointModel pp,
@@ -41,9 +42,18 @@ class PullPointBottomSheetContent extends StatelessWidget {
             const SizedBox(height: 16),
             const AppTitle("Артисты"),
             const SizedBox(height: 8),
-            CategoryChip(
-              gradient: AppGradients.main,
-              childText: pullPoint.owner.name ?? "-",
+            TouchableOpacity(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) => ArtistGuestScreen(artist: pullPoint.owner),
+                  ),
+                );
+              },
+              child: CategoryChip(
+                gradient: AppGradients.main,
+                childText: pullPoint.owner.name ?? "-",
+              ),
             ),
             const SizedBox(height: 16),
             const AppTitle("Время начала и конца"),
