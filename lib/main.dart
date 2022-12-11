@@ -4,11 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:pull_point/presentation/auth/ui/screens/screens.dart';
+import 'package:pull_point/presentation/blocs/user/wallet_bloc/wallet_bloc.dart';
 import 'package:pull_point/presentation/home/home_page.dart';
 
 import 'data/data.dart';
 import 'domain/domain.dart';
 import 'presentation/blocs/blocs.dart';
+import 'presentation/blocs/user/create_wallet_bloc/create_wallet_bloc.dart';
 import 'presentation/ui_kit/ui_kit.dart';
 
 late Box<UserModel?> userBox;
@@ -34,6 +36,7 @@ class MyApp extends StatelessWidget {
     // final MapFiltersRepositoryInterface mapFiltersRepository = MapFiltersRepositoryImpl();
     final FeedFiltersRepositoryInterface feedFiltersRepository = FeedFiltersRepositoryImpl();
     final CategoriesRepositoryInterface categoriesRepository = CategoriesRepositoryImpl();
+    final WalletRepositoryInterface walletRepository = WalletRepositoryImpl(userBox: userBox);
 
     return MultiBlocProvider(
       providers: [
@@ -51,6 +54,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<SubcategoriesBloc>(
             create: (context) => SubcategoriesBloc(categoriesRepository: categoriesRepository)),
         BlocProvider<ArtistsBloc>(create: (context) => ArtistsBloc(artistsRepository: artistsRepository)),
+        BlocProvider<CreateWalletBloc>(create: (context) => CreateWalletBloc(walletRepository: walletRepository)),
+        BlocProvider<WalletBloc>(create: (context) => WalletBloc(walletRepository: walletRepository)),
         BlocProvider<AddArtistBloc>(create: (context) => AddArtistBloc(artistsRepository: artistsRepository)),
         BlocProvider<DeleteArtistBloc>(create: (context) => DeleteArtistBloc(artistsRepository: artistsRepository)),
         BlocProvider<UserArtistsBloc>(create: (context) => UserArtistsBloc(artistsRepository: artistsRepository)),

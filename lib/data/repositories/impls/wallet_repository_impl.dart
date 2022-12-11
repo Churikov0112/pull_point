@@ -33,16 +33,23 @@ class WalletRepositoryImpl implements WalletRepositoryInterface {
   }
 
   @override
-  Future<WalletModel?> createUserWallet() async {
+  Future<WalletModel?> createUserWallet({
+    required String cardNumber,
+  }) async {
     final response = await CreateUserWalletRequest.send(
+      cardNumber: cardNumber,
       jwt: userBox.get("user")?.accessToken,
     );
+
+    print(response.statusCode);
 
     if (response.statusCode == 200) {
       String source = const Utf8Decoder().convert(response.bodyBytes);
       final decodedResponse = jsonDecode(source);
       userWallet = WalletModel.fromJson(decodedResponse);
     }
+
+    print(userWallet.toString());
 
     return userWallet;
   }
@@ -85,13 +92,13 @@ class WalletRepositoryImpl implements WalletRepositoryInterface {
     return response.statusCode == 200;
   }
 
-  @override
-  Future<WalletModel?> updateUserWallet({
-    required String cardNumber,
-    required String cardExpireDate,
-    required String cardCVV,
-  }) async {
-    // TODO: implement updateUserWallet
-    throw UnimplementedError();
-  }
+  // @override
+  // Future<WalletModel?> updateUserWallet({
+  //   required String cardNumber,
+  //   required String cardExpireDate,
+  //   required String cardCVV,
+  // }) async {
+  //   // TODO: implement updateUserWallet
+  //   throw UnimplementedError();
+  // }
 }

@@ -21,6 +21,7 @@ class _UserContentState extends State<UserContent> {
     if (authState is AuthStateAuthorized) {
       if (authState.user.isArtist == true) {
         context.read<UserArtistsBloc>().add(UserArtistsEventLoad(userId: authState.user.id));
+        context.read<WalletBloc>().add(const WalletEventGet(needUpdate: true));
       }
     }
     super.initState();
@@ -41,7 +42,7 @@ class _UserContentState extends State<UserContent> {
                 const SizedBox(height: 50),
                 UserInfoWidget(user: state.user),
                 const SizedBox(height: 16),
-                BalanceInfoWidget(user: state.user),
+                const BalanceInfoWidget(),
                 const SizedBox(height: 16),
                 BlocBuilder<UserArtistsBloc, UserArtistsState>(
                   builder: (context, state) {

@@ -6,6 +6,19 @@ enum TransactionType {
   output,
 }
 
+TransactionType _transactionTypeFromString(String type) {
+  switch (type) {
+    case "INPUT":
+      return TransactionType.input;
+    case "TRANSFER":
+      return TransactionType.transfer;
+    case "OUTPUT":
+      return TransactionType.output;
+    default:
+      return TransactionType.transfer;
+  }
+}
+
 class TransactionModel {
   final int id;
   final TransactionType type;
@@ -22,9 +35,9 @@ class TransactionModel {
   static TransactionModel fromJson(dynamic source) {
     return TransactionModel(
       id: source['id'],
-      type: source['type'],
+      type: _transactionTypeFromString(source["type"]),
       sum: source['sum'],
-      dateTime: DateTime.parse(source['dateTime']),
+      dateTime: DateTime.parse(source['timestamp']),
     );
   }
 }

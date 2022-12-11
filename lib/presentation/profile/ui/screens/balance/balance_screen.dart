@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/presentation/profile/ui/screens/balance/transactions_list/transactions_list.dart';
 import 'package:pull_point/presentation/profile/ui/screens/balance/withdraw_money_section/withdraw_money_section.dart';
 
+import '../../../../blocs/blocs.dart';
 import '../../../../ui_kit/ui_kit.dart';
 import 'shop_list/shop_list.dart';
 
@@ -61,21 +63,34 @@ class _BalanceScreenState extends State<BalanceScreen> {
                 ),
               ),
               const SizedBox(height: 32),
-              Row(
-                children: [
-                  const AppTitle("Текущий баланс: 100"), // TODO заменить на реальный
-                  const SizedBox(width: 8),
-                  Image.asset(
-                    "assets/raster/images/coin.png",
-                    height: 20,
-                    width: 20,
-                  ),
-                ],
+              BlocBuilder<WalletBloc, WalletState>(
+                builder: (context, walletState) {
+                  if (walletState is WalletStateLoaded) {
+                    if (walletState.wallet != null) {
+                      return Column(
+                        children: [
+                          Row(
+                            children: [
+                              AppTitle("Текущий баланс: ${walletState.wallet!.balance}"),
+                              const SizedBox(width: 8),
+                              Image.asset(
+                                "assets/raster/images/coin.png",
+                                height: 20,
+                                width: 20,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          if (_groupSliderValue == 0) const TransactionsList(),
+                          if (_groupSliderValue == 1) const ShopItemsList(),
+                          if (_groupSliderValue == 2) const WithdrawMoneySection(),
+                        ],
+                      );
+                    }
+                  }
+                  return const SizedBox.shrink();
+                },
               ),
-              const SizedBox(height: 8),
-              if (_groupSliderValue == 0) const TransactionsList(),
-              if (_groupSliderValue == 1) const ShopItemsList(),
-              if (_groupSliderValue == 2) const WithdrawMoneySection(),
             ],
           ),
         ),
