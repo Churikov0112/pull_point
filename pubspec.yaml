@@ -10,20 +10,15 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.2
-
   # Value equality
   equatable: ^2.0.3
   
   # Remote API
   http: ^0.13.4
-  internet_connection_checker: ^0.0.1+4
 
   # Local cache
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-
-  # For OS-specific directory paths
   path_provider: ^2.0.11
 
   # Bloc / Cubit for state management
@@ -48,6 +43,10 @@ dependencies:
   email_validator: ^2.1.17
   mask_text_input_formatter: ^2.4.0
 
+  # QR
+  qr_flutter: ^4.0.0
+  mobile_scanner: ^2.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -56,9 +55,6 @@ dev_dependencies:
   # code gen
   hive_generator: ^1.1.3
   build_runner: ^2.2.0
-
-  # QR
-  mobile_scanner: ^2.1.0
 
 flutter:
   uses-material-design: true

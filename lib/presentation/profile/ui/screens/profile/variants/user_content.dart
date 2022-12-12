@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pull_point/presentation/profile/ui/screens/profile/widgets/user_qr_widget.dart';
 
 import '../../../../../blocs/blocs.dart';
 import '../../../../../ui_kit/ui_kit.dart';
@@ -52,26 +53,23 @@ class _UserContentState extends State<UserContent> {
       child: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          height: mediaQuery.size.height,
+          height: mediaQuery.size.height + 48,
           width: mediaQuery.size.width,
           decoration: const BoxDecoration(color: AppColors.backgroundPage),
           child: BlocBuilder<AuthBloc, AuthState>(
-            builder: (context, state) {
-              if (state is AuthStateAuthorized) {
+            builder: (context, authState) {
+              if (authState is AuthStateAuthorized) {
                 return Column(
                   children: [
                     const SizedBox(height: 50),
-                    UserInfoWidget(user: state.user),
+                    UserInfoWidget(user: authState.user),
                     const SizedBox(height: 16),
                     const BalanceInfoWidget(),
                     const SizedBox(height: 16),
-                    BlocBuilder<UserArtistsBloc, UserArtistsState>(
-                      builder: (context, state) {
-                        if (state is UserArtistsStateLoading) return const LoadingIndicator();
-                        if (state is UserArtistsStateSelected) return const ArtistInfoWidget();
-                        return const SizedBox.shrink();
-                      },
-                    ),
+                    const ArtistInfoWidget(),
+                    const SizedBox(height: 16),
+                    const ArtistQRWidget(),
+                    const SizedBox(height: 16),
                     // const ArtistInfoWidget(),
                     const Spacer(),
                     LongButton(
@@ -88,6 +86,7 @@ class _UserContentState extends State<UserContent> {
                   ],
                 );
               }
+
               return const SizedBox.shrink();
             },
           ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart'
-    show CircularProgressIndicator, Colors, FloatingActionButton, Icons, MaterialPageRoute;
+    show CircularProgressIndicator, Colors, FloatingActionButton, Icons, MaterialPageRoute, RefreshIndicator;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
@@ -32,6 +32,10 @@ class _FeedScreenState extends State<FeedScreen> {
     }
     setState(() => loadingLocation = false);
     return userLocation;
+  }
+
+  void refreshPullPoints() {
+    context.read<PullPointsBloc>().add(const PullPointsEventLoad());
   }
 
   @override
@@ -83,17 +87,24 @@ class _FeedScreenState extends State<FeedScreen> {
                             SizedBox(
                               height: mediaQuery.size.height - mediaQuery.padding.top - 56,
                               width: mediaQuery.size.width,
-                              child: ListView.builder(
-                                padding: const EdgeInsets.only(top: 16),
-                                itemCount: loadedPullPoints.length,
-                                itemBuilder: (context, index) {
-                                  return PosterItemV2(
-                                    pullPoint: loadedPullPoints[index],
-                                    userLocation: _currentUserLocation != null
-                                        ? LatLng(_currentUserLocation!.latitude, _currentUserLocation!.longitude)
-                                        : null,
-                                  );
+                              child: RefreshIndicator(
+                                displacement: 100,
+                                color: AppColors.orange,
+                                onRefresh: () async {
+                                  refreshPullPoints();
                                 },
+                                child: ListView.builder(
+                                  padding: const EdgeInsets.only(top: 16),
+                                  itemCount: loadedPullPoints.length,
+                                  itemBuilder: (context, index) {
+                                    return PosterItemV2(
+                                      pullPoint: loadedPullPoints[index],
+                                      userLocation: _currentUserLocation != null
+                                          ? LatLng(_currentUserLocation!.latitude, _currentUserLocation!.longitude)
+                                          : null,
+                                    );
+                                  },
+                                ),
                               ),
                             ),
 
@@ -116,9 +127,7 @@ class _FeedScreenState extends State<FeedScreen> {
                     );
                   }
                   if (pullPointsState is PullPointsStateLoading) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return const Center(child: CircularProgressIndicator(color: AppColors.orange));
                   }
                   return const SizedBox.shrink();
                 },
