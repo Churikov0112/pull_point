@@ -5,8 +5,9 @@ export 'artist/user_artists_bloc/user_artists_bloc.dart';
 
 export 'user/auth_bloc/auth_bloc.dart';
 
-export 'user/wallet_bloc/wallet_bloc.dart';
-export 'user/create_wallet_bloc/create_wallet_bloc.dart';
+export 'wallet/wallet_bloc/wallet_bloc.dart';
+export 'wallet/wallet_adding_money_bloc/wallet_adding_money_bloc.dart';
+export 'wallet/create_wallet_bloc/create_wallet_bloc.dart';
 
 export 'category/categories_bloc/categories_bloc.dart';
 export 'category/subcategories_bloc/subcategories_bloc.dart';

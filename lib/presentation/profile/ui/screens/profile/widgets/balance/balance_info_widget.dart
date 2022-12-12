@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/domain/domain.dart';
-import 'package:pull_point/presentation/blocs/user/wallet_bloc/wallet_bloc.dart';
+import '../../../../../../blocs/blocs.dart';
 import '../../../../../../ui_kit/ui_kit.dart';
 import '../../../balance/balance_screen.dart';
 import '../../../create_wallet/create_wallet_screen.dart';
@@ -21,6 +21,10 @@ class BalanceInfoWidget extends StatelessWidget {
           } else {
             return _WalletCreate();
           }
+        }
+
+        if (state is WalletStatePending) {
+          return _WalletLoading();
         }
 
         if (state is WalletStateFailed) {
@@ -127,5 +131,12 @@ class _WalletError extends StatelessWidget {
         child: AppTitle(reason),
       ),
     );
+  }
+}
+
+class _WalletLoading extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const CircularProgressIndicator(color: AppColors.orange);
   }
 }

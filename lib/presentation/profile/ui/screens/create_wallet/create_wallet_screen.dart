@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:pull_point/presentation/blocs/user/create_wallet_bloc/create_wallet_bloc.dart';
 
+import '../../../../blocs/blocs.dart';
 import '../../../../ui_kit/ui_kit.dart';
 
 class CreateWalletScreen extends StatelessWidget {

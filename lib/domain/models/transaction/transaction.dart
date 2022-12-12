@@ -22,7 +22,7 @@ TransactionType _transactionTypeFromString(String type) {
 class TransactionModel {
   final int id;
   final TransactionType type;
-  final double sum;
+  final int sum;
   final DateTime dateTime;
 
   const TransactionModel({

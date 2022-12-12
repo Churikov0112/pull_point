@@ -24,6 +24,7 @@ class ArtistsBloc extends Bloc<ArtistsEvent, ArtistsState> {
       categoryId: event.categoryId,
       subcategoryIds: event.subcategoryIds,
     );
+
     if (artists.isNotEmpty) {
       emit(ArtistsStateLoaded(artists: artists));
     } else {

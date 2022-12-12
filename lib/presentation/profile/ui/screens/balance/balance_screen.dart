@@ -65,6 +65,15 @@ class _BalanceScreenState extends State<BalanceScreen> {
               const SizedBox(height: 32),
               BlocBuilder<WalletBloc, WalletState>(
                 builder: (context, walletState) {
+                  if (walletState is WalletStatePending) {
+                    return const Center(
+                      child: LinearProgressIndicator(
+                        color: AppColors.orange,
+                        backgroundColor: AppColors.surface,
+                      ),
+                    );
+                  }
+
                   if (walletState is WalletStateLoaded) {
                     if (walletState.wallet != null) {
                       return Column(

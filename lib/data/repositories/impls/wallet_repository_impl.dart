@@ -41,15 +41,11 @@ class WalletRepositoryImpl implements WalletRepositoryInterface {
       jwt: userBox.get("user")?.accessToken,
     );
 
-    print(response.statusCode);
-
     if (response.statusCode == 200) {
       String source = const Utf8Decoder().convert(response.bodyBytes);
       final decodedResponse = jsonDecode(source);
       userWallet = WalletModel.fromJson(decodedResponse);
     }
-
-    print(userWallet.toString());
 
     return userWallet;
   }
