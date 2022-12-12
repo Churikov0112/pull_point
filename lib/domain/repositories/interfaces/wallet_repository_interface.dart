@@ -5,7 +5,7 @@ abstract class WalletRepositoryInterface {
   Future<WalletModel?> createUserWallet({required String cardNumber});
 
   /// Получение внутреннего кошелька
-  Future<WalletModel?> getUserWallet({required bool needUpdate});
+  Future<WalletModel?> getUserWallet();
 
   /// Покупка внутренней валюты, пополнение кошелька
   Future<bool> buyCoins({required int sum});

@@ -57,6 +57,9 @@ class _UserContentState extends State<UserContent> {
                   backgroundColor: AppColors.orange,
                   child: const AppText("Выйти", textColor: AppColors.textOnColors),
                   onTap: () async {
+                    context.read<UserArtistsBloc>().add(const UserArtistsEventResetSelectOnLogout());
+                    context.read<FeedFiltersBloc>().add(const ResetFeedFiltersEvent());
+
                     context.read<AuthBloc>().add(const AuthEventLogout());
                   },
                 ),

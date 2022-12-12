@@ -24,3 +24,7 @@ class UserArtistsEventSelect extends UserArtistsEvent {
     required this.userId,
   });
 }
+
+class UserArtistsEventResetSelectOnLogout extends UserArtistsEvent {
+  const UserArtistsEventResetSelectOnLogout();
+}

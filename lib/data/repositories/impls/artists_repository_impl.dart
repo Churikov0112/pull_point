@@ -152,4 +152,10 @@ class ArtistsRepositoryImpl extends ArtistsRepositoryInterface {
 
     return userArtists;
   }
+
+  @override
+  void unselectArtistOnLogout() {
+    userArtists.clear();
+    selectedArtist = null;
+  }
 }

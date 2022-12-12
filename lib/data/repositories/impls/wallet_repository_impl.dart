@@ -8,24 +8,18 @@ import '../../http_requests/http_requests.dart';
 class WalletRepositoryImpl implements WalletRepositoryInterface {
   WalletRepositoryImpl();
 
-  WalletModel? userWallet;
-
   @override
-  Future<WalletModel?> getUserWallet({
-    required bool needUpdate,
-  }) async {
-    if (needUpdate) {
-      final response = await GetUserWalletRequest.send(
-        jwt: main.userBox.get("user")?.accessToken,
-      );
+  Future<WalletModel?> getUserWallet() async {
+    final response = await GetUserWalletRequest.send(
+      jwt: main.userBox.get("user")?.accessToken,
+    );
 
-      if (response.statusCode == 200) {
-        String source = const Utf8Decoder().convert(response.bodyBytes);
-        final decodedResponse = jsonDecode(source);
-        userWallet = WalletModel.fromJson(decodedResponse);
-      }
+    if (response.statusCode == 200) {
+      String source = const Utf8Decoder().convert(response.bodyBytes);
+      final decodedResponse = jsonDecode(source);
+      return WalletModel.fromJson(decodedResponse);
     }
-    return userWallet;
+    return null;
   }
 
   @override
@@ -40,10 +34,10 @@ class WalletRepositoryImpl implements WalletRepositoryInterface {
     if (response.statusCode == 200) {
       String source = const Utf8Decoder().convert(response.bodyBytes);
       final decodedResponse = jsonDecode(source);
-      userWallet = WalletModel.fromJson(decodedResponse);
+      return WalletModel.fromJson(decodedResponse);
     }
 
-    return userWallet;
+    return null;
   }
 
   @override

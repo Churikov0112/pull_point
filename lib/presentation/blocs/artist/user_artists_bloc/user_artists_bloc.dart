@@ -16,6 +16,7 @@ class UserArtistsBloc extends Bloc<UserArtistsEvent, UserArtistsState> {
         super(const UserArtistsStateInitial()) {
     on<UserArtistsEventLoad>(_load);
     on<UserArtistsEventSelect>(_select);
+    on<UserArtistsEventResetSelectOnLogout>(_reset);
   }
 
   Future<void> _load(UserArtistsEventLoad event, Emitter<UserArtistsState> emit) async {
@@ -38,5 +39,9 @@ class UserArtistsBloc extends Bloc<UserArtistsEvent, UserArtistsState> {
     } else {
       BotToast.showText(text: "Произошла ошибка при выборе артиста");
     }
+  }
+
+  Future<void> _reset(UserArtistsEventResetSelectOnLogout event, Emitter<UserArtistsState> emit) async {
+    _artistsRepository.unselectArtistOnLogout();
   }
 }

@@ -35,5 +35,7 @@ abstract class ArtistsRepositoryInterface {
     required int artistId,
   });
 
+  void unselectArtistOnLogout();
+
   ArtistModel? getSelectedArtist();
 }

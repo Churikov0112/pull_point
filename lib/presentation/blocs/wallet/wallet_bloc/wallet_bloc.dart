@@ -18,7 +18,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   Future<void> _getWallet(WalletEventGet event, Emitter<WalletState> emit) async {
     emit(const WalletStateInitial());
     emit(const WalletStatePending());
-    final wallet = await _walletRepository.getUserWallet(needUpdate: event.needUpdate);
+    final wallet = await _walletRepository.getUserWallet();
     await Future.delayed(const Duration(milliseconds: 1000));
     if (wallet != null) {
       emit(WalletStateLoaded(wallet: wallet));
