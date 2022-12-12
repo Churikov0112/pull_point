@@ -100,6 +100,23 @@ class _DonationScreenState extends State<DonationScreen> {
                           },
                         ),
                         const SizedBox(height: 32),
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                AppTitle("Текущий баланс: ${walletState.wallet!.balance}"),
+                                const SizedBox(width: 8),
+                                Image.asset(
+                                  "assets/raster/images/coin.png",
+                                  height: 20,
+                                  width: 20,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
                         AppTextFormField(
                           controller: controller,
                           hintText: "Какую сумму Вы хотите пожертвовать?",
