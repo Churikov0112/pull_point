@@ -14,3 +14,7 @@ class WalletEventGet extends WalletEvent {
     required this.needUpdate,
   });
 }
+
+class WalletEventReset extends WalletEvent {
+  const WalletEventReset();
+}

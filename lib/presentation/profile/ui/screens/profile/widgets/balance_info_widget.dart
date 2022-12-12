@@ -15,6 +15,8 @@ class BalanceInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<WalletBloc, WalletState>(
       builder: (context, state) {
+        print(state);
+
         if (state is WalletStateLoaded) {
           if (state.wallet != null) {
             return _WalletLoaded(wallet: state.wallet!);

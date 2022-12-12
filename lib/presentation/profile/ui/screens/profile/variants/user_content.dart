@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pull_point/main.dart';
 import 'package:pull_point/presentation/profile/ui/screens/profile/widgets/user_qr_widget.dart';
 
 import '../../../../../blocs/blocs.dart';
@@ -23,21 +24,26 @@ class _UserContentState extends State<UserContent> {
     authBloc = context.read<AuthBloc>();
     final authState = authBloc.state;
     if (authState is AuthStateAuthorized) {
-      if (authState.user.isArtist == true) {
-        refreshData(userId: authState.user.id);
-      }
+      refreshData(userId: authState.user.id);
     }
     super.initState();
   }
 
   void refreshData({required int userId}) {
-    context.read<UserArtistsBloc>().add(UserArtistsEventLoad(userId: userId));
     context.read<WalletBloc>().add(const WalletEventGet(needUpdate: true));
+
+    final authState = authBloc.state;
+    if (authState is AuthStateAuthorized) {
+      if (authState.user.isArtist ?? false) {
+        context.read<UserArtistsBloc>().add(UserArtistsEventLoad(userId: userId));
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
+
     return RefreshIndicator(
       displacement: 100,
       color: AppColors.orange,
@@ -45,15 +51,13 @@ class _UserContentState extends State<UserContent> {
         await Future.delayed(const Duration(milliseconds: 300));
         final authState = authBloc.state;
         if (authState is AuthStateAuthorized) {
-          if (authState.user.isArtist == true) {
-            refreshData(userId: authState.user.id);
-          }
+          refreshData(userId: authState.user.id);
         }
       },
       child: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          height: mediaQuery.size.height + 48,
+          height: mediaQuery.size.height,
           width: mediaQuery.size.width,
           decoration: const BoxDecoration(color: AppColors.backgroundPage),
           child: BlocBuilder<AuthBloc, AuthState>(
@@ -66,11 +70,9 @@ class _UserContentState extends State<UserContent> {
                     const SizedBox(height: 16),
                     const BalanceInfoWidget(),
                     const SizedBox(height: 16),
-                    const ArtistInfoWidget(),
+                    if (authState.user.isArtist ?? false) const ArtistInfoWidget(),
                     const SizedBox(height: 16),
-                    const ArtistQRWidget(),
-                    const SizedBox(height: 16),
-                    // const ArtistInfoWidget(),
+                    if (authState.user.isArtist ?? false) const ArtistQRWidget(),
                     const Spacer(),
                     LongButton(
                       backgroundColor: AppColors.orange,
@@ -78,6 +80,7 @@ class _UserContentState extends State<UserContent> {
                       onTap: () async {
                         context.read<UserArtistsBloc>().add(const UserArtistsEventResetSelectOnLogout());
                         context.read<FeedFiltersBloc>().add(const ResetFeedFiltersEvent());
+                        context.read<WalletBloc>().add(const WalletEventReset());
 
                         context.read<AuthBloc>().add(const AuthEventLogout());
                       },

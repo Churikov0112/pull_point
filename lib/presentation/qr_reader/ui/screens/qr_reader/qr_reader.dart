@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart' show MaterialPageRoute;
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 import 'package:flutter/widgets.dart';
 
+import '../../../../../data/http_requests/artist/get_artists.dart';
+import '../../../../../data/http_requests/backend_config/backend_config.dart';
+import '../../../../../domain/models/models.dart';
 import '../../../../artist/artist_guest_screen.dart';
 
 class QrReaderScreen extends StatefulWidget {
@@ -22,25 +27,34 @@ class _QrReaderScreenState extends State<QrReaderScreen> {
   }
 
   @override
-  void didChangeDependencies() {
-    cameraController.start();
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    print("cameraController.hashCode ${cameraController.hashCode}");
+    final navigator = Navigator.of(context);
     return MobileScanner(
       controller: cameraController,
       allowDuplicates: false,
-      onDetect: (barcode, args) {
-        if (barcode.rawValue == null) {
-          debugPrint('Failed to scan Barcode');
-        } else {
+      onDetect: (barcode, args) async {
+        if (barcode.rawValue != null) {
           final String code = barcode.rawValue!;
-          debugPrint('Barcode found! $code');
-          // Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => ArtistGuestScreen()));
-          cameraController.stop();
+
+          if (code.contains("${BackendConfig.baseUrl}/artist/")) {
+            final response = await GetArtistsRequest.send(
+              search: code.replaceAll("${BackendConfig.baseUrl}/artist/", ""),
+              categoryId: null,
+              subcategoryIds: null,
+            );
+            String source = const Utf8Decoder().convert(response.bodyBytes);
+            final decodedResponse = jsonDecode(source);
+            if ((decodedResponse as List).isNotEmpty) {
+              final artist = ArtistModel.fromJson((decodedResponse).first);
+              if (response.statusCode == 200) {
+                navigator.push(
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) => ArtistGuestScreen(artist: artist),
+                  ),
+                );
+              }
+            }
+          }
         }
       },
     );

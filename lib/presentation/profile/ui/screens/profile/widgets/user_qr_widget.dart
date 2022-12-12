@@ -30,7 +30,7 @@ class ArtistQRWidget extends StatelessWidget {
                   child: QrImage(
                     data: "${BackendConfig.baseUrl}/artist/${userArtistsState.selectedArtist.name}",
                     version: QrVersions.auto,
-                    size: 200.0,
+                    size: 200,
                   ),
                 ),
               ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pull_point/presentation/donation/donation_screen.dart';
 
 import '../../domain/models/models.dart';
 import '../ui_kit/ui_kit.dart';
@@ -94,7 +95,13 @@ class ArtistGuestScreen extends StatelessWidget {
       floatingActionButton: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: LongButton(
-          onTap: () {},
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => DonationScreen(artist: artist),
+              ),
+            );
+          },
           backgroundColor: AppColors.orange,
           child: const AppText("Пожертвовать", textColor: AppColors.textOnColors),
         ),

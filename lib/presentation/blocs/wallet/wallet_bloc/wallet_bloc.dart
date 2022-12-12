@@ -11,19 +11,26 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   })  : _walletRepository = walletRepository,
         super(const WalletStateInitial()) {
     on<WalletEventGet>(_getWallet);
+    on<WalletEventReset>(_reset);
   }
 
   final WalletRepositoryInterface _walletRepository;
 
   Future<void> _getWallet(WalletEventGet event, Emitter<WalletState> emit) async {
-    emit(const WalletStateInitial());
     emit(const WalletStatePending());
     final wallet = await _walletRepository.getUserWallet();
     await Future.delayed(const Duration(milliseconds: 1000));
     if (wallet != null) {
       emit(WalletStateLoaded(wallet: wallet));
+      return;
     } else {
       emit(const WalletStateNoWallet());
+      return;
     }
+  }
+
+  Future<void> _reset(WalletEventReset event, Emitter<WalletState> emit) async {
+    await _walletRepository.getUserWallet();
+    emit(const WalletStateInitial());
   }
 }

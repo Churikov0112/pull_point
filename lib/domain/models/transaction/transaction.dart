@@ -37,7 +37,7 @@ class TransactionModel {
       id: source['id'],
       type: _transactionTypeFromString(source["type"]),
       sum: source['sum'],
-      dateTime: DateTime.parse(source['timestamp']),
+      dateTime: DateTime.parse(source['timestamp']).add(const Duration(hours: 3)),
     );
   }
 }
