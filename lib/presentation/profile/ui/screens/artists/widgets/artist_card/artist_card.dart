@@ -22,6 +22,7 @@ class ArtistCard extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           title: Text("Удалить артиста ${artist.name}?"),
           actions: [
             TextButton(
