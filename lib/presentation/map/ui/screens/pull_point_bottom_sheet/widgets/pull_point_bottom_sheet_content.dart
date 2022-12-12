@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart' show Colors, MaterialPageRoute;
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_point/presentation/artist/artist_guest_screen.dart';
+import 'package:pull_point/presentation/blocs/blocs.dart';
 import 'package:pull_point/presentation/donation/donation_screen.dart';
 
 import '../../../../../../domain/models/models.dart';
@@ -119,19 +121,36 @@ class PullPointBottomSheetContent extends StatelessWidget {
                   ),
                 ],
               ),
-            Padding(
-              padding: const EdgeInsets.only(top: 32),
-              child: LongButton(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context) => DonationScreen(artist: pullPoint.owner),
-                    ),
-                  );
-                },
-                backgroundColor: AppColors.orange,
-                child: const AppText("Пожертвовать", textColor: AppColors.textOnColors),
-              ),
+            BlocBuilder<UserArtistsBloc, UserArtistsState>(
+              builder: (context, state) {
+                if (state is UserArtistsStateSelected) {
+                  print(state.allUserArtists);
+                  for (final artist in state.allUserArtists) {
+                    if (pullPoint.owner.id == artist.id) {
+                      return const Padding(
+                        padding: EdgeInsets.only(top: 32),
+                        child: Center(
+                          child: AppText("Это ваше выступление"),
+                        ),
+                      );
+                    }
+                  }
+                }
+                return Padding(
+                  padding: const EdgeInsets.only(top: 32),
+                  child: LongButton(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) => DonationScreen(artist: pullPoint.owner),
+                        ),
+                      );
+                    },
+                    backgroundColor: AppColors.orange,
+                    child: const AppText("Пожертвовать", textColor: AppColors.textOnColors),
+                  ),
+                );
+              },
             ),
           ],
         ),

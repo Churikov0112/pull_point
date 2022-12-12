@@ -35,8 +35,8 @@ class PullPointModel extends Equatable {
       title: source['name'],
       description: source['description'],
       geo: Geo(latLng: LatLng(source['latitude'], source['longitude'])),
-      startsAt: DateTime.parse(source['startTime']),
-      endsAt: DateTime.parse(source['endTime']),
+      startsAt: DateTime.parse(source['startTime']).toLocal().subtract(const Duration(hours: 3)),
+      endsAt: DateTime.parse(source['endTime']).toLocal().subtract(const Duration(hours: 3)),
       owner: ArtistModel.fromJson(source['owner']),
       artists: [
         for (final artist in source['artists']) ArtistModel.fromJson(artist),
@@ -46,7 +46,8 @@ class PullPointModel extends Equatable {
         for (final subcat in source['subcategories']) SubcategoryModel.fromJson(subcat),
       ],
       // posterUrl: source['posterUrl'],
-      nearestMetroStations: MetroStations.getNearestMetroStations(latLng: LatLng(source['latitude'], source['longitude'])),
+      nearestMetroStations:
+          MetroStations.getNearestMetroStations(latLng: LatLng(source['latitude'], source['longitude'])),
     );
   }
 
