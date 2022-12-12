@@ -53,7 +53,7 @@ class TransactionItem extends StatelessWidget {
                         ? "+ ${transaction.sum.toStringAsFixed(0)}"
                         : transaction.type == TransactionType.output
                             ? "- ${transaction.sum.toStringAsFixed(0)}"
-                            : "- ${transaction.sum.toStringAsFixed(0)}",
+                            : " ${transaction.sum.toStringAsFixed(0)}",
                     textColor: transaction.type == TransactionType.input
                         ? AppColors.success
                         : transaction.type == TransactionType.output

@@ -82,17 +82,22 @@ class _ArtistsScreenState extends State<ArtistsScreen> {
     final mediaQuery = MediaQuery.of(context);
 
     return Scaffold(
-      body: BlocBuilder<DeleteArtistBloc, DeleteArtistState>(
-        builder: ((context, deleteArtistState) {
-          if (deleteArtistState is DeleteArtistStateDeleted) updatePage();
-
-          return BlocBuilder<AddArtistBloc, AddArtistState>(
-            builder: ((context, addArtistState) {
-              if (addArtistState is AddArtistStateCreated) updatePage();
-
+      body: BlocListener<DeleteArtistBloc, DeleteArtistState>(
+        listener: (context, deleteArtistListenerState) {
+          if (deleteArtistListenerState is DeleteArtistStateDeleted) updatePage();
+        },
+        child: BlocListener<AddArtistBloc, AddArtistState>(
+          listener: (context, addArtistState) {
+            if (addArtistState is AddArtistStateCreated) updatePage();
+          },
+          child: BlocBuilder<DeleteArtistBloc, DeleteArtistState>(
+            builder: (context, deleteArtistState) {
+              if (deleteArtistState is DeleteArtistStateLoading) {
+                return const Center(child: CircularProgressIndicator(color: AppColors.orange));
+              }
               return BlocBuilder<UserArtistsBloc, UserArtistsState>(
-                builder: (context, state) {
-                  if (state is UserArtistsStateSelected) {
+                builder: (context, userArtistsState) {
+                  if (userArtistsState is UserArtistsStateSelected) {
                     return DecoratedBox(
                       decoration: const BoxDecoration(color: AppColors.backgroundPage),
                       child: Column(
@@ -107,7 +112,8 @@ class _ArtistsScreenState extends State<ArtistsScreen> {
                           const SizedBox(height: 24),
                           ArtistsCarousel(
                             items: buildArtistCards(
-                                allUserArtists: state.allUserArtists, selectedArtist: state.selectedArtist),
+                                allUserArtists: userArtistsState.allUserArtists,
+                                selectedArtist: userArtistsState.selectedArtist),
                             currentIndex: currentArtistIndex,
                             carouselController: carouselController,
                             onPageChanged: (index, reason) {
@@ -116,7 +122,7 @@ class _ArtistsScreenState extends State<ArtistsScreen> {
                           ),
                           const SizedBox(height: 12),
                           ArtistsDotIndicator(
-                            length: state.allUserArtists.length,
+                            length: userArtistsState.allUserArtists.length,
                             currentIndex: currentArtistIndex,
                           ),
                           const SizedBox(height: 12),
@@ -124,12 +130,12 @@ class _ArtistsScreenState extends State<ArtistsScreen> {
                       ),
                     );
                   }
-                  return const SizedBox.shrink();
+                  return const Center(child: CircularProgressIndicator(color: AppColors.orange));
                 },
               );
-            }),
-          );
-        }),
+            },
+          ),
+        ),
       ),
     );
   }

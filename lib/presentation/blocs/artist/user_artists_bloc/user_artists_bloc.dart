@@ -21,6 +21,7 @@ class UserArtistsBloc extends Bloc<UserArtistsEvent, UserArtistsState> {
 
   Future<void> _load(UserArtistsEventLoad event, Emitter<UserArtistsState> emit) async {
     emit(const UserArtistsStateLoading());
+    await Future.delayed(const Duration(seconds: 1));
     final artists = await _artistsRepository.getUserArtists(userId: event.userId);
     final selectedArtist = _artistsRepository.getSelectedArtist();
     if (selectedArtist != null) {

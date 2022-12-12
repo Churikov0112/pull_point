@@ -23,6 +23,7 @@ class WalletAddingMoneyBloc extends Bloc<WalletAddingMoneyEvent, WalletAddingMon
     final successful = await _walletRepository.buyCoins(sum: event.shopItem.sum);
     if (successful) {
       emit(const WalletAddingMoneyStateReady());
+      BotToast.showText(text: "Кошелек успешно пополнен");
     } else {
       BotToast.showText(text: "Не удалось пополнить кошелек");
       emit(const WalletAddingMoneyStateFailed(reason: "Не удалось пополнить кошелек"));

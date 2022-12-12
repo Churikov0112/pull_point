@@ -18,6 +18,8 @@ class DeleteArtistBloc extends Bloc<DeleteArtistEvent, DeleteArtistState> {
   }
 
   Future<void> _delete(DeleteArtistEventDelete event, Emitter<DeleteArtistState> emit) async {
+    emit(const DeleteArtistStateLoading());
+    await Future.delayed(const Duration(seconds: 1));
     final created = await _artistsRepository.deleteArtist(
       artistId: event.artistId,
     );

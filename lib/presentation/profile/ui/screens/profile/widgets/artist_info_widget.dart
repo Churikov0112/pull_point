@@ -14,26 +14,29 @@ class ArtistInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
 
-    return TouchableOpacity(
-      onPressed: () {
-        Navigator.of(context).push(
-          MaterialPageRoute<void>(
-            builder: (BuildContext context) => const ArtistsScreen(),
-          ),
-        );
-      },
-      child: Container(
-        width: mediaQuery.size.width,
-        decoration: const BoxDecoration(
-          color: AppColors.backgroundCard,
-          borderRadius: BorderRadius.all(Radius.circular(16)),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-          child: BlocBuilder<UserArtistsBloc, UserArtistsState>(
-            builder: (context, state) {
-              if (state is UserArtistsStateSelected) {
-                return Column(
+    return BlocBuilder<UserArtistsBloc, UserArtistsState>(
+      builder: (context, state) {
+        if (state is UserArtistsStateLoading) {
+          return const Center(child: CircularProgressIndicator(color: AppColors.orange));
+        }
+        if (state is UserArtistsStateSelected) {
+          return TouchableOpacity(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => const ArtistsScreen(),
+                ),
+              );
+            },
+            child: Container(
+              width: mediaQuery.size.width,
+              decoration: const BoxDecoration(
+                color: AppColors.backgroundCard,
+                borderRadius: BorderRadius.all(Radius.circular(16)),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const AppText("Артист"),
@@ -64,13 +67,14 @@ class ArtistInfoWidget extends StatelessWidget {
                       ),
                     ),
                   ],
-                );
-              }
-              return const SizedBox.shrink();
-            },
-          ),
-        ),
-      ),
+                ),
+              ),
+            ),
+          );
+        }
+
+        return const Center(child: CircularProgressIndicator(color: AppColors.orange));
+      },
     );
   }
 }

@@ -18,6 +18,8 @@ class AddArtistBloc extends Bloc<AddArtistEvent, AddArtistState> {
   }
 
   Future<void> _create(AddArtistEventCreate event, Emitter<AddArtistState> emit) async {
+    emit(const AddArtistStateLoading());
+    await Future.delayed(const Duration(seconds: 1));
     final created = await _artistsRepository.createArtist(
       userInput: event.userInput,
       name: event.name,

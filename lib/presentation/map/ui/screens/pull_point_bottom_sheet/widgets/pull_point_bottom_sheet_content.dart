@@ -101,7 +101,6 @@ class PullPointBottomSheetContent extends StatelessWidget {
                         for (final metroStation in pullPoint.nearestMetroStations)
                           ChipWithChild(
                             backgroundColor: StaticMethods.getColorByMetroLine(metroStation.line),
-                            onPressed: () {},
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [

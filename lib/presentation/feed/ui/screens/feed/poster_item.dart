@@ -22,10 +22,6 @@ class PosterItemV2 extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaqQuery = MediaQuery.of(context);
 
-    print(pullPoint.startsAt.toLocal());
-    print(DateTime.now().toLocal());
-    print(pullPoint.startsAt.toLocal().isBefore(DateTime.now().toLocal()));
-
     return Padding(
       padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
       child: Container(
@@ -164,21 +160,23 @@ class PosterItemV2 extends StatelessWidget {
                       runSpacing: 8,
                       children: [
                         for (final metroStation in pullPoint.nearestMetroStations)
-                          ChipWithChild(
-                            backgroundColor: StaticMethods.getColorByMetroLine(metroStation.line),
-                            onPressed: () {},
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                AppText(metroStation.title, textColor: AppColors.textOnColors),
-                                const SizedBox(width: 8),
-                                Image.asset(
-                                  "assets/raster/images/metro_logo.png",
-                                  height: 16,
-                                  width: 16,
-                                  color: AppColors.iconsOnColors,
-                                ),
-                              ],
+                          GestureDetector(
+                            onTap: () {},
+                            child: ChipWithChild(
+                              backgroundColor: StaticMethods.getColorByMetroLine(metroStation.line),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  AppText(metroStation.title, textColor: AppColors.textOnColors),
+                                  const SizedBox(width: 8),
+                                  Image.asset(
+                                    "assets/raster/images/metro_logo.png",
+                                    height: 16,
+                                    width: 16,
+                                    color: AppColors.iconsOnColors,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                       ],
