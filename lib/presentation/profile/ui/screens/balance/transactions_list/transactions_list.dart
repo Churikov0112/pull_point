@@ -20,7 +20,7 @@ class _TransactionsListState extends State<TransactionsList> {
         return Column(
           children: [
             const SizedBox(height: 16),
-            for (final transaction in history)
+            for (final transaction in history.reversed)
               Padding(
                 padding: const EdgeInsets.only(bottom: 8),
                 child: TransactionItem(transaction: transaction),

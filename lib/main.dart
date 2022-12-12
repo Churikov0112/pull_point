@@ -73,6 +73,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<WalletBloc>(create: (context) => WalletBloc(walletRepository: walletRepository)),
         BlocProvider<WalletAddingMoneyBloc>(
             create: (context) => WalletAddingMoneyBloc(walletRepository: walletRepository)),
+        BlocProvider<WalletTransferMoneyBloc>(
+            create: (context) => WalletTransferMoneyBloc(walletRepository: walletRepository)),
       ],
       child: MaterialApp(
         builder: BotToastInit(),
