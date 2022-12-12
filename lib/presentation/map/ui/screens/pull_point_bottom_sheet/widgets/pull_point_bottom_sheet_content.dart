@@ -2,6 +2,7 @@ import 'package:flutter/material.dart' show Colors, MaterialPageRoute;
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_point/presentation/artist/artist_guest_screen.dart';
+import 'package:pull_point/presentation/donation/donation_screen.dart';
 
 import '../../../../../../domain/models/models.dart';
 import '../../../../../static_methods/static_methods.dart';
@@ -121,7 +122,13 @@ class PullPointBottomSheetContent extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 32),
               child: LongButton(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (BuildContext context) => DonationScreen(artist: pullPoint.owner),
+                    ),
+                  );
+                },
                 backgroundColor: AppColors.orange,
                 child: const AppText("Пожертвовать", textColor: AppColors.textOnColors),
               ),

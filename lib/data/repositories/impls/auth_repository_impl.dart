@@ -1,20 +1,15 @@
 import 'dart:convert';
 
-import 'package:hive/hive.dart';
-
 import '../../../domain/domain.dart';
+import '../../../main.dart' as main;
 import '../../http_requests/http_requests.dart';
 
 class AuthRepositoryImpl extends AuthRepositoryInterface {
-  AuthRepositoryImpl({
-    required this.userBox,
-  });
-
-  Box<UserModel?> userBox;
+  AuthRepositoryImpl();
 
   @override
   Future<UserModel?> checkAccountLocally() async {
-    final result = userBox.get('user');
+    final result = main.userBox.get('user');
     return result;
   }
 
@@ -30,7 +25,6 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
     } else {
       return null;
     }
-
   }
 
   @override
@@ -46,8 +40,8 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
         user: decodedResponse["user"],
         jwt: decodedResponse["jwt"],
       );
-      userBox.put("user", user);
-      final result = userBox.get('user');
+      main.userBox.put("user", user);
+      final result = main.userBox.get('user');
       return result;
     } else {
       return null;
@@ -72,8 +66,8 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
         accessToken: userInput.accessToken,
         isArtist: userInput.isArtist,
       );
-      userBox.put("user", user);
-      final result = userBox.get('user');
+      main.userBox.put("user", user);
+      final result = main.userBox.get('user');
       return result;
     } else {
       return null;
@@ -82,7 +76,7 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
 
   @override
   Future<void> logout() async {
-    userBox.clear();
+    main.userBox.clear();
     return;
   }
 }

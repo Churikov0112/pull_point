@@ -23,7 +23,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     if (wallet != null) {
       emit(WalletStateLoaded(wallet: wallet));
     } else {
-      emit(const WalletStateFailed(reason: "не удалось загрузить баланс"));
+      emit(const WalletStateNoWallet());
     }
   }
 }

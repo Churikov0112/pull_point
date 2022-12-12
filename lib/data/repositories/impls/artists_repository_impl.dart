@@ -1,16 +1,11 @@
 import 'dart:convert';
 
-import 'package:hive/hive.dart';
-
 import '../../../domain/domain.dart';
+import '../../../main.dart' as main;
 import '../../http_requests/http_requests.dart';
 
 class ArtistsRepositoryImpl extends ArtistsRepositoryInterface {
-  ArtistsRepositoryImpl({
-    required this.userBox,
-  });
-
-  Box<UserModel?> userBox;
+  ArtistsRepositoryImpl();
 
   List<ArtistModel> userArtists = [];
   ArtistModel? selectedArtist;
@@ -52,7 +47,7 @@ class ArtistsRepositoryImpl extends ArtistsRepositoryInterface {
       description: description,
       categoryId: categoryId,
       subcategoriesIds: subcategoryIds,
-      jwt: userBox.get("user")?.accessToken,
+      jwt: main.userBox.get("user")?.accessToken,
     );
     // print("userId: ${userInput.id}");
     // print("name: $name");
@@ -70,7 +65,7 @@ class ArtistsRepositoryImpl extends ArtistsRepositoryInterface {
         email: userInput.email,
         username: userInput.username,
         isArtist: true,
-        accessToken: userBox.get("user")?.accessToken,
+        accessToken: main.userBox.get("user")?.accessToken,
       );
       String source = const Utf8Decoder().convert(response.bodyBytes);
 
@@ -81,11 +76,11 @@ class ArtistsRepositoryImpl extends ArtistsRepositoryInterface {
         email: userInput.email,
         username: userInput.username,
         isArtist: false,
-        accessToken: userBox.get("user")?.accessToken,
+        accessToken: main.userBox.get("user")?.accessToken,
       );
     }
-    userBox.put("user", user);
-    final result = userBox.get('user');
+    main.userBox.put("user", user);
+    final result = main.userBox.get('user');
 
     return result?.isArtist ?? false;
   }
@@ -104,7 +99,7 @@ class ArtistsRepositoryImpl extends ArtistsRepositoryInterface {
       categoryId: categoryId,
       artistId: artistId,
       subcategoriesIds: subcategoryIds,
-      jwt: userBox.get("user")?.accessToken,
+      jwt: main.userBox.get("user")?.accessToken,
     );
     return response.statusCode == 200;
   }
@@ -115,7 +110,7 @@ class ArtistsRepositoryImpl extends ArtistsRepositoryInterface {
   }) async {
     final response = await DeleteArtistRequest.send(
       artistId: artistId,
-      jwt: userBox.get("user")?.accessToken,
+      jwt: main.userBox.get("user")?.accessToken,
     );
     if (response.statusCode == 200) {
       userArtists.removeWhere((element) => element.id == artistId);

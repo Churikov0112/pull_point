@@ -56,7 +56,7 @@ class _UserContentState extends State<UserContent> {
                 LongButton(
                   backgroundColor: AppColors.orange,
                   child: const AppText("Выйти", textColor: AppColors.textOnColors),
-                  onTap: () {
+                  onTap: () async {
                     context.read<AuthBloc>().add(const AuthEventLogout());
                   },
                 ),

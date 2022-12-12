@@ -6,11 +6,13 @@ import '../touchable_opacity/touchable_opacity.dart';
 class PullPointAppBar extends StatelessWidget {
   const PullPointAppBar({
     required this.title,
+    this.titleMaxLines = 1,
     this.onBackPressed,
     super.key,
   });
 
   final String title;
+  final int titleMaxLines;
   final Function()? onBackPressed;
 
   @override
@@ -31,9 +33,13 @@ class PullPointAppBar extends StatelessWidget {
                   const SizedBox.square(dimension: 24, child: Center(child: Icon(Icons.arrow_back_ios_new, size: 20))),
             ),
           const SizedBox(width: 8),
-          AppTitle(
-            title,
-            // style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+          SizedBox(
+            width: mediaQuery.size.width - 64,
+            child: AppTitle(
+              title,
+              maxLines: titleMaxLines,
+              // style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+            ),
           ),
           // GradientText(
           //   gradient: AppGradients.main,

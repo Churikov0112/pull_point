@@ -191,7 +191,7 @@ class PosterItemV2 extends StatelessWidget {
                       TouchableOpacity(
                         onPressed: () {
                           context.read<PullPointsBloc>().add(SelectPullPointEvent(selectedPullPointId: pullPoint.id));
-                          context.read<HomeBloc>().add(const SelectTabEvent(tabIndex: 0));
+                          context.read<HomeBloc>().add(const HomeEventSelectTab(tabIndex: 0));
                         },
                         child: ClipRRect(
                           borderRadius: const BorderRadius.all(Radius.circular(16)),

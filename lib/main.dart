@@ -28,12 +28,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // чтобы в нескольких местах использовать один объект
-    final AuthRepositoryInterface authRepository = AuthRepositoryImpl(userBox: userBox);
-    final ArtistsRepositoryInterface artistsRepository = ArtistsRepositoryImpl(userBox: userBox);
-    final PullPointsRepositoryInterface pullPointsRepository = PullPointsRepositoryImpl(userBox: userBox);
+    final AuthRepositoryInterface authRepository = AuthRepositoryImpl();
+    final ArtistsRepositoryInterface artistsRepository = ArtistsRepositoryImpl();
+    final PullPointsRepositoryInterface pullPointsRepository = PullPointsRepositoryImpl();
+    final WalletRepositoryInterface walletRepository = WalletRepositoryImpl();
+
     final FeedFiltersRepositoryInterface feedFiltersRepository = FeedFiltersRepositoryImpl();
     final CategoriesRepositoryInterface categoriesRepository = CategoriesRepositoryImpl();
-    final WalletRepositoryInterface walletRepository = WalletRepositoryImpl(userBox: userBox);
 
     // final MapFiltersRepositoryInterface mapFiltersRepository = MapFiltersRepositoryImpl();
 
@@ -82,6 +83,7 @@ class MyApp extends StatelessWidget {
         home: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
             if (state is AuthStateAuthorized) return const HomePage();
+
             return const StartScreen();
           },
         ),

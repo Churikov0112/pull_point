@@ -1,18 +1,15 @@
-import 'package:hive/hive.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:pull_point/domain/models/geo/geo.dart';
 
 import '../../../domain/domain.dart';
+import '../../../main.dart' as main;
 import '../../http_requests/http_requests.dart';
 import '../mock/metro_stations.dart';
 
 class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
-  PullPointsRepositoryImpl({
-    required this.userBox,
-  });
+  PullPointsRepositoryImpl();
 
   List<PullPointModel> allPullPoints = [];
-  Box<UserModel?> userBox;
 
   @override
   Future<List<PullPointModel>> getPullPoints({
@@ -95,7 +92,7 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
       endTime: endTime,
       categoryId: categoryId,
       subcategoryIds: subcategoryIds,
-      jwt: userBox.get("user")?.accessToken,
+      jwt: main.userBox.get("user")?.accessToken,
     );
     if (response.statusCode == 200) return true;
     return false;

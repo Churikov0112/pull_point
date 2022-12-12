@@ -23,10 +23,14 @@ class WalletStateLoaded extends WalletState {
   });
 }
 
-class WalletStateFailed extends WalletState {
-  final String reason;
-
-  const WalletStateFailed({
-    required this.reason,
-  });
+class WalletStateNoWallet extends WalletState {
+  const WalletStateNoWallet();
 }
+
+// class WalletStateFailed extends WalletState {
+//   final String reason;
+
+//   const WalletStateFailed({
+//     required this.reason,
+//   });
+// }

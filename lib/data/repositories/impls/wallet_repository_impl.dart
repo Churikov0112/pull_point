@@ -1,16 +1,12 @@
 import 'dart:convert';
 
-import 'package:hive/hive.dart';
 import 'package:pull_point/domain/repositories/interfaces/wallet_repository_interface.dart';
 import '../../../domain/models/models.dart';
+import '../../../main.dart' as main;
 import '../../http_requests/http_requests.dart';
 
 class WalletRepositoryImpl implements WalletRepositoryInterface {
-  Box<UserModel?> userBox;
-
-  WalletRepositoryImpl({
-    required this.userBox,
-  });
+  WalletRepositoryImpl();
 
   WalletModel? userWallet;
 
@@ -20,7 +16,7 @@ class WalletRepositoryImpl implements WalletRepositoryInterface {
   }) async {
     if (needUpdate) {
       final response = await GetUserWalletRequest.send(
-        jwt: userBox.get("user")?.accessToken,
+        jwt: main.userBox.get("user")?.accessToken,
       );
 
       if (response.statusCode == 200) {
@@ -38,7 +34,7 @@ class WalletRepositoryImpl implements WalletRepositoryInterface {
   }) async {
     final response = await CreateUserWalletRequest.send(
       cardNumber: cardNumber,
-      jwt: userBox.get("user")?.accessToken,
+      jwt: main.userBox.get("user")?.accessToken,
     );
 
     if (response.statusCode == 200) {
@@ -54,7 +50,7 @@ class WalletRepositoryImpl implements WalletRepositoryInterface {
   Future<bool> buyCoins({required int sum}) async {
     final response = await FinanceInputRequest.send(
       sum: sum,
-      jwt: userBox.get("user")?.accessToken,
+      jwt: main.userBox.get("user")?.accessToken,
     );
 
     return response.statusCode == 200;
@@ -67,7 +63,7 @@ class WalletRepositoryImpl implements WalletRepositoryInterface {
   }) async {
     final response = await FinanceOutputRequest.send(
       sum: sum,
-      jwt: userBox.get("user")?.accessToken,
+      jwt: main.userBox.get("user")?.accessToken,
       outputCardNumber: outputCardNumber,
     );
 
@@ -81,7 +77,7 @@ class WalletRepositoryImpl implements WalletRepositoryInterface {
   }) async {
     final response = await FinanceTransferRequest.send(
       sum: sum,
-      jwt: userBox.get("user")?.accessToken,
+      jwt: main.userBox.get("user")?.accessToken,
       targetArtistName: artistName,
     );
 

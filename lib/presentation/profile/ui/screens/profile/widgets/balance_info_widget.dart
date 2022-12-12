@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/domain/domain.dart';
-import '../../../../../../blocs/blocs.dart';
-import '../../../../../../ui_kit/ui_kit.dart';
-import '../../../balance/balance_screen.dart';
-import '../../../create_wallet/create_wallet_screen.dart';
+import '../../../../../blocs/blocs.dart';
+import '../../../../../ui_kit/ui_kit.dart';
+import '../../balance/balance_screen.dart';
+import '../../create_wallet/create_wallet_screen.dart';
 
 class BalanceInfoWidget extends StatelessWidget {
   const BalanceInfoWidget({
@@ -18,8 +18,6 @@ class BalanceInfoWidget extends StatelessWidget {
         if (state is WalletStateLoaded) {
           if (state.wallet != null) {
             return _WalletLoaded(wallet: state.wallet!);
-          } else {
-            return _WalletCreate();
           }
         }
 
@@ -27,8 +25,8 @@ class BalanceInfoWidget extends StatelessWidget {
           return _WalletLoading();
         }
 
-        if (state is WalletStateFailed) {
-          return _WalletError(reason: state.reason);
+        if (state is WalletStateNoWallet) {
+          return _WalletCreate();
         }
 
         return const SizedBox.shrink();

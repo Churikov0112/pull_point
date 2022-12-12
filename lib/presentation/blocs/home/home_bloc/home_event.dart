@@ -7,10 +7,10 @@ abstract class HomeEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class SelectTabEvent extends HomeEvent {
+class HomeEventSelectTab extends HomeEvent {
   final int tabIndex;
 
-  const SelectTabEvent({
+  const HomeEventSelectTab({
     required this.tabIndex,
   });
 }

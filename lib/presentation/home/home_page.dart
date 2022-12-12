@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _onItemTapped(int index) {
-    context.read<HomeBloc>().add(SelectTabEvent(tabIndex: index));
+    context.read<HomeBloc>().add(HomeEventSelectTab(tabIndex: index));
   }
 
   Widget _currentScreen({required int index}) {
