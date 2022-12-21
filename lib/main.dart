@@ -30,13 +30,11 @@ class MyApp extends StatelessWidget {
     // чтобы в нескольких местах использовать один объект
     final AuthRepositoryInterface authRepository = AuthRepositoryImpl();
     final ArtistsRepositoryInterface artistsRepository = ArtistsRepositoryImpl();
-
     final PullPointsRepositoryInterface pullPointsRepository = PullPointsRepositoryImpl();
-
     final WalletRepositoryInterface walletRepository = WalletRepositoryImpl();
-
     final FeedFiltersRepositoryInterface feedFiltersRepository = FeedFiltersRepositoryImpl();
     final CategoriesRepositoryInterface categoriesRepository = CategoriesRepositoryImpl();
+    final FavoritesRepositoryInterface favoritesRepository = FavoritesRepositoryImpl();
 
     // final MapFiltersRepositoryInterface mapFiltersRepository = MapFiltersRepositoryImpl();
 
@@ -85,6 +83,10 @@ class MyApp extends StatelessWidget {
             create: (context) => WalletWithdrawMoneyBloc(walletRepository: walletRepository)),
         BlocProvider<WalletTransferMoneyBloc>(
             create: (context) => WalletTransferMoneyBloc(walletRepository: walletRepository)),
+
+        // favorites blocs
+        BlocProvider<GetFavoritesBloc>(create: (context) => GetFavoritesBloc(favoritesRepository: favoritesRepository)),
+        BlocProvider<AddFavoritesBloc>(create: (context) => AddFavoritesBloc(favoritesRepository: favoritesRepository)),
       ],
       child: MaterialApp(
         builder: BotToastInit(),

@@ -22,6 +22,10 @@ export 'user/send_code.dart';
 export 'user/verify_code.dart';
 export 'user/refresh_jwt.dart';
 
+// favorites
+export 'favorites/add_artist_to_user_favorites.dart';
+export 'favorites/get_user_favorites.dart';
+
 // wallet
 export 'wallet/create_wallet.dart';
 export 'wallet/get_wallet.dart';
