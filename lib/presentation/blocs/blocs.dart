@@ -6,6 +6,7 @@ export 'artist/user_artists_bloc/user_artists_bloc.dart';
 export 'user/auth_bloc/auth_bloc.dart';
 
 export 'wallet/wallet_bloc/wallet_bloc.dart';
+export 'wallet/wallet_history_bloc/wallet_history_bloc.dart';
 export 'wallet/wallet_adding_money_bloc/wallet_adding_money_bloc.dart';
 export 'wallet/wallet_withdraw_money_bloc/wallet_withdraw_money_bloc.dart';
 export 'wallet/wallet_transfer_money_bloc/wallet_transfer_money_bloc.dart';

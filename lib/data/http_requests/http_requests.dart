@@ -25,6 +25,7 @@ export 'user/refresh_jwt.dart';
 // wallet
 export 'wallet/create_wallet.dart';
 export 'wallet/get_wallet.dart';
+export 'wallet/get_wallet_history.dart';
 
 // finance
 export 'finance/finance_input.dart';

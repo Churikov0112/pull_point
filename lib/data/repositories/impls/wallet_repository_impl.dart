@@ -23,6 +23,24 @@ class WalletRepositoryImpl implements WalletRepositoryInterface {
   }
 
   @override
+  Future<List<TransactionModel>?> getUserWalletHistory() async {
+    final response = await GetUserWalletHistoryRequest.send(
+      jwt: main.userBox.get("user")?.accessToken,
+    );
+
+    if (response.statusCode == 200) {
+      String source = const Utf8Decoder().convert(response.bodyBytes);
+      final decodedResponse = jsonDecode(source);
+      final List<TransactionModel> transactions = [];
+      for (var transaction in decodedResponse) {
+        transactions.add(TransactionModel.fromJson(transaction));
+      }
+      return transactions;
+    }
+    return null;
+  }
+
+  @override
   Future<WalletModel?> createUserWallet({
     required String cardNumber,
   }) async {

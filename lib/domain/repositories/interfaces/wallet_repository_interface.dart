@@ -7,6 +7,9 @@ abstract class WalletRepositoryInterface {
   /// Получение внутреннего кошелька
   Future<WalletModel?> getUserWallet();
 
+  /// Получение истории транзакций внутреннего кошелька
+  Future<List<TransactionModel>?> getUserWalletHistory();
+
   /// Покупка внутренней валюты, пополнение кошелька
   Future<bool> buyCoins({required int sum});
 

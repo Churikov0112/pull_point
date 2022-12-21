@@ -66,6 +66,7 @@ class _WithdrawMoneySectionState extends State<WithdrawMoneySection> {
       listener: (context, walletWithdrawMoneyListenerState) {
         if (walletWithdrawMoneyListenerState is WalletWithdrawMoneyStateReady) {
           context.read<WalletBloc>().add(const WalletEventGet(needUpdate: true));
+          context.read<WalletHistoryBloc>().add(const WalletHistoryEventGet(needUpdate: true));
         }
       },
       child: BlocBuilder<WalletWithdrawMoneyBloc, WalletWithdrawMoneyState>(

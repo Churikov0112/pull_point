@@ -41,6 +41,7 @@ class _ShopItemState extends State<ShopItem> {
               ),
               onPressed: () {
                 context.read<WalletAddingMoneyBloc>().add(WalletAddingMoneyEventAddMoney(shopItem: shopItem));
+                context.read<WalletHistoryBloc>().add(const WalletHistoryEventGet(needUpdate: true));
                 Navigator.of(context).pop();
               },
             ),

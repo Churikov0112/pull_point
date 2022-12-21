@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/main.dart';
-import 'package:pull_point/presentation/profile/ui/screens/profile/widgets/user_qr_widget.dart';
+import 'package:pull_point/presentation/profile/ui/screens/profile/widgets/artist_qr_widget.dart';
 
 import '../../../../../blocs/blocs.dart';
 import '../../../../../ui_kit/ui_kit.dart';
@@ -58,6 +58,7 @@ class _UserContentState extends State<UserContent> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           width: mediaQuery.size.width,
+          height: mediaQuery.size.height - 30,
           decoration: const BoxDecoration(color: AppColors.backgroundPage),
           child: BlocBuilder<AuthBloc, AuthState>(
             builder: (context, authState) {
@@ -66,11 +67,8 @@ class _UserContentState extends State<UserContent> {
                   children: [
                     const SizedBox(height: 50),
                     UserInfoWidget(user: authState.user),
-                    const SizedBox(height: 16),
                     const BalanceInfoWidget(),
-                    const SizedBox(height: 16),
                     if (authState.user.isArtist ?? false) const ArtistInfoWidget(),
-                    const SizedBox(height: 16),
                     if (authState.user.isArtist ?? false) const ArtistQRWidget(),
                     const SizedBox(height: 16),
                     LongButton(

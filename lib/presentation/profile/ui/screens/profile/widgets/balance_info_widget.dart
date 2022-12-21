@@ -13,26 +13,29 @@ class BalanceInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WalletBloc, WalletState>(
-      builder: (context, state) {
-        print(state);
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: BlocBuilder<WalletBloc, WalletState>(
+        builder: (context, state) {
+          print(state);
 
-        if (state is WalletStateLoaded) {
-          if (state.wallet != null) {
-            return _WalletLoaded(wallet: state.wallet!);
+          if (state is WalletStateLoaded) {
+            if (state.wallet != null) {
+              return _WalletLoaded(wallet: state.wallet!);
+            }
           }
-        }
 
-        if (state is WalletStatePending) {
-          return _WalletLoading();
-        }
+          if (state is WalletStatePending) {
+            return _WalletLoading();
+          }
 
-        if (state is WalletStateNoWallet) {
-          return _WalletCreate();
-        }
+          if (state is WalletStateNoWallet) {
+            return _WalletCreate();
+          }
 
-        return const SizedBox.shrink();
-      },
+          return const SizedBox.shrink();
+        },
+      ),
     );
   }
 }

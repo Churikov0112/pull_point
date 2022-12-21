@@ -13,10 +13,16 @@ class TransactionsList extends StatefulWidget {
 
 class _TransactionsListState extends State<TransactionsList> {
   @override
+  void initState() {
+    context.read<WalletHistoryBloc>().add(const WalletHistoryEventGet(needUpdate: true));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WalletBloc, WalletState>(builder: (context, walletState) {
-      if (walletState is WalletStateLoaded) {
-        final history = walletState.wallet?.history ?? [];
+    return BlocBuilder<WalletHistoryBloc, WalletHistoryState>(builder: (context, walletHistoryState) {
+      if (walletHistoryState is WalletHistoryStateLoaded) {
+        final history = walletHistoryState.transactions ?? [];
         return Column(
           children: [
             const SizedBox(height: 16),

@@ -78,6 +78,7 @@ class MyApp extends StatelessWidget {
         // wallet blocs
         BlocProvider<CreateWalletBloc>(create: (context) => CreateWalletBloc(walletRepository: walletRepository)),
         BlocProvider<WalletBloc>(create: (context) => WalletBloc(walletRepository: walletRepository)),
+        BlocProvider<WalletHistoryBloc>(create: (context) => WalletHistoryBloc(walletRepository: walletRepository)),
         BlocProvider<WalletAddingMoneyBloc>(
             create: (context) => WalletAddingMoneyBloc(walletRepository: walletRepository)),
         BlocProvider<WalletWithdrawMoneyBloc>(
