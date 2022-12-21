@@ -16,9 +16,6 @@ class ArtistInfoWidget extends StatelessWidget {
 
     return BlocBuilder<UserArtistsBloc, UserArtistsState>(
       builder: (context, state) {
-        if (state is UserArtistsStateLoading) {
-          return const Center(child: CircularProgressIndicator(color: AppColors.orange));
-        }
         if (state is UserArtistsStateSelected) {
           return TouchableOpacity(
             onPressed: () {
@@ -73,7 +70,25 @@ class ArtistInfoWidget extends StatelessWidget {
           );
         }
 
-        return const Center(child: CircularProgressIndicator(color: AppColors.orange));
+        if (state is UserArtistsStateLoading) {
+          return Container(
+            height: 200,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(16)),
+              color: AppColors.backgroundCard,
+            ),
+            child: const Center(child: CircularProgressIndicator(color: AppColors.orange)),
+          );
+        }
+
+        return Container(
+          height: 200,
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+            color: AppColors.backgroundCard,
+          ),
+          child: const Center(child: CircularProgressIndicator(color: AppColors.orange)),
+        );
       },
     );
   }

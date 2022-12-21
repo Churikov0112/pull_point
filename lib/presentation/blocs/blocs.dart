@@ -7,6 +7,7 @@ export 'user/auth_bloc/auth_bloc.dart';
 
 export 'wallet/wallet_bloc/wallet_bloc.dart';
 export 'wallet/wallet_adding_money_bloc/wallet_adding_money_bloc.dart';
+export 'wallet/wallet_withdraw_money_bloc/wallet_withdraw_money_bloc.dart';
 export 'wallet/wallet_transfer_money_bloc/wallet_transfer_money_bloc.dart';
 export 'wallet/create_wallet_bloc/create_wallet_bloc.dart';
 

@@ -57,7 +57,6 @@ class _UserContentState extends State<UserContent> {
       child: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          height: mediaQuery.size.height,
           width: mediaQuery.size.width,
           decoration: const BoxDecoration(color: AppColors.backgroundPage),
           child: BlocBuilder<AuthBloc, AuthState>(
@@ -73,7 +72,7 @@ class _UserContentState extends State<UserContent> {
                     if (authState.user.isArtist ?? false) const ArtistInfoWidget(),
                     const SizedBox(height: 16),
                     if (authState.user.isArtist ?? false) const ArtistQRWidget(),
-                    const Spacer(),
+                    const SizedBox(height: 16),
                     LongButton(
                       backgroundColor: AppColors.orange,
                       child: const AppText("Выйти", textColor: AppColors.textOnColors),
@@ -85,7 +84,7 @@ class _UserContentState extends State<UserContent> {
                         context.read<AuthBloc>().add(const AuthEventLogout());
                       },
                     ),
-                    const SizedBox(height: 72),
+                    const SizedBox(height: 16),
                   ],
                 );
               }

@@ -65,9 +65,20 @@ class PosterItemV2 extends StatelessWidget {
                         children: [
                           SizedBox(
                             width: mediaqQuery.size.width - 90,
-                            child: AppTitle(pullPoint.title),
+                            child: AppTitle(
+                              pullPoint.title,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                            ),
                           ),
-                          AppText(pullPoint.owner.name ?? "-"),
+                          SizedBox(
+                            width: mediaqQuery.size.width - 90,
+                            child: AppText(
+                              pullPoint.owner.name ?? "-",
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                            ),
+                          ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [

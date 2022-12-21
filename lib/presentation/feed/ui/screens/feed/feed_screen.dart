@@ -91,6 +91,7 @@ class _FeedScreenState extends State<FeedScreen> {
                                 displacement: 100,
                                 color: AppColors.orange,
                                 onRefresh: () async {
+                                  await Future.delayed(const Duration(milliseconds: 500));
                                   refreshPullPoints();
                                 },
                                 child: ListView.builder(

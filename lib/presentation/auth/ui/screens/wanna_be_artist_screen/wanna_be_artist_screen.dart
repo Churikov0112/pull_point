@@ -72,7 +72,7 @@ class _WannaBeArtistScreenState extends State<WannaBeArtistScreen> {
                   Column(
                     children: [
                       LongButton(
-                        backgroundColor: AppColors.orange.withOpacity(0.5),
+                        backgroundColor: AppColors.blue,
                         onTap: () {
                           context.read<AuthBloc>().add(AuthEventRegisterUser(user: widget.user));
                         },

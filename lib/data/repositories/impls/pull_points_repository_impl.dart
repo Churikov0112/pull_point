@@ -36,34 +36,6 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
       }
     }
 
-    // allPullPoints = [
-    //   PullPointModel(
-    //     id: 0,
-    //     title: "Стрит на грибе",
-    //     description: "Глеб Васильев ебанулся и играет фонк",
-    //     category: const CategoryModel(id: 0, name: "Музыка"),
-    //     subcategories: const [
-    //       SubcategoryModel(id: 22, name: "Фонк"),
-    //     ],
-    //     geo: Geo(latLng: LatLng(59.9351, 30.328573)),
-    //     startsAt: DateTime.now(),
-    //     endsAt: DateTime.now().add(const Duration(hours: 4)),
-    //     owner: const ArtistModel(
-    //       id: 0,
-    //       name: "Cheap Dramas",
-    //       description: "lkakk;lkakkflkakklkakklkakklkakklkakklkakklkakklkakklkakklkakklkakklkakklkakklkakklkakklkakk",
-    //       category: CategoryModel(id: 0, name: "Музыка"),
-    //       subcategories: [
-    //         SubcategoryModel(id: 20, name: "Рэп"),
-    //         SubcategoryModel(id: 21, name: "Стрит"),
-    //         SubcategoryModel(id: 22, name: "Фонк"),
-    //       ],
-    //     ),
-    //     artists: const [],
-    //     nearestMetroStations: MetroStations.getNearestMetroStations(latLng: LatLng(59.9351, 30.328573)),
-    //   ),
-    // ];
-
     return allPullPoints;
   }
 

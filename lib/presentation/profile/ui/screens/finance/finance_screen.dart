@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pull_point/presentation/profile/ui/screens/balance/transactions_list/transactions_list.dart';
-import 'package:pull_point/presentation/profile/ui/screens/balance/withdraw_money_section/withdraw_money_section.dart';
+import 'package:pull_point/presentation/profile/ui/screens/finance/transactions_list/transactions_list.dart';
+import 'package:pull_point/presentation/profile/ui/screens/finance/withdraw_money_section/withdraw_money_section.dart';
 
 import '../../../../blocs/blocs.dart';
 import '../../../../ui_kit/ui_kit.dart';

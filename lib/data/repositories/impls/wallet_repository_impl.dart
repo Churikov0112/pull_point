@@ -53,12 +53,10 @@ class WalletRepositoryImpl implements WalletRepositoryInterface {
   @override
   Future<bool> sellCoins({
     required int sum,
-    required String outputCardNumber,
   }) async {
     final response = await FinanceOutputRequest.send(
       sum: sum,
       jwt: main.userBox.get("user")?.accessToken,
-      outputCardNumber: outputCardNumber,
     );
 
     return response.statusCode == 200;

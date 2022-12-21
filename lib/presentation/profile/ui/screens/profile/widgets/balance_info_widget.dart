@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/domain/domain.dart';
 import '../../../../../blocs/blocs.dart';
 import '../../../../../ui_kit/ui_kit.dart';
-import '../../balance/balance_screen.dart';
+import '../../finance/finance_screen.dart';
 import '../../create_wallet/create_wallet_screen.dart';
 
 class BalanceInfoWidget extends StatelessWidget {
@@ -137,6 +137,13 @@ class _WalletError extends StatelessWidget {
 class _WalletLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const CircularProgressIndicator(color: AppColors.orange);
+    return Container(
+      height: 80,
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(16)),
+        color: AppColors.backgroundCard,
+      ),
+      child: const Center(child: CircularProgressIndicator(color: AppColors.orange)),
+    );
   }
 }

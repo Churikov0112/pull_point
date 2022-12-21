@@ -14,6 +14,24 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
   }
 
   @override
+  Future<UserModel?> refreshJWT() async {
+    final response = await RefreshJWTRequest.send(jwt: main.userBox.get('user')?.accessToken);
+    if (response.statusCode == 200) {
+      String source = const Utf8Decoder().convert(response.bodyBytes);
+      final decodedResponse = jsonDecode(source);
+      final UserModel user = UserModel.fromJson(
+        user: decodedResponse["user"],
+        jwt: decodedResponse["jwt"],
+      );
+      main.userBox.put("user", user);
+      final result = main.userBox.get('user');
+      return result;
+    } else {
+      return null;
+    }
+  }
+
+  @override
   Future<String?> getVerificationCode({
     required String email,
   }) async {

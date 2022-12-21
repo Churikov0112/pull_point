@@ -11,7 +11,7 @@ abstract class WalletRepositoryInterface {
   Future<bool> buyCoins({required int sum});
 
   /// Продажа внутренней валюты, вывод денег на карту
-  Future<bool> sellCoins({required String outputCardNumber, required int sum});
+  Future<bool> sellCoins({required int sum});
 
   /// Перевод внутренней валюты другому артисту
   Future<bool> transferCoins({required String artistName, required int sum});

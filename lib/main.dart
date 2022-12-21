@@ -30,7 +30,9 @@ class MyApp extends StatelessWidget {
     // чтобы в нескольких местах использовать один объект
     final AuthRepositoryInterface authRepository = AuthRepositoryImpl();
     final ArtistsRepositoryInterface artistsRepository = ArtistsRepositoryImpl();
+
     final PullPointsRepositoryInterface pullPointsRepository = PullPointsRepositoryImpl();
+
     final WalletRepositoryInterface walletRepository = WalletRepositoryImpl();
 
     final FeedFiltersRepositoryInterface feedFiltersRepository = FeedFiltersRepositoryImpl();
@@ -49,7 +51,12 @@ class MyApp extends StatelessWidget {
         BlocProvider<HomeBloc>(create: (context) => HomeBloc()),
 
         // pull point blocs
-        BlocProvider<PullPointsBloc>(create: (context) => PullPointsBloc(repository: pullPointsRepository)),
+        BlocProvider<PullPointsBloc>(
+          create: (context) => PullPointsBloc(
+            repository: pullPointsRepository,
+          ),
+        ),
+
         BlocProvider<CreatePullPointBloc>(
             create: (context) => CreatePullPointBloc(pullPointsRepository: pullPointsRepository)),
 
@@ -73,6 +80,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<WalletBloc>(create: (context) => WalletBloc(walletRepository: walletRepository)),
         BlocProvider<WalletAddingMoneyBloc>(
             create: (context) => WalletAddingMoneyBloc(walletRepository: walletRepository)),
+        BlocProvider<WalletWithdrawMoneyBloc>(
+            create: (context) => WalletWithdrawMoneyBloc(walletRepository: walletRepository)),
         BlocProvider<WalletTransferMoneyBloc>(
             create: (context) => WalletTransferMoneyBloc(walletRepository: walletRepository)),
       ],

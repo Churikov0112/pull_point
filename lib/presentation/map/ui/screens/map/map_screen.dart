@@ -29,9 +29,6 @@ final _kTileLayerOptions = TileLayerOptions(
   backgroundColor: Colors.white,
   urlTemplate: 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png',
   subdomains: ['a', 'b', 'c'],
-  // free maps
-  // https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png
-  // https://tile.openstreetmap.org/{z}/{x}/{y}.png
 );
 
 class MapScreen extends StatefulWidget {

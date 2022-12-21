@@ -20,6 +20,7 @@ export 'pull_point/get_pull_points.dart';
 export 'user/create_user.dart';
 export 'user/send_code.dart';
 export 'user/verify_code.dart';
+export 'user/refresh_jwt.dart';
 
 // wallet
 export 'wallet/create_wallet.dart';

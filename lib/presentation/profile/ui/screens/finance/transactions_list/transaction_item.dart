@@ -12,11 +12,29 @@ class TransactionItem extends StatelessWidget {
   final TransactionModel transaction;
 
   String getTransactionTitle() {
+    String transferText;
+    if (transaction.dir == TransactionDir.income) {
+      transferText = 'Получено пожертвование';
+    } else {
+      transferText = 'Вы пожертвовали';
+    }
+
     return transaction.type == TransactionType.input
         ? "Пополнение"
         : transaction.type == TransactionType.output
             ? "Вывод средств"
-            : "Перевод";
+            : transferText;
+  }
+
+  String getTransactionSumText() {
+    return (transaction.type == TransactionType.input || transaction.dir == TransactionDir.income)
+        ? "+ ${transaction.sum.toStringAsFixed(0)}"
+        : "- ${transaction.sum.toStringAsFixed(0)}";
+  }
+
+  Color getTransactionSumColor() {
+    if (transaction.type == TransactionType.input || transaction.dir == TransactionDir.income) return AppColors.success;
+    return AppColors.text;
   }
 
   String getTransactionDateTime() {
@@ -49,16 +67,8 @@ class TransactionItem extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   AppSubtitle(
-                    transaction.type == TransactionType.input
-                        ? "+ ${transaction.sum.toStringAsFixed(0)}"
-                        : transaction.type == TransactionType.output
-                            ? "- ${transaction.sum.toStringAsFixed(0)}"
-                            : " ${transaction.sum.toStringAsFixed(0)}",
-                    textColor: transaction.type == TransactionType.input
-                        ? AppColors.success
-                        : transaction.type == TransactionType.output
-                            ? AppColors.error
-                            : AppColors.text,
+                    getTransactionSumText(),
+                    textColor: getTransactionSumColor(),
                   ),
                   const SizedBox(width: 8),
                   Image.asset(

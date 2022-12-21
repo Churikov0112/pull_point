@@ -51,7 +51,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(const AuthStatePending());
     final UserModel? user = await _authRepository.checkAccountLocally();
     if (user != null) {
-      emit(AuthStateAuthorized(user: user));
+      final refreshedUser = await _authRepository.refreshJWT();
+      if (refreshedUser != null) {
+        emit(AuthStateAuthorized(user: user));
+      } else {
+        BotToast.showText(text: "Не удалось обновить токен");
+        emit(const AuthStateUnauthorized());
+      }
     } else {
       emit(const AuthStateUnauthorized());
     }

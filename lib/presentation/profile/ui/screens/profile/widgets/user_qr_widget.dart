@@ -38,7 +38,14 @@ class ArtistQRWidget extends StatelessWidget {
           );
         }
         if (userArtistsState is UserArtistsStateLoading) {
-          return const Center(child: CircularProgressIndicator(color: AppColors.orange));
+          return Container(
+            height: 200,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(16)),
+              color: AppColors.backgroundCard,
+            ),
+            child: const Center(child: CircularProgressIndicator(color: AppColors.orange)),
+          );
         }
         return const SizedBox.shrink();
       },
