@@ -84,10 +84,23 @@ class _ArtistGuestScreenState extends State<ArtistGuestScreen> {
                           const SizedBox(height: 16),
                           const Divider(thickness: 1),
                           const SizedBox(height: 16),
-                          if (getFavoritesState is GetFavoritesStatePending ||
+                          if (context.read<AuthBloc>().state is AuthStateGuest ||
+                              context.read<AuthBloc>().state is AuthStateUnauthorized)
+                            TouchableOpacity(
+                              onPressed: () {
+                                context.read<HomeBloc>().add(const HomeEventSelectTab(tabIndex: 4));
+                                Navigator.of(context).pop();
+                              },
+                              child: CategoryChip(
+                                backgroundColor: AppColors.backgroundPage.withOpacity(0.3),
+                                textColor: AppColors.text,
+                                childText: "Авторизуйтесь, чтобы добавлять в избранное",
+                              ),
+                            )
+                          else if (getFavoritesState is GetFavoritesStatePending ||
                               addFavoritesState is AddFavoritesStatePending)
-                            const CircularProgressIndicator(color: AppColors.orange),
-                          if (getFavoritesState is GetFavoritesStateLoaded &&
+                            const CircularProgressIndicator(color: AppColors.orange)
+                          else if (getFavoritesState is GetFavoritesStateLoaded &&
                               addFavoritesState is! AddFavoritesStatePending)
                             if (getFavoritesState.favorites?.contains(widget.artist) ?? false)
                               TouchableOpacity(
