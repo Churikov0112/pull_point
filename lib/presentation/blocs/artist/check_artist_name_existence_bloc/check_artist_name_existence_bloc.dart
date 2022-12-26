@@ -23,12 +23,12 @@ class CheckArtistNameExistenceBloc extends Bloc<CheckArtistNameExistenceEvent, C
     final exists = await _artistsRepository.checkArtistNameExistence(artistName: event.artistName);
     await Future.delayed(const Duration(milliseconds: 1000));
     if (exists == null) {
-      BotToast.showText(text: "Произошла ошибка при проверке имени пользователя");
+      BotToast.showText(text: "Произошла ошибка при проверке имени артиста");
       emit(const CheckArtistNameExistenceStateInitial());
       return;
     }
     if (exists) {
-      BotToast.showText(text: "Пользователь с таким именем уже существует");
+      BotToast.showText(text: "Артист с таким именем уже существует");
       emit(const CheckArtistNameExistenceStateExists());
       return;
     } else {
