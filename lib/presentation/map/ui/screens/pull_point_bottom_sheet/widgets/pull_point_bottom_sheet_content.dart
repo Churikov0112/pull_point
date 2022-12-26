@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' show Colors, MaterialPageRoute;
+import 'package:flutter/material.dart' show Colors, InkWell, MaterialPageRoute;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -10,15 +10,6 @@ import 'package:pull_point/presentation/donation/donation_screen.dart';
 import '../../../../../../domain/models/models.dart';
 import '../../../../../static_methods/static_methods.dart';
 import '../../../../../ui_kit/ui_kit.dart';
-
-// bool _isActive({
-//   required PullPointModel pp,
-// }) {
-//   if (pp.startsAt.isBefore(DateTime.now()) && pp.endsAt.isAfter(DateTime.now())) {
-//     return true;
-//   }
-//   return false;
-// }
 
 class PullPointBottomSheetContent extends StatelessWidget {
   const PullPointBottomSheetContent({
@@ -48,31 +39,7 @@ class PullPointBottomSheetContent extends StatelessWidget {
                 const SizedBox(height: 16),
                 const AppTitle("Артисты"),
                 const SizedBox(height: 8),
-                TouchableOpacity(
-                  onPressed: () {
-                    if (!(main.userBox.get("user")?.isArtist ?? false)) {
-                      Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (BuildContext context) => ArtistGuestScreen(artist: pullPoint.owner),
-                        ),
-                      );
-                    } else {
-                      if (state is UserArtistsStateSelected) {
-                        if (!state.allUserArtists.contains(pullPoint.owner)) {
-                          Navigator.of(context).push(
-                            MaterialPageRoute<void>(
-                              builder: (BuildContext context) => ArtistGuestScreen(artist: pullPoint.owner),
-                            ),
-                          );
-                        }
-                      }
-                    }
-                  },
-                  child: CategoryChip(
-                    gradient: AppGradients.main,
-                    childText: pullPoint.owner.name ?? "-",
-                  ),
-                ),
+                ArtistChip(pullPoint: pullPoint),
                 const SizedBox(height: 16),
                 const AppTitle("Время начала и конца"),
                 const SizedBox(height: 8),
@@ -177,6 +144,56 @@ class DonateButton extends StatelessWidget {
         backgroundColor: AppColors.orange,
         child: const AppText("Пожертвовать", textColor: AppColors.textOnColors),
       ),
+    );
+  }
+}
+
+class ArtistChip extends StatelessWidget {
+  const ArtistChip({
+    required this.pullPoint,
+    super.key,
+  });
+
+  final PullPointModel pullPoint;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<UserArtistsBloc, UserArtistsState>(
+      builder: (context, userArtistsState) {
+        return GestureDetector(
+          onTap: () {
+            if (main.userBox.get("user") == null) {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => ArtistGuestScreen(artist: pullPoint.owner),
+                ),
+              );
+            } else if (main.userBox.get("user")!.isArtist != null) {
+              if (main.userBox.get("user")!.isArtist! == false) {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) => ArtistGuestScreen(artist: pullPoint.owner),
+                  ),
+                );
+              } else {
+                if (userArtistsState is UserArtistsStateSelected) {
+                  if (!userArtistsState.allUserArtists.contains(pullPoint.owner)) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => ArtistGuestScreen(artist: pullPoint.owner),
+                      ),
+                    );
+                  }
+                }
+              }
+            }
+          },
+          child: CategoryChip(
+            gradient: AppGradients.main,
+            childText: pullPoint.owner.name ?? "-",
+          ),
+        );
+      },
     );
   }
 }

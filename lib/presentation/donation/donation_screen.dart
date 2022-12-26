@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pull_point/presentation/home/home_page.dart';
 
 import '../../domain/models/models.dart';
 import '../blocs/blocs.dart';
@@ -181,7 +182,10 @@ class _NoWallet extends StatelessWidget {
         child: LongButton(
           onTap: () {
             context.read<HomeBloc>().add(const HomeEventSelectTab(tabIndex: 4));
-            Navigator.of(context).pop();
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute<void>(builder: (BuildContext context) => const HomePage()),
+              ModalRoute.withName('/'),
+            );
           },
           backgroundColor: AppColors.orange,
           child: const AppText("В профиль", textColor: AppColors.textOnColors),
