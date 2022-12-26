@@ -8,8 +8,18 @@ class FavoritesRepositoryImpl implements FavoritesRepositoryInterface {
   FavoritesRepositoryImpl();
 
   @override
-  Future<bool> addToUserFavorites({required int artistId}) async {
+  Future<bool> addArtistToUserFavorites({required int artistId}) async {
     final response = await AddArtistToUserFavoritesRequest.send(
+      artistId: artistId,
+      jwt: main.userBox.get("user")?.accessToken,
+    );
+
+    return response.statusCode == 200;
+  }
+
+  @override
+  Future<bool> deleteArtistFromUserFavorites({required int artistId}) async {
+    final response = await DeleteArtistFromUserFavoritesRequest.send(
       artistId: artistId,
       jwt: main.userBox.get("user")?.accessToken,
     );

@@ -24,6 +24,7 @@ export 'user/refresh_jwt.dart';
 
 // favorites
 export 'favorites/add_artist_to_user_favorites.dart';
+export 'favorites/delete_artist_from_user_favorites.dart';
 export 'favorites/get_user_favorites.dart';
 
 // wallet

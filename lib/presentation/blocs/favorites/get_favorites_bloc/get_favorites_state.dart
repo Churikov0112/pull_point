@@ -16,7 +16,7 @@ class GetFavoritesStatePending extends GetFavoritesState {
 }
 
 class GetFavoritesStateLoaded extends GetFavoritesState {
-  final List<ArtistModel>? favorites;
+  final List<ArtistModel> favorites;
 
   const GetFavoritesStateLoaded({
     required this.favorites,

@@ -17,6 +17,7 @@ export 'category/subcategories_bloc/subcategories_bloc.dart';
 
 export 'favorites/get_favorites_bloc/get_favorites_bloc.dart';
 export 'favorites/add_favorites_bloc/add_favorites_bloc.dart';
+export 'favorites/delete_favorites_bloc/delete_favorites_bloc.dart';
 
 export 'pull_point/create_pull_point_bloc/create_pull_point_bloc.dart';
 export 'pull_point/pull_points_bloc/pull_points_bloc.dart';

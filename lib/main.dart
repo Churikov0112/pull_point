@@ -87,6 +87,8 @@ class MyApp extends StatelessWidget {
         // favorites blocs
         BlocProvider<GetFavoritesBloc>(create: (context) => GetFavoritesBloc(favoritesRepository: favoritesRepository)),
         BlocProvider<AddFavoritesBloc>(create: (context) => AddFavoritesBloc(favoritesRepository: favoritesRepository)),
+        BlocProvider<DeleteFavoritesBloc>(
+            create: (context) => DeleteFavoritesBloc(favoritesRepository: favoritesRepository)),
       ],
       child: MaterialApp(
         builder: BotToastInit(),

@@ -43,14 +43,12 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
           }
 
           if (getFavoritesState is GetFavoritesStateLoaded) {
-            if (getFavoritesState.favorites != null) {
-              return ListView.builder(
-                itemCount: getFavoritesState.favorites!.length,
-                itemBuilder: (context, index) {
-                  return ArtistItem(artist: getFavoritesState.favorites![index]);
-                },
-              );
-            }
+            return ListView.builder(
+              itemCount: getFavoritesState.favorites.length,
+              itemBuilder: (context, index) {
+                return ArtistItem(artist: getFavoritesState.favorites[index]);
+              },
+            );
           }
           return const SizedBox.shrink();
         }),
@@ -70,51 +68,71 @@ class ArtistItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-      child: TouchableOpacity(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute<void>(
-              builder: (BuildContext context) => ArtistGuestScreen(artist: artist),
+    return BlocListener<DeleteFavoritesBloc, DeleteFavoritesState>(
+      listener: (context, deleteFavoritesListenerState) {
+        if (deleteFavoritesListenerState is DeleteFavoritesStateReady) {
+          context.read<GetFavoritesBloc>().add(const GetFavoritesEventGet(needUpdate: true));
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+        child: TouchableOpacity(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => ArtistGuestScreen(artist: artist),
+              ),
+            );
+          },
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: AppColors.backgroundCard,
+              borderRadius: BorderRadius.circular(16),
             ),
-          );
-        },
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: AppColors.backgroundCard,
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AppTitle(artist.name ?? "null name"),
-                const SizedBox(height: 8),
-                AppText(artist.description ?? "null description"),
-                const SizedBox(height: 16),
-                SizedBox(
-                  width: mediaQuery.size.width,
-                  child: Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: [
-                      if (artist.category != null)
-                        StaticChip(
-                          gradient: AppGradients.main,
-                          childText: artist.category!.name,
-                        ),
-                      if (artist.subcategories != null)
-                        for (final subcategory in artist.subcategories!)
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppTitle(artist.name ?? "null name"),
+                  const SizedBox(height: 8),
+                  AppText(artist.description ?? "null description"),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: mediaQuery.size.width,
+                    child: Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        if (artist.category != null)
                           StaticChip(
-                            gradient: AppGradients.first,
-                            childText: subcategory.name,
+                            gradient: AppGradients.main,
+                            childText: artist.category!.name,
                           ),
-                    ],
+                        if (artist.subcategories != null)
+                          for (final subcategory in artist.subcategories!)
+                            StaticChip(
+                              gradient: AppGradients.first,
+                              childText: subcategory.name,
+                            ),
+                        TouchableOpacity(
+                          onPressed: () {
+                            context.read<DeleteFavoritesBloc>().add(DeleteFavoritesEventDelete(artistId: artist.id));
+                          },
+                          child: const SizedBox(
+                            width: 32,
+                            height: 32,
+                            child: Icon(
+                              Icons.favorite,
+                              color: AppColors.pink,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

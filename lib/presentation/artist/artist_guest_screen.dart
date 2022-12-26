@@ -52,9 +52,11 @@ class _ArtistGuestScreenState extends State<ArtistGuestScreen> {
                           SizedBox(height: mediaQuery.padding.top + 24),
                           PullPointAppBar(
                             title: widget.artist.name ?? "Страница артиста",
+                            titleMaxLines: 2,
                             onBackPressed: () {
                               Navigator.of(context).pop();
                             },
+                            right: FavoritesButton(artist: widget.artist),
                           ),
                           const SizedBox(height: 32),
                           AppText(widget.artist.description ?? ""),
@@ -81,49 +83,6 @@ class _ArtistGuestScreenState extends State<ArtistGuestScreen> {
                                 ],
                               ),
                             ),
-                          const SizedBox(height: 16),
-                          const Divider(thickness: 1),
-                          const SizedBox(height: 16),
-                          if (context.read<AuthBloc>().state is AuthStateGuest ||
-                              context.read<AuthBloc>().state is AuthStateUnauthorized)
-                            TouchableOpacity(
-                              onPressed: () {
-                                context.read<HomeBloc>().add(const HomeEventSelectTab(tabIndex: 4));
-                                Navigator.of(context).pop();
-                              },
-                              child: CategoryChip(
-                                backgroundColor: AppColors.backgroundPage.withOpacity(0.3),
-                                textColor: AppColors.text,
-                                childText: "Авторизуйтесь, чтобы добавлять в избранное",
-                              ),
-                            )
-                          else if (getFavoritesState is GetFavoritesStatePending ||
-                              addFavoritesState is AddFavoritesStatePending)
-                            const CircularProgressIndicator(color: AppColors.orange)
-                          else if (getFavoritesState is GetFavoritesStateLoaded &&
-                              addFavoritesState is! AddFavoritesStatePending)
-                            if (getFavoritesState.favorites?.contains(widget.artist) ?? false)
-                              TouchableOpacity(
-                                onPressed: () {},
-                                child: CategoryChip(
-                                  backgroundColor: AppColors.backgroundPage.withOpacity(0.3),
-                                  textColor: AppColors.text,
-                                  childText: "В избранном",
-                                ),
-                              )
-                            else
-                              TouchableOpacity(
-                                onPressed: () {
-                                  context
-                                      .read<AddFavoritesBloc>()
-                                      .add(AddFavoritesEventAdd(artistId: widget.artist.id));
-                                },
-                                child: CategoryChip(
-                                  backgroundColor: AppColors.backgroundPage.withOpacity(0.1),
-                                  textColor: AppColors.text,
-                                  childText: "Добавить в избранное",
-                                ),
-                              ),
                           const SizedBox(height: 16),
                           const Divider(thickness: 1),
                           const SizedBox(height: 16),
@@ -166,6 +125,65 @@ class _ArtistGuestScreenState extends State<ArtistGuestScreen> {
             },
           );
         },
+      ),
+    );
+  }
+}
+
+class FavoritesButton extends StatelessWidget {
+  const FavoritesButton({
+    required this.artist,
+    super.key,
+  });
+
+  final ArtistModel artist;
+
+  @override
+  Widget build(BuildContext context) {
+    final authState = context.read<AuthBloc>().state;
+    final getFavoritesState = context.read<GetFavoritesBloc>().state;
+
+    if (authState is AuthStateGuest) {
+      return GestureDetector(
+        onTap: () {
+          context.read<HomeBloc>().add(const HomeEventSelectTab(tabIndex: 4));
+          Navigator.of(context).pop();
+        },
+        child: const Icon(
+          Icons.favorite_border_rounded,
+          size: 32,
+          color: AppColors.pink,
+        ),
+      );
+    }
+
+    if (getFavoritesState is GetFavoritesStatePending) {
+      return const CircularProgressIndicator(color: AppColors.orange);
+    }
+
+    if (getFavoritesState is GetFavoritesStateLoaded) {
+      if (getFavoritesState.favorites.contains(artist)) {
+        return GestureDetector(
+          onTap: () {
+            context.read<DeleteFavoritesBloc>().add(DeleteFavoritesEventDelete(artistId: artist.id));
+          },
+          child: const Icon(
+            Icons.favorite,
+            size: 32,
+            color: AppColors.pink,
+          ),
+        );
+      }
+    }
+
+    return GestureDetector(
+      onTap: () {
+        context.read<AddFavoritesBloc>().add(AddFavoritesEventAdd(artistId: artist.id));
+      },
+      child: const Icon(
+        Icons.favorite_border_rounded,
+        size: 32,
+        color: AppColors.pink,
       ),
     );
   }

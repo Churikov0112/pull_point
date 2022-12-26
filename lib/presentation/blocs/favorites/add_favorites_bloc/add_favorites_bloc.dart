@@ -18,7 +18,7 @@ class AddFavoritesBloc extends Bloc<AddFavoritesEvent, AddFavoritesState> {
 
   Future<void> _addFavorites(AddFavoritesEventAdd event, Emitter<AddFavoritesState> emit) async {
     emit(const AddFavoritesStatePending());
-    final succeeded = await _favoritesRepository.addToUserFavorites(artistId: event.artistId);
+    final succeeded = await _favoritesRepository.addArtistToUserFavorites(artistId: event.artistId);
     await Future.delayed(const Duration(milliseconds: 1000));
     if (succeeded) {
       emit(const AddFavoritesStateReady());

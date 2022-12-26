@@ -8,12 +8,16 @@ class PullPointAppBar extends StatelessWidget {
     required this.title,
     this.titleMaxLines = 1,
     this.onBackPressed,
+    this.right,
     super.key,
   });
 
   final String title;
   final int titleMaxLines;
   final Function()? onBackPressed;
+
+  /// should be 32 px width
+  final Widget? right;
 
   @override
   Widget build(BuildContext context) {
@@ -32,15 +36,17 @@ class PullPointAppBar extends StatelessWidget {
               child:
                   const SizedBox.square(dimension: 24, child: Center(child: Icon(Icons.arrow_back_ios_new, size: 20))),
             ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 16),
           SizedBox(
-            width: mediaQuery.size.width - 64,
+            width: mediaQuery.size.width - 128,
             child: AppTitle(
-              title,
+              // title,
+              "titletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitle",
               maxLines: titleMaxLines,
-              // style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
             ),
           ),
+          const Spacer(),
+          if (right != null) right!,
           // GradientText(
           //   gradient: AppGradients.main,
           //   src: Text(
