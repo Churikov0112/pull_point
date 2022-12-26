@@ -2,8 +2,10 @@ export 'artist/add_artist_bloc/add_artist_bloc.dart';
 export 'artist/delete_artist_bloc/delete_artist_bloc.dart';
 export 'artist/artists_bloc/artists_bloc.dart';
 export 'artist/user_artists_bloc/user_artists_bloc.dart';
+export 'artist/check_artist_name_existence_bloc/check_artist_name_existence_bloc.dart';
 
 export 'user/auth_bloc/auth_bloc.dart';
+export 'user/check_username_existence_bloc/check_username_existence_bloc.dart';
 
 export 'wallet/wallet_bloc/wallet_bloc.dart';
 export 'wallet/wallet_history_bloc/wallet_history_bloc.dart';

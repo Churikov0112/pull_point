@@ -158,7 +158,7 @@ class FavoritesButton extends StatelessWidget {
     }
 
     if (getFavoritesState is GetFavoritesStatePending) {
-      return const CircularProgressIndicator(color: AppColors.orange);
+      return const LoadingIndicator();
     }
 
     if (getFavoritesState is GetFavoritesStateLoaded) {

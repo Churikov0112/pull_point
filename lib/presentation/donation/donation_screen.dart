@@ -203,7 +203,7 @@ class _Loading extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       backgroundColor: AppColors.backgroundCard,
-      body: Center(child: CircularProgressIndicator(color: AppColors.orange)),
+      body: Center(child: LoadingIndicator()),
     );
   }
 }

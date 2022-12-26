@@ -93,7 +93,7 @@ class _ArtistsScreenState extends State<ArtistsScreen> {
           child: BlocBuilder<DeleteArtistBloc, DeleteArtistState>(
             builder: (context, deleteArtistState) {
               if (deleteArtistState is DeleteArtistStateLoading) {
-                return const Center(child: CircularProgressIndicator(color: AppColors.orange));
+                return const Center(child: LoadingIndicator());
               }
               return BlocBuilder<UserArtistsBloc, UserArtistsState>(
                 builder: (context, userArtistsState) {
@@ -130,7 +130,7 @@ class _ArtistsScreenState extends State<ArtistsScreen> {
                       ),
                     );
                   }
-                  return const Center(child: CircularProgressIndicator(color: AppColors.orange));
+                  return const Center(child: LoadingIndicator());
                 },
               );
             },

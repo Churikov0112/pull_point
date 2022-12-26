@@ -40,10 +40,12 @@ class MyApp extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: [
-        // auth bloc
+        // auth blocs
         BlocProvider<AuthBloc>(
             create: (context) => AuthBloc(authRepository: authRepository, artistsRepository: artistsRepository)
               ..add(const AuthEventCheckAccoutLocally())),
+        BlocProvider<CheckUsernameExistenceBloc>(
+            create: (context) => CheckUsernameExistenceBloc(authRepository: authRepository)),
 
         // home screen (tabbar) bloc
         BlocProvider<HomeBloc>(create: (context) => HomeBloc()),
@@ -72,6 +74,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<AddArtistBloc>(create: (context) => AddArtistBloc(artistsRepository: artistsRepository)),
         BlocProvider<DeleteArtistBloc>(create: (context) => DeleteArtistBloc(artistsRepository: artistsRepository)),
         BlocProvider<UserArtistsBloc>(create: (context) => UserArtistsBloc(artistsRepository: artistsRepository)),
+        BlocProvider<CheckArtistNameExistenceBloc>(
+            create: (context) => CheckArtistNameExistenceBloc(artistsRepository: artistsRepository)),
 
         // wallet blocs
         BlocProvider<CreateWalletBloc>(create: (context) => CreateWalletBloc(walletRepository: walletRepository)),

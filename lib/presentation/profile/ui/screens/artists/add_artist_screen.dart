@@ -50,7 +50,7 @@ class __AddArtistScreenState extends State<AddArtistScreen> {
             return const Scaffold(
               backgroundColor: AppColors.backgroundCard,
               body: Center(
-                child: CircularProgressIndicator(color: AppColors.orange),
+                child: LoadingIndicator(),
               ),
             );
           }

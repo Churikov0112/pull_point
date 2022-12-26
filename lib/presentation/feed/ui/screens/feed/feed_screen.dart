@@ -128,7 +128,7 @@ class _FeedScreenState extends State<FeedScreen> {
                     );
                   }
                   if (pullPointsState is PullPointsStateLoading) {
-                    return const Center(child: CircularProgressIndicator(color: AppColors.orange));
+                    return const Center(child: LoadingIndicator());
                   }
                   return const SizedBox.shrink();
                 },

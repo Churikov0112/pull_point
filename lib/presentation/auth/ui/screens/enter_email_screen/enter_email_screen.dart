@@ -83,54 +83,64 @@ class _EnterEmailScreenState extends State<EnterEmailScreen> {
     // final mediaQuery = MediaQuery.of(context);
     return WillPopScope(
       onWillPop: _onWillPop,
-      child: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
-          if (state is AuthStateCodeSent) _goToEnterCodeScreen();
-          if (state is AuthStateUnauthorized) _goToStartScreen();
-          // if (state is AuthStateAuthorized) _goToHomePage();
-          if (state is AuthStateGuest) _goToHomePage();
-          return Scaffold(
-            backgroundColor: AppColors.backgroundCard,
-            body: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const GradientText(
-                    gradient: AppGradients.main,
-                    src: Text(
-                      "Введите ваш Email",
-                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Form(
-                    child: AppTextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      hintText: "example@gmail.com",
-                      maxLines: 1,
-                      controller: emailEditingController,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  LongButton(
-                    backgroundColor: AppColors.orange,
-                    onTap: () {
-                      isValid = EmailValidator.validate(emailEditingController.text);
-                      if (!isValid) {
-                        BotToast.showText(text: "Введите корректный Email");
-                        return;
-                      }
-                      context.read<AuthBloc>().add(AuthEventSendCode(email: emailEditingController.text));
-                    },
-                    child: const AppButtonText("Отправить код", textColor: AppColors.textOnColors),
-                  ),
-                ],
-              ),
-            ),
-          );
+      child: BlocListener<AuthBloc, AuthState>(
+        listener: (context, authListenerState) {
+          if (authListenerState is AuthStateCodeSent) _goToEnterCodeScreen();
+          if (authListenerState is AuthStateUnauthorized) _goToStartScreen();
+          if (authListenerState is AuthStateGuest) _goToHomePage();
         },
+        child: Scaffold(
+          backgroundColor: AppColors.backgroundCard,
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const GradientText(
+                  gradient: AppGradients.main,
+                  src: Text(
+                    "Введите ваш Email",
+                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Form(
+                  child: AppTextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    hintText: "example@gmail.com",
+                    maxLines: 1,
+                    controller: emailEditingController,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, authState) {
+                    if (authState is AuthStatePending) {
+                      return const LongButton(
+                        backgroundColor: AppColors.orange,
+                        isDisabled: true,
+                        child: LoadingIndicator(),
+                      );
+                    }
+                    return LongButton(
+                      backgroundColor: AppColors.orange,
+                      onTap: () {
+                        isValid = EmailValidator.validate(emailEditingController.text);
+                        if (!isValid) {
+                          BotToast.showText(text: "Введите корректный Email");
+                          return;
+                        }
+                        context.read<AuthBloc>().add(AuthEventSendCode(email: emailEditingController.text));
+                      },
+                      child: const AppButtonText("Отправить код", textColor: AppColors.textOnColors),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

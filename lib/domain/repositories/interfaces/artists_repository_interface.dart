@@ -38,4 +38,6 @@ abstract class ArtistsRepositoryInterface {
   void unselectArtistOnLogout();
 
   ArtistModel? getSelectedArtist();
+
+  Future<bool?> checkArtistNameExistence({required String artistName});
 }

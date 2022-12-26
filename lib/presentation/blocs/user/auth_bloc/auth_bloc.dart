@@ -49,8 +49,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _checkAccountLocally(AuthEventCheckAccoutLocally event, Emitter<AuthState> emit) async {
     emit(const AuthStatePending());
+    await Future.delayed(const Duration(milliseconds: 1000));
     final UserModel? user = await _authRepository.checkAccountLocally();
     if (user != null) {
+      await Future.delayed(const Duration(milliseconds: 1000));
       final refreshedUser = await _authRepository.refreshJWT();
       if (refreshedUser != null) {
         emit(AuthStateAuthorized(user: user));
@@ -65,6 +67,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _sendVerificationCode(AuthEventSendCode event, Emitter<AuthState> emit) async {
     emit(const AuthStatePending());
+    await Future.delayed(const Duration(milliseconds: 1000));
     final code = await _authRepository.getVerificationCode(email: event.email);
     if (code != null) {
       emit(AuthStateCodeSent(email: event.email, code: code));
@@ -76,6 +79,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _login(AuthEventLogin event, Emitter<AuthState> emit) async {
     emit(const AuthStatePending());
+    await Future.delayed(const Duration(milliseconds: 1000));
     final user = await _authRepository.login(email: event.email, code: event.code);
     if (user != null) {
       if (user.username != null) {
@@ -90,6 +94,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _registerUser(AuthEventRegisterUser event, Emitter<AuthState> emit) async {
     emit(const AuthStatePending());
+    await Future.delayed(const Duration(milliseconds: 1000));
     final user = await _authRepository.createUser(userInput: event.user);
     if (user != null) {
       emit(AuthStateAuthorized(user: user));
@@ -100,6 +105,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _registerArtist(AuthEventRegisterArtist event, Emitter<AuthState> emit) async {
     emit(const AuthStatePending());
+    await Future.delayed(const Duration(milliseconds: 1000));
     final user = await _authRepository.createUser(userInput: event.user);
     if (user != null) {
       final artistCreated = await _artistsRepository.createArtist(

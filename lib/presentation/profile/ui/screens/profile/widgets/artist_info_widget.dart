@@ -79,7 +79,7 @@ class ArtistInfoWidget extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(16)),
                 color: AppColors.backgroundCard,
               ),
-              child: const Center(child: CircularProgressIndicator(color: AppColors.orange)),
+              child: const Center(child: LoadingIndicator()),
             );
           }
 
@@ -89,7 +89,7 @@ class ArtistInfoWidget extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(16)),
               color: AppColors.backgroundCard,
             ),
-            child: const Center(child: CircularProgressIndicator(color: AppColors.orange)),
+            child: const Center(child: LoadingIndicator()),
           );
         },
       ),

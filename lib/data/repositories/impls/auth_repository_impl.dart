@@ -14,6 +14,19 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
   }
 
   @override
+  Future<bool?> checkUsernameExistence({required String username}) async {
+    final response = await CheckUsernameExistenceRequest.send(username: username);
+    if (response.statusCode == 200) {
+      String source = const Utf8Decoder().convert(response.bodyBytes);
+      final decodedResponse = jsonDecode(source);
+      final isUsernameFree = (decodedResponse as bool);
+      final isUsernameAlreadyExists = !isUsernameFree;
+      return isUsernameAlreadyExists;
+    }
+    return null;
+  }
+
+  @override
   Future<UserModel?> refreshJWT() async {
     final response = await RefreshJWTRequest.send(jwt: main.userBox.get('user')?.accessToken);
     if (response.statusCode == 200) {

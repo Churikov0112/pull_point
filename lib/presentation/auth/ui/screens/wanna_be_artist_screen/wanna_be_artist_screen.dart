@@ -48,52 +48,63 @@ class _WannaBeArtistScreenState extends State<WannaBeArtistScreen> {
   @override
   Widget build(BuildContext context) {
     // final mediaQuery = MediaQuery.of(context);
-    return BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, state) {
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
         if (state is AuthStateAuthorized) _goToHomePage();
         if (state is AuthStateArtistCreating) _goToArtistRegisterScreen(user: state.user);
-        return WillPopScope(
-          onWillPop: () async => false,
-          child: Scaffold(
-            backgroundColor: AppColors.backgroundCard,
-            body: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const GradientText(
-                    gradient: AppGradients.main,
-                    src: Text(
-                      "Вы артист или зритель? Артисты могут создавать выступления и получать пожертвования.",
-                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
-                    ),
+      },
+      child: WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          backgroundColor: AppColors.backgroundCard,
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const GradientText(
+                  gradient: AppGradients.main,
+                  src: Text(
+                    "Вы артист или зритель? Артисты могут создавать выступления и получать пожертвования.",
+                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
                   ),
-                  const SizedBox(height: 32),
-                  Column(
-                    children: [
-                      LongButton(
-                        backgroundColor: AppColors.blue,
-                        onTap: () {
-                          context.read<AuthBloc>().add(AuthEventRegisterUser(user: widget.user));
-                        },
-                        child: const AppButtonText("Я зритель", textColor: AppColors.textOnColors),
-                      ),
-                      const SizedBox(height: 16),
-                      LongButton(
-                        backgroundColor: AppColors.orange,
-                        onTap: () {
-                          context.read<AuthBloc>().add(AuthEventOpenUpdateArtistPage(user: widget.user));
-                        },
-                        child: const AppButtonText("Я артист", textColor: AppColors.textOnColors),
-                      ),
-                    ],
-                  )
-                ],
-              ),
+                ),
+                const SizedBox(height: 32),
+                Column(
+                  children: [
+                    BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, authState) {
+                        if (authState is AuthStatePending) {
+                          return const LongButton(
+                            backgroundColor: AppColors.orange,
+                            isDisabled: true,
+                            child: LoadingIndicator(),
+                          );
+                        }
+                        return LongButton(
+                          backgroundColor: AppColors.blue,
+                          onTap: () {
+                            context.read<AuthBloc>().add(AuthEventRegisterUser(user: widget.user));
+                          },
+                          child: const AppButtonText("Я зритель", textColor: AppColors.textOnColors),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    LongButton(
+                      backgroundColor: AppColors.orange,
+                      onTap: () {
+                        context.read<AuthBloc>().add(AuthEventOpenUpdateArtistPage(user: widget.user));
+                      },
+                      child: const AppButtonText("Я артист", textColor: AppColors.textOnColors),
+                    ),
+                  ],
+                )
+              ],
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

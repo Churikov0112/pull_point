@@ -38,11 +38,29 @@ class _EnterUserDataScreenState extends State<EnterUserDataScreen> {
     // final mediaQuery = MediaQuery.of(context);
     return WillPopScope(
       onWillPop: () async => false,
-      child: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
-          if (state is AuthStateUsernameInputed) _goToWannaBeArtistScreen(user: state.user);
+      child: BlocListener<CheckUsernameExistenceBloc, CheckUsernameExistenceState>(
+        listener: (context, checkUsernameExistenceListenerState) {
+          if (checkUsernameExistenceListenerState is CheckUsernameExistenceStateNotExists) {
+            context.read<AuthBloc>().add(
+                  AuthEventOpenWannaBeArtistPage(
+                    user: UserModel(
+                      id: widget.user.id,
+                      username: usernameEditingController.text,
+                      accessToken: widget.user.accessToken,
+                      email: widget.user.email,
+                      isArtist: false, // потом это может измениться
+                    ),
+                  ),
+                );
 
-          return Scaffold(
+            context.read<CheckUsernameExistenceBloc>().add(const CheckUsernameExistenceEventReset());
+          }
+        },
+        child: BlocListener<AuthBloc, AuthState>(
+          listener: (context, authState) {
+            if (authState is AuthStateUsernameInputed) _goToWannaBeArtistScreen(user: authState.user);
+          },
+          child: Scaffold(
             backgroundColor: AppColors.backgroundCard,
             body: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -64,33 +82,36 @@ class _EnterUserDataScreenState extends State<EnterUserDataScreen> {
                     controller: usernameEditingController,
                   ),
                   const SizedBox(height: 16),
-                  LongButton(
-                    backgroundColor: AppColors.orange,
-                    onTap: () {
-                      if (usernameEditingController.text.isEmpty) {
-                        BotToast.showText(text: "Введите имя пользователя");
-                        return;
+                  BlocBuilder<CheckUsernameExistenceBloc, CheckUsernameExistenceState>(
+                    builder: (context, checkUsernameExistenceState) {
+                      if (checkUsernameExistenceState is CheckUsernameExistenceStatePending) {
+                        return const LongButton(
+                          backgroundColor: AppColors.orange,
+                          isDisabled: true,
+                          child: LoadingIndicator(),
+                        );
                       }
+                      return LongButton(
+                        backgroundColor: AppColors.orange,
+                        onTap: () {
+                          if (usernameEditingController.text.isEmpty) {
+                            BotToast.showText(text: "Введите имя пользователя");
+                            return;
+                          }
 
-                      context.read<AuthBloc>().add(
-                            AuthEventOpenWannaBeArtistPage(
-                              user: UserModel(
-                                id: widget.user.id,
-                                username: usernameEditingController.text,
-                                accessToken: widget.user.accessToken,
-                                email: widget.user.email,
-                                isArtist: false, // потом это может измениться
-                              ),
-                            ),
-                          );
+                          context
+                              .read<CheckUsernameExistenceBloc>()
+                              .add(CheckUsernameExistenceEventCheck(username: usernameEditingController.text));
+                        },
+                        child: const AppButtonText("Создать", textColor: AppColors.textOnColors),
+                      );
                     },
-                    child: const AppButtonText("Создать", textColor: AppColors.textOnColors),
                   ),
                 ],
               ),
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }

@@ -4,6 +4,7 @@ export 'artist/delete_artist.dart';
 export 'artist/get_artists.dart';
 export 'artist/get_user_artists.dart';
 export 'artist/update_artist.dart';
+export 'artist/check_artist_name_existence.dart';
 
 // category
 export 'category/get_categories.dart';
@@ -21,6 +22,7 @@ export 'user/create_user.dart';
 export 'user/send_code.dart';
 export 'user/verify_code.dart';
 export 'user/refresh_jwt.dart';
+export 'user/check_username_existence.dart';
 
 // favorites
 export 'favorites/add_artist_to_user_favorites.dart';

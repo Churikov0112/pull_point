@@ -65,12 +65,34 @@ class __EnterArtistDataScreenState extends State<EnterArtistDataScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onWillPop,
-      child: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
-          if (state is AuthStateAuthorized) _goToHomePage();
-          if (state is AuthStateUsernameInputed) _goToWannaBeArtistScreen(user: state.user);
+      child: BlocListener<CheckArtistNameExistenceBloc, CheckArtistNameExistenceState>(
+        listener: (context, checkArtistNameExistenceState) {
+          if (checkArtistNameExistenceState is CheckArtistNameExistenceStateNotExists) {
+            context.read<AuthBloc>().add(
+                  AuthEventRegisterArtist(
+                    user: UserModel(
+                      id: widget.user.id,
+                      username: widget.user.username,
+                      email: widget.user.email,
+                      accessToken: widget.user.accessToken,
+                      isArtist: true,
+                    ),
+                    name: artistNameEditingController.text,
+                    description: artistDescriptionEditingController.text,
+                    categoryId: pickedCategory!.id,
+                    subcategoryIds: pickedSubcategories.map((cat) => cat.id).toList(),
+                  ),
+                );
 
-          return Scaffold(
+            context.read<CheckArtistNameExistenceBloc>().add(const CheckArtistNameExistenceEventReset());
+          }
+        },
+        child: BlocListener<AuthBloc, AuthState>(
+          listener: (context, authState) {
+            if (authState is AuthStateAuthorized) _goToHomePage();
+            if (authState is AuthStateUsernameInputed) _goToWannaBeArtistScreen(user: authState.user);
+          },
+          child: Scaffold(
             backgroundColor: AppColors.backgroundCard,
             body: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -193,46 +215,44 @@ class __EnterArtistDataScreenState extends State<EnterArtistDataScreen> {
 
                   const SizedBox(height: 32),
 
-                  LongButton(
-                    backgroundColor: AppColors.orange,
-                    onTap: () {
-                      if (artistNameEditingController.text.isEmpty) {
-                        BotToast.showText(text: "Введите имя");
-                        return;
+                  BlocBuilder<CheckArtistNameExistenceBloc, CheckArtistNameExistenceState>(
+                    builder: (context, checkArtistNameExistenceState) {
+                      if (checkArtistNameExistenceState is CheckArtistNameExistenceStatePending) {
+                        return const LongButton(
+                          backgroundColor: AppColors.orange,
+                          isDisabled: true,
+                          child: LoadingIndicator(),
+                        );
                       }
-                      if (artistDescriptionEditingController.text.isEmpty) {
-                        BotToast.showText(text: "Введите описание");
-                        return;
-                      }
-                      if (pickedCategory == null) {
-                        BotToast.showText(text: "Выберите категорию");
-                        return;
-                      }
-                      FocusScope.of(context).unfocus();
-                      context.read<AuthBloc>().add(
-                            AuthEventRegisterArtist(
-                              user: UserModel(
-                                id: widget.user.id,
-                                username: widget.user.username,
-                                email: widget.user.email,
-                                accessToken: widget.user.accessToken,
-                                isArtist: true,
-                              ),
-                              name: artistNameEditingController.text,
-                              description: artistDescriptionEditingController.text,
-                              categoryId: pickedCategory!.id,
-                              subcategoryIds: pickedSubcategories.map((cat) => cat.id).toList(),
-                            ),
-                          );
-                      // Navigator.of(context).pop();
+                      return LongButton(
+                        backgroundColor: AppColors.orange,
+                        onTap: () {
+                          if (artistNameEditingController.text.isEmpty) {
+                            BotToast.showText(text: "Введите имя");
+                            return;
+                          }
+                          if (artistDescriptionEditingController.text.isEmpty) {
+                            BotToast.showText(text: "Введите описание");
+                            return;
+                          }
+                          if (pickedCategory == null) {
+                            BotToast.showText(text: "Выберите категорию");
+                            return;
+                          }
+                          FocusScope.of(context).unfocus();
+                          context
+                              .read<CheckArtistNameExistenceBloc>()
+                              .add(CheckArtistNameExistenceEventCheck(artistName: artistNameEditingController.text));
+                        },
+                        child: const AppButtonText("Создать", textColor: AppColors.textOnColors),
+                      );
                     },
-                    child: const AppButtonText("Создать", textColor: AppColors.textOnColors),
                   ),
                 ],
               ),
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }

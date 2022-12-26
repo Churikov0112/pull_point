@@ -3,6 +3,8 @@ import '../../models/models.dart';
 abstract class AuthRepositoryInterface {
   Future<UserModel?> checkAccountLocally();
 
+  Future<bool?> checkUsernameExistence({required String username});
+
   Future<UserModel?> refreshJWT();
 
   Future<String?> getVerificationCode({

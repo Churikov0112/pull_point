@@ -158,4 +158,17 @@ class ArtistsRepositoryImpl extends ArtistsRepositoryInterface {
     userArtists.clear();
     selectedArtist = null;
   }
+
+  @override
+  Future<bool?> checkArtistNameExistence({required String artistName}) async {
+    final response = await CheckArtistNameExistenceRequest.send(artistName: artistName);
+    if (response.statusCode == 200) {
+      String source = const Utf8Decoder().convert(response.bodyBytes);
+      final decodedResponse = jsonDecode(source);
+      final isArtistNameFree = (decodedResponse as bool);
+      final isArtistNameAlreadyExists = !isArtistNameFree;
+      return isArtistNameAlreadyExists;
+    }
+    return null;
+  }
 }

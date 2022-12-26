@@ -74,7 +74,7 @@ class _WithdrawMoneySectionState extends State<WithdrawMoneySection> {
           return BlocBuilder<WalletBloc, WalletState>(
             builder: (context, walletState) {
               if (walletWithdrawMoneyState is WalletWithdrawMoneyStatePending) {
-                return const Center(child: CircularProgressIndicator(color: AppColors.orange));
+                return const Center(child: LoadingIndicator());
               }
 
               if (walletState is WalletStateLoaded) {

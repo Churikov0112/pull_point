@@ -68,70 +68,87 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
     final mediaQuery = MediaQuery.of(context);
     return WillPopScope(
       onWillPop: _onWillPop,
-      child: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
-          if (state is AuthStateAuthorized) _goToHomePage();
-          if (state is AuthStateEnterEmailPageOpened) _goToEnterEmailScreen();
-          if (state is AuthStateCodeVerified) _goToUserRegisterScreen(user: state.user);
-          return Scaffold(
-            backgroundColor: AppColors.backgroundCard,
-            body: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: mediaQuery.size.width - 32,
-                    child: GradientText(
-                      gradient: AppGradients.main,
-                      src: Text(
-                        "Введите код, который мы прислали на ${widget.email})",
-                        style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  if (state is AuthStateCodeSent)
-                    SizedBox(
-                      width: mediaQuery.size.width - 32,
-                      child: GradientText(
-                        gradient: AppGradients.main,
-                        src: Text(
-                          "Код: ${state.code}",
-                          style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                    ),
-                  const SizedBox(height: 16),
-                  Form(
-                    child: AppTextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      hintText: "******",
-                      inputFormatters: [LengthLimitingTextInputFormatter(6)],
-                      maxLines: 1,
-                      controller: codeEditingController,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  LongButton(
-                    backgroundColor: AppColors.orange,
-                    onTap: () {
-                      if (codeEditingController.text.isEmpty) {
-                        BotToast.showText(text: "Вы не ввели код");
-                        return;
-                      }
-                      FocusScope.of(context).unfocus();
-                      context
-                          .read<AuthBloc>()
-                          .add(AuthEventLogin(email: widget.email, code: codeEditingController.text));
-                    },
-                    child: const AppButtonText("Далее", textColor: AppColors.textOnColors),
-                  ),
-                ],
-              ),
-            ),
-          );
+      child: BlocListener<AuthBloc, AuthState>(
+        listener: (context, authListenerState) {
+          if (authListenerState is AuthStateAuthorized) _goToHomePage();
+          if (authListenerState is AuthStateEnterEmailPageOpened) _goToEnterEmailScreen();
+          if (authListenerState is AuthStateCodeVerified) _goToUserRegisterScreen(user: authListenerState.user);
         },
+        child: Scaffold(
+          backgroundColor: AppColors.backgroundCard,
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: mediaQuery.size.width - 32,
+                  child: GradientText(
+                    gradient: AppGradients.main,
+                    src: Text(
+                      "Введите код, который мы прислали на ${widget.email})",
+                      style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, authState) {
+                    if (authState is AuthStateCodeSent) {
+                      return SizedBox(
+                        width: mediaQuery.size.width - 32,
+                        child: GradientText(
+                          gradient: AppGradients.main,
+                          src: Text(
+                            "Код: ${authState.code}",
+                            style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+                const SizedBox(height: 16),
+                Form(
+                  child: AppTextFormField(
+                    keyboardType: TextInputType.number,
+                    hintText: "******",
+                    inputFormatters: [LengthLimitingTextInputFormatter(6)],
+                    maxLines: 1,
+                    controller: codeEditingController,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, authState) {
+                    if (authState is AuthStatePending) {
+                      return const LongButton(
+                        backgroundColor: AppColors.orange,
+                        isDisabled: true,
+                        child: LoadingIndicator(),
+                      );
+                    }
+                    return LongButton(
+                      backgroundColor: AppColors.orange,
+                      onTap: () {
+                        if (codeEditingController.text.isEmpty) {
+                          BotToast.showText(text: "Вы не ввели код");
+                          return;
+                        }
+                        FocusScope.of(context).unfocus();
+                        context
+                            .read<AuthBloc>()
+                            .add(AuthEventLogin(email: widget.email, code: codeEditingController.text));
+                      },
+                      child: const AppButtonText("Далее", textColor: AppColors.textOnColors),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

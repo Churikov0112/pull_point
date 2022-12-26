@@ -71,15 +71,26 @@ class _UserContentState extends State<UserContent> {
                     if (authState.user.isArtist ?? false) const ArtistInfoWidget(),
                     if (authState.user.isArtist ?? false) const ArtistQRWidget(),
                     const SizedBox(height: 16),
-                    LongButton(
-                      backgroundColor: AppColors.orange,
-                      child: const AppText("Выйти", textColor: AppColors.textOnColors),
-                      onTap: () async {
-                        context.read<UserArtistsBloc>().add(const UserArtistsEventResetSelectOnLogout());
-                        context.read<FeedFiltersBloc>().add(const ResetFeedFiltersEvent());
-                        context.read<WalletBloc>().add(const WalletEventReset());
+                    BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, authState) {
+                        if (authState is AuthStatePending) {
+                          return const LongButton(
+                            backgroundColor: AppColors.orange,
+                            isDisabled: true,
+                            child: LoadingIndicator(),
+                          );
+                        }
+                        return LongButton(
+                          backgroundColor: AppColors.orange,
+                          child: const AppText("Выйти", textColor: AppColors.textOnColors),
+                          onTap: () async {
+                            context.read<UserArtistsBloc>().add(const UserArtistsEventResetSelectOnLogout());
+                            context.read<FeedFiltersBloc>().add(const ResetFeedFiltersEvent());
+                            context.read<WalletBloc>().add(const WalletEventReset());
 
-                        context.read<AuthBloc>().add(const AuthEventLogout());
+                            context.read<AuthBloc>().add(const AuthEventLogout());
+                          },
+                        );
                       },
                     ),
                     const SizedBox(height: 16),
