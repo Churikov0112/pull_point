@@ -56,11 +56,22 @@ dev_dependencies:
   hive_generator: ^1.1.3
   build_runner: ^2.2.0
 
+  # App Icon
+  flutter_launcher_icons: ^0.11.0
+
+flutter_icons:
+  ios: true
+  android: "launcher_icon"
+  image_path: "assets/raster/launcher_icon/icon.png"
+  adaptive_icon_background: "assets/raster/launcher_icon/background.png"
+  adaptive_icon_foreground: "assets/raster/launcher_icon/foreground.png"
+
 flutter:
   uses-material-design: true
 
   assets:
     - assets/raster/images/
+    - assets/raster/launcher_icon/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

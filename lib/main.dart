@@ -95,6 +95,7 @@ class MyApp extends StatelessWidget {
             create: (context) => DeleteFavoritesBloc(favoritesRepository: favoritesRepository)),
       ],
       child: MaterialApp(
+        title: "Pull Point",
         builder: BotToastInit(),
         debugShowCheckedModeBanner: false,
         theme: ThemeData.light().copyWith(

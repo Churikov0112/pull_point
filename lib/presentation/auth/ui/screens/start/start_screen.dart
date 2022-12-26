@@ -35,35 +35,40 @@ class StartScreen extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async => false,
       child: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if (state is AuthStateAuthorized || state is AuthStateGuest) _goToHomePage(context);
-          if (state is AuthStateEnterEmailPageOpened) _goToEnterEmailPage(context);
+        listener: (context, authListenerState) {
+          if (authListenerState is AuthStateAuthorized || authListenerState is AuthStateGuest) _goToHomePage(context);
+          if (authListenerState is AuthStateEnterEmailPageOpened) _goToEnterEmailPage(context);
         },
         child: Scaffold(
-          body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                LongButton(
-                  onTap: () {
-                    context.read<AuthBloc>().add(const AuthEventOpenEmailPage());
-                    // Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => const EnterEmailScreen()));
-                  },
-                  backgroundColor: AppColors.orange,
-                  child: const AppText("Авторизоваться", textColor: AppColors.textOnColors),
+          body: BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, authState) {
+              if (authState is AuthStatePending) {
+                return const Center(child: LoadingIndicator());
+              }
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    LongButton(
+                      onTap: () {
+                        context.read<AuthBloc>().add(const AuthEventOpenEmailPage());
+                      },
+                      backgroundColor: AppColors.orange,
+                      child: const AppText("Авторизоваться", textColor: AppColors.textOnColors),
+                    ),
+                    const SizedBox(height: 16),
+                    LongButton(
+                      onTap: () {
+                        context.read<AuthBloc>().add(const AuthEventContinueAsGuest());
+                      },
+                      backgroundColor: AppColors.primary.withOpacity(0.1),
+                      child: const AppText("Продолжить как гость"),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 16),
-                LongButton(
-                  onTap: () {
-                    // Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) => const HomePage()));
-                    context.read<AuthBloc>().add(const AuthEventContinueAsGuest());
-                  },
-                  backgroundColor: AppColors.primary.withOpacity(0.1),
-                  child: const AppText("Продолжить как гость"),
-                ),
-              ],
-            ),
+              );
+            },
           ),
         ),
       ),
