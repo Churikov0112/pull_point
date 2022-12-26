@@ -42,14 +42,14 @@ TransactionDir? _transactionDirFromString(String type, String? dir) {
 }
 
 class TransactionModel {
-  final int id;
+  // final int id;
   final TransactionType type;
   final TransactionDir? dir;
   final int sum;
   final DateTime dateTime;
 
   const TransactionModel({
-    required this.id,
+    // required this.id,
     required this.type,
     required this.dir,
     required this.sum,
@@ -57,8 +57,9 @@ class TransactionModel {
   });
 
   static TransactionModel fromJson(dynamic source) {
+    // print(source['id']);
     return TransactionModel(
-      id: source['id'],
+      // id: source['id'],
       type: _transactionTypeFromString(source["type"]),
       dir: _transactionDirFromString(source["type"], source["dir"]),
       sum: source['sum'],

@@ -163,28 +163,42 @@ class FavoritesButton extends StatelessWidget {
 
     if (getFavoritesState is GetFavoritesStateLoaded) {
       if (getFavoritesState.favorites.contains(artist)) {
-        return GestureDetector(
-          onTap: () {
-            context.read<DeleteFavoritesBloc>().add(DeleteFavoritesEventDelete(artistId: artist.id));
+        return BlocBuilder<DeleteFavoritesBloc, DeleteFavoritesState>(
+          builder: (context, deleteFavoritesState) {
+            if (deleteFavoritesState is DeleteFavoritesStatePending) {
+              return const LoadingIndicator();
+            }
+            return GestureDetector(
+              onTap: () {
+                context.read<DeleteFavoritesBloc>().add(DeleteFavoritesEventDelete(artistId: artist.id));
+              },
+              child: const Icon(
+                Icons.favorite,
+                size: 32,
+                color: AppColors.pink,
+              ),
+            );
           },
-          child: const Icon(
-            Icons.favorite,
-            size: 32,
-            color: AppColors.pink,
-          ),
         );
       }
     }
 
-    return GestureDetector(
-      onTap: () {
-        context.read<AddFavoritesBloc>().add(AddFavoritesEventAdd(artistId: artist.id));
+    return BlocBuilder<AddFavoritesBloc, AddFavoritesState>(
+      builder: (context, addFavoritesState) {
+        if (addFavoritesState is AddFavoritesStatePending) {
+          return const LoadingIndicator();
+        }
+        return GestureDetector(
+          onTap: () {
+            context.read<AddFavoritesBloc>().add(AddFavoritesEventAdd(artistId: artist.id));
+          },
+          child: const Icon(
+            Icons.favorite_border_rounded,
+            size: 32,
+            color: AppColors.pink,
+          ),
+        );
       },
-      child: const Icon(
-        Icons.favorite_border_rounded,
-        size: 32,
-        color: AppColors.pink,
-      ),
     );
   }
 }

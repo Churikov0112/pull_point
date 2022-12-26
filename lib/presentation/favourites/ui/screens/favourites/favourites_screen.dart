@@ -33,25 +33,63 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
         decoration: const BoxDecoration(
           color: AppColors.backgroundPage,
         ),
-        child: BlocBuilder<GetFavoritesBloc, GetFavoritesState>(builder: (context, getFavoritesState) {
-          if (getFavoritesState is GetFavoritesStatePending) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: AppColors.orange,
-              ),
-            );
-          }
+        child: BlocBuilder<GetFavoritesBloc, GetFavoritesState>(
+          builder: (context, getFavoritesState) {
+            if (getFavoritesState is GetFavoritesStatePending) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: AppColors.orange,
+                ),
+              );
+            }
 
-          if (getFavoritesState is GetFavoritesStateLoaded) {
-            return ListView.builder(
-              itemCount: getFavoritesState.favorites.length,
-              itemBuilder: (context, index) {
-                return ArtistItem(artist: getFavoritesState.favorites[index]);
-              },
-            );
-          }
-          return const SizedBox.shrink();
-        }),
+            if (context.read<AuthBloc>().state is AuthStateGuest) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const AppText(
+                        "Чтобы добавлять артистов  в избранное, необходимо авторизоваться. Сделать это можно в профиле",
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 32),
+                      LongButton(
+                        backgroundColor: AppColors.orange,
+                        onTap: () {
+                          context.read<HomeBloc>().add(const HomeEventSelectTab(tabIndex: 4));
+                        },
+                        child: const AppText("В профиль", textColor: AppColors.textOnColors),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+
+            if (getFavoritesState is GetFavoritesStateLoaded) {
+              if (getFavoritesState.favorites.isEmpty) {
+                return const Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 32),
+                    child: AppText(
+                      "Тут пока пусто. Попробуйте добавить любимого артиста в избранное, и он окажется здесь",
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                );
+              }
+              return ListView.builder(
+                itemCount: getFavoritesState.favorites.length,
+                itemBuilder: (context, index) {
+                  return ArtistItem(artist: getFavoritesState.favorites[index]);
+                },
+              );
+            }
+            return const SizedBox.shrink();
+          },
+        ),
       ),
     );
   }

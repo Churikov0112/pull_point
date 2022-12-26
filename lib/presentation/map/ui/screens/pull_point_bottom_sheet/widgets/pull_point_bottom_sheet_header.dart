@@ -34,17 +34,17 @@ class PullPointBottomSheetHeader extends StatelessWidget {
                     width: mediaQuery.size.width * 0.85,
                     child: AppTitle(
                       pullPoint.title,
-                      maxLines: 2,
+                      maxLines: 1,
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    pullPoint.owner.name ?? "-",
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
+                  SizedBox(
+                    width: mediaQuery.size.width * 0.85,
+                    child: AppText(
+                      pullPoint.owner.name ?? "-",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    maxLines: 1,
                   ),
                 ],
               ),
