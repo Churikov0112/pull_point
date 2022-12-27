@@ -12,7 +12,11 @@ class DeleteFavoritesStateInitial extends DeleteFavoritesState {
 }
 
 class DeleteFavoritesStatePending extends DeleteFavoritesState {
-  const DeleteFavoritesStatePending();
+  final int artistId;
+
+  const DeleteFavoritesStatePending({
+    required this.artistId,
+  });
 }
 
 class DeleteFavoritesStateReady extends DeleteFavoritesState {

@@ -153,18 +153,29 @@ class ArtistItem extends StatelessWidget {
                               gradient: AppGradients.first,
                               childText: subcategory.name,
                             ),
-                        TouchableOpacity(
-                          onPressed: () {
-                            context.read<DeleteFavoritesBloc>().add(DeleteFavoritesEventDelete(artistId: artist.id));
+                        BlocBuilder<DeleteFavoritesBloc, DeleteFavoritesState>(
+                          builder: (context, deleteFavoritesState) {
+                            if (deleteFavoritesState is DeleteFavoritesStatePending) {
+                              if (deleteFavoritesState.artistId == artist.id) {
+                                return const LoadingIndicator();
+                              }
+                            }
+                            return TouchableOpacity(
+                              onPressed: () {
+                                context
+                                    .read<DeleteFavoritesBloc>()
+                                    .add(DeleteFavoritesEventDelete(artistId: artist.id));
+                              },
+                              child: const SizedBox(
+                                width: 32,
+                                height: 32,
+                                child: Icon(
+                                  Icons.favorite,
+                                  color: AppColors.pink,
+                                ),
+                              ),
+                            );
                           },
-                          child: const SizedBox(
-                            width: 32,
-                            height: 32,
-                            child: Icon(
-                              Icons.favorite,
-                              color: AppColors.pink,
-                            ),
-                          ),
                         ),
                       ],
                     ),

@@ -17,7 +17,7 @@ class DeleteFavoritesBloc extends Bloc<DeleteFavoritesEvent, DeleteFavoritesStat
   final FavoritesRepositoryInterface _favoritesRepository;
 
   Future<void> _deleteArtistFromFavorites(DeleteFavoritesEventDelete event, Emitter<DeleteFavoritesState> emit) async {
-    emit(const DeleteFavoritesStatePending());
+    emit(DeleteFavoritesStatePending(artistId: event.artistId));
     final succeeded = await _favoritesRepository.deleteArtistFromUserFavorites(artistId: event.artistId);
     await Future.delayed(const Duration(milliseconds: 1000));
     if (succeeded) {
