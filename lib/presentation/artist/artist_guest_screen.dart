@@ -34,97 +34,104 @@ class _ArtistGuestScreenState extends State<ArtistGuestScreen> {
           context.read<GetFavoritesBloc>().add(const GetFavoritesEventGet(needUpdate: true));
         }
       },
-      child: BlocBuilder<GetFavoritesBloc, GetFavoritesState>(
-        builder: (context, getFavoritesState) {
-          return BlocBuilder<AddFavoritesBloc, AddFavoritesState>(
-            builder: (context, addFavoritesState) {
-              return Scaffold(
-                backgroundColor: AppColors.backgroundCard,
-                body: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: ScrollConfiguration(
-                    behavior: CustomScrollBehavior(),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(height: mediaQuery.padding.top + 24),
-                          PullPointAppBar(
-                            title: widget.artist.name ?? "Страница артиста",
-                            titleMaxLines: 2,
-                            onBackPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            right: FavoritesButton(artist: widget.artist),
-                          ),
-                          const SizedBox(height: 32),
-                          AppText(widget.artist.description ?? ""),
-                          const SizedBox(height: 16),
-                          const Divider(thickness: 1),
-                          const SizedBox(height: 16),
-                          if (widget.artist.category != null)
-                            SizedBox(
-                              width: mediaQuery.size.width,
-                              child: Wrap(
-                                spacing: 8,
-                                runSpacing: 8,
+      child: BlocListener<DeleteFavoritesBloc, DeleteFavoritesState>(
+        listener: (context, deleteFavoritesListenerState) {
+          if (deleteFavoritesListenerState is DeleteFavoritesStateReady) {
+            context.read<GetFavoritesBloc>().add(const GetFavoritesEventGet(needUpdate: true));
+          }
+        },
+        child: BlocBuilder<GetFavoritesBloc, GetFavoritesState>(
+          builder: (context, getFavoritesState) {
+            return BlocBuilder<AddFavoritesBloc, AddFavoritesState>(
+              builder: (context, addFavoritesState) {
+                return Scaffold(
+                  backgroundColor: AppColors.backgroundCard,
+                  body: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: ScrollConfiguration(
+                      behavior: CustomScrollBehavior(),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(height: mediaQuery.padding.top + 24),
+                            PullPointAppBar(
+                              title: widget.artist.name ?? "Страница артиста",
+                              titleMaxLines: 2,
+                              onBackPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              right: FavoritesButton(artist: widget.artist),
+                            ),
+                            const SizedBox(height: 32),
+                            AppText(widget.artist.description ?? ""),
+                            const SizedBox(height: 16),
+                            const Divider(thickness: 1),
+                            const SizedBox(height: 16),
+                            if (widget.artist.category != null)
+                              SizedBox(
+                                width: mediaQuery.size.width,
+                                child: Wrap(
+                                  spacing: 8,
+                                  runSpacing: 8,
+                                  children: [
+                                    CategoryChip(
+                                      gradient: AppGradients.main,
+                                      childText: widget.artist.category!.name,
+                                    ),
+                                    if (widget.artist.subcategories != null)
+                                      for (final subcategory in widget.artist.subcategories!)
+                                        CategoryChip(
+                                          gradient: AppGradients.first,
+                                          childText: subcategory.name,
+                                        ),
+                                  ],
+                                ),
+                              ),
+                            const SizedBox(height: 16),
+                            const Divider(thickness: 1),
+                            const SizedBox(height: 16),
+                            const AppTitle("Последние выступления"),
+                            const SizedBox(height: 16),
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
                                 children: [
-                                  CategoryChip(
-                                    gradient: AppGradients.main,
-                                    childText: widget.artist.category!.name,
-                                  ),
-                                  if (widget.artist.subcategories != null)
-                                    for (final subcategory in widget.artist.subcategories!)
-                                      CategoryChip(
-                                        gradient: AppGradients.first,
-                                        childText: subcategory.name,
-                                      ),
+                                  for (int i = 0; i < 5; i++)
+                                    const Padding(
+                                      padding: EdgeInsets.only(right: 8),
+                                      child: PPHistoryItem(),
+                                    ),
                                 ],
                               ),
                             ),
-                          const SizedBox(height: 16),
-                          const Divider(thickness: 1),
-                          const SizedBox(height: 16),
-                          const AppTitle("Последние выступления"),
-                          const SizedBox(height: 16),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: [
-                                for (int i = 0; i < 5; i++)
-                                  const Padding(
-                                    padding: EdgeInsets.only(right: 8),
-                                    child: PPHistoryItem(),
-                                  ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 100),
-                        ],
+                            const SizedBox(height: 100),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                floatingActionButton: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: LongButton(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (BuildContext context) => DonationScreen(artist: widget.artist),
-                        ),
-                      );
-                    },
-                    backgroundColor: AppColors.orange,
-                    child: const AppText("Пожертвовать", textColor: AppColors.textOnColors),
+                  floatingActionButton: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: LongButton(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) => DonationScreen(artist: widget.artist),
+                          ),
+                        );
+                      },
+                      backgroundColor: AppColors.orange,
+                      child: const AppText("Пожертвовать", textColor: AppColors.textOnColors),
+                    ),
                   ),
-                ),
-                floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-              );
-            },
-          );
-        },
+                  floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }

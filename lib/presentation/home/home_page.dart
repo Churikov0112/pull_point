@@ -22,6 +22,15 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    final authState = context.read<AuthBloc>().state;
+    if (authState is AuthStateAuthorized) {
+      if (authState.user.isArtist != null) {
+        if (authState.user.isArtist == true) {
+          context.read<UserArtistsBloc>().add(UserArtistsEventLoad(userId: authState.user.id));
+        }
+      }
+    }
+
     mapController = MapController();
     super.initState();
   }
