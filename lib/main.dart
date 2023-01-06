@@ -97,6 +97,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: "Pull Point",
         builder: BotToastInit(),
+        navigatorObservers: [BotToastNavigatorObserver()],
         debugShowCheckedModeBanner: false,
         theme: ThemeData.light().copyWith(
           backgroundColor: AppColors.primary,

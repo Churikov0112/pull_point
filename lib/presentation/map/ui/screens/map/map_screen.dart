@@ -27,8 +27,19 @@ final _kMapOptions = MapOptions(
 
 final _kTileLayerOptions = TileLayerOptions(
   backgroundColor: Colors.white,
-  urlTemplate: 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png',
-  subdomains: ['a', 'b', 'c'],
+  // urlTemplate: 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', // светло-оранжевая
+  // urlTemplate: 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', // светло-серая без текста
+  // urlTemplate: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', // очень темная карта
+  // urlTemplate: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', // светло-бежевая
+  // urlTemplate: 'https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png', // зеленая, много линий
+  // urlTemplate: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', // зеленая, бордовые линии
+  // urlTemplate:
+  //     'https://server.arcgisonline.com/ArcGIS/rest/services/Specialty/DeLorme_World_Base_Map/MapServer/tile/{z}/{y}/{x}', // желтая, розовые и филетовые линии
+  // urlTemplate:
+  //     'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', // серо-зеленая
+  urlTemplate:
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', // снимки со спутника
+  // urlTemplate: 'http://tile.mtbmap.cz/mtbmap_tiles/{z}/{x}/{y}.png', // мерзкие зеленые карты
 );
 
 class MapScreen extends StatefulWidget {
