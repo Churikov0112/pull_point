@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' show Icons;
 import 'package:flutter/widgets.dart';
 import 'package:pull_point/presentation/ui_kit/text/text.dart';
+
 import '../touchable_opacity/touchable_opacity.dart';
 
 class PullPointAppBar extends StatelessWidget {
@@ -40,8 +41,7 @@ class PullPointAppBar extends StatelessWidget {
           SizedBox(
             width: mediaQuery.size.width - 128,
             child: AppTitle(
-              // title,
-              "titletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitle",
+              title,
               maxLines: titleMaxLines,
             ),
           ),

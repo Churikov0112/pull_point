@@ -19,6 +19,8 @@ class CreatePullPointBloc extends Bloc<CreatePullPointEvent, CreatePullPointStat
   }
 
   Future<void> _create(CreatePullPointEventCreate event, Emitter<CreatePullPointState> emit) async {
+    emit(const CreatePullPointStateLoading());
+    await Future.delayed(const Duration(seconds: 1));
     final created = await _pullPointsRepository.createPullPoint(
       name: event.name,
       description: event.description,
