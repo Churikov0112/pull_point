@@ -44,5 +44,6 @@ class UserArtistsBloc extends Bloc<UserArtistsEvent, UserArtistsState> {
 
   Future<void> _reset(UserArtistsEventResetSelectOnLogout event, Emitter<UserArtistsState> emit) async {
     _artistsRepository.unselectArtistOnLogout();
+    emit(const UserArtistsStateInitial());
   }
 }

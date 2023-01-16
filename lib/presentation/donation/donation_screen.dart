@@ -38,6 +38,7 @@ class _DonationScreenState extends State<DonationScreen> {
       listener: (context, walletTransferMoneyListenerState) {
         if (walletTransferMoneyListenerState is WalletTransferMoneyStateReady) {
           context.read<WalletBloc>().add(const WalletEventGet(needUpdate: true));
+          Navigator.of(context).pop();
         }
       },
       child: BlocBuilder<WalletTransferMoneyBloc, WalletTransferMoneyState>(

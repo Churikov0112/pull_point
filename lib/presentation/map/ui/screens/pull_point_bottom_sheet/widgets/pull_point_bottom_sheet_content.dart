@@ -26,6 +26,8 @@ class PullPointBottomSheetContent extends StatelessWidget {
     final mediaQuery = MediaQuery.of(context);
     return BlocBuilder<UserArtistsBloc, UserArtistsState>(
       builder: (context, state) {
+        print(main.userBox.get("user"));
+        print(state.runtimeType);
         return Container(
           color: Colors.white,
           child: Padding(
@@ -102,16 +104,24 @@ class PullPointBottomSheetContent extends StatelessWidget {
                       ),
                     ],
                   ),
-                if (main.userBox.get("user") == null)
-                  DonateButton(artist: pullPoint.owner)
-                else if (state is UserArtistsStateSelected)
-                  if (state.allUserArtists.contains(pullPoint.owner))
-                    const Padding(
-                      padding: EdgeInsets.only(top: 32),
-                      child: Center(child: AppText("Это ваше выступление")),
-                    )
-                  else
-                    DonateButton(artist: pullPoint.owner),
+
+                if (state is UserArtistsStateSelected)
+                  const Padding(
+                    padding: EdgeInsets.only(top: 32),
+                    child: Center(child: AppText("Это ваше выступление")),
+                  )
+                else
+                  DonateButton(artist: pullPoint.owner),
+                // if (main.userBox.get("user") == null)
+                //   DonateButton(artist: pullPoint.owner)
+                // else if (state is UserArtistsStateSelected)
+                //   if (state.allUserArtists.contains(pullPoint.owner))
+                //     const Padding(
+                //       padding: EdgeInsets.only(top: 32),
+                //       child: Center(child: AppText("Это ваше выступление")),
+                //     )
+                //   else
+                //     DonateButton(artist: pullPoint.owner),
               ],
             ),
           ),
