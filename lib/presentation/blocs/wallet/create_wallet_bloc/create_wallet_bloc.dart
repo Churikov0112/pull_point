@@ -18,10 +18,12 @@ class CreateWalletBloc extends Bloc<CreateWalletEvent, CreateWalletState> {
 
   Future<void> _createWallet(CreateWalletEventCreate event, Emitter<CreateWalletState> emit) async {
     emit(const CreateWalletStateInitial());
+    emit(const CreateWalletStatePending());
     final wallet = await _walletRepository.createUserWallet(cardNumber: event.cardNumber);
     if (wallet != null) {
       emit(CreateWalletStateCreated(wallet: wallet));
     } else {
+      emit(const CreateWalletStateInitial());
       BotToast.showText(text: "Не удалось создать кошелек");
     }
   }

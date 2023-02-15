@@ -54,13 +54,33 @@ class CreateWalletScreen extends StatelessWidget {
                   ),
                   const Spacer(),
                   const SizedBox(height: 24),
-                  LongButton(
-                    onTap: () {
-                      final cardNumber = cardNumberController.text.replaceAll(" ", "");
-                      context.read<CreateWalletBloc>().add(CreateWalletEventCreate(cardNumber: cardNumber));
+
+                  // create wallet button
+                  BlocBuilder<CreateWalletBloc, CreateWalletState>(
+                    builder: (context, createWalletState) {
+                      if (createWalletState is CreateWalletStatePending) {
+                        return LongButton(
+                          isDisabled: true,
+                          backgroundColor: AppColors.orange.withOpacity(0.4),
+                          child: const Center(
+                            child: LoadingIndicator(),
+                          ),
+                        );
+                      }
+                      if (createWalletState is CreateWalletStateInitial) {
+                        return LongButton(
+                          onTap: () {
+                            final cardNumber = cardNumberController.text.replaceAll(" ", "");
+                            context.read<CreateWalletBloc>().add(CreateWalletEventCreate(cardNumber: cardNumber));
+                          },
+                          isDisabled: false,
+                          backgroundColor: AppColors.orange,
+                          child: const AppText("Создать кошелек", textColor: AppColors.textOnColors),
+                        );
+                      }
+
+                      return const SizedBox.shrink();
                     },
-                    backgroundColor: AppColors.orange,
-                    child: const AppText("Создать кошелек", textColor: AppColors.textOnColors),
                   ),
                   const SizedBox(height: 24),
                 ],

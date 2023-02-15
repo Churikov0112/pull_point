@@ -11,6 +11,10 @@ class CreateWalletStateInitial extends CreateWalletState {
   const CreateWalletStateInitial();
 }
 
+class CreateWalletStatePending extends CreateWalletState {
+  const CreateWalletStatePending();
+}
+
 class CreateWalletStateCreated extends CreateWalletState {
   final WalletModel wallet;
 
