@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "816197029801",
+    "project_id": "pull-point",
+    "storage_bucket": "pull-point.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:816197029801:android:a5b0f49270923fc5f4feb8",
+        "android_client_info": {
+          "package_name": "com.example.pull_point"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "816197029801-e4m5cgg890hku7i8e2qvdhacu0604ilb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHIowrqk2zto5SDATRu6QH4-Egj1BMeFc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "816197029801-e4m5cgg890hku7i8e2qvdhacu0604ilb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "816197029801-elr38kkb38ov2pmov6tg6kbsifuc78i6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pullPoint"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui' show Color;
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart' show Colors;
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
@@ -195,5 +196,27 @@ abstract class StaticMethods {
       return null;
     }
     return latLng;
+  }
+
+  static void requestNotificationPermission() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print("user granted permission");
+    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+      print("user granted provisional permission");
+    } else {
+      print("user declined or has not accepted permission provisional permission");
+    }
   }
 }

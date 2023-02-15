@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:pull_point/presentation/favourites/ui/screens/screens.dart';
 import 'package:pull_point/presentation/qr_reader/ui/screens/qr_reader/qr_reader.dart';
+import 'package:pull_point/presentation/static_methods/static_methods.dart';
 import 'package:pull_point/presentation/ui_kit/ui_kit.dart';
 
 import '../blocs/blocs.dart';
@@ -22,6 +23,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    StaticMethods.requestNotificationPermission();
+
     final authState = context.read<AuthBloc>().state;
     if (authState is AuthStateAuthorized) {
       if (authState.user.isArtist != null) {

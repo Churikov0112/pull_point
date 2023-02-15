@@ -1,4 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
@@ -8,6 +10,7 @@ import 'package:pull_point/presentation/home/home_page.dart';
 
 import 'data/data.dart';
 import 'domain/domain.dart';
+import 'firebase_options.dart';
 import 'presentation/blocs/blocs.dart';
 import 'presentation/ui_kit/ui_kit.dart';
 
@@ -15,6 +18,9 @@ late Box<UserModel?> userBox;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await FirebaseMessaging.instance.getInitialMessage();
   final directory = await path_provider.getApplicationDocumentsDirectory();
   Hive.registerAdapter(UserModelAdapter());
   Hive.init(directory.path);
