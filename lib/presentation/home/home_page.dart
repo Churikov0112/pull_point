@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:pull_point/presentation/favourites/ui/screens/screens.dart';
 import 'package:pull_point/presentation/qr_reader/ui/screens/qr_reader/qr_reader.dart';
-import 'package:pull_point/presentation/static_methods/static_methods.dart';
 import 'package:pull_point/presentation/ui_kit/ui_kit.dart';
 
 import '../blocs/blocs.dart';
 import '../feed/feed.dart';
 import '../map/map.dart';
 import '../profile/profile.dart';
+import '../static_methods/firebase_methods.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -23,7 +23,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    StaticMethods.requestNotificationPermission();
+    FirebaseStaticMethods.requestNotificationPermission();
+    FirebaseStaticMethods.getToken();
 
     final authState = context.read<AuthBloc>().state;
     if (authState is AuthStateAuthorized) {

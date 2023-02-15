@@ -19,7 +19,7 @@ late Box<UserModel?> userBox;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(name: "pull-point-app", options: DefaultFirebaseOptions.currentPlatform);
   await FirebaseMessaging.instance.getInitialMessage();
   final directory = await path_provider.getApplicationDocumentsDirectory();
   Hive.registerAdapter(UserModelAdapter());

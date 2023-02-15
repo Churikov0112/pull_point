@@ -50,20 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCHIowrqk2zto5SDATRu6QH4-Egj1BMeFc',
-    appId: '1:816197029801:android:a5b0f49270923fc5f4feb8',
-    messagingSenderId: '816197029801',
-    projectId: 'pull-point',
-    storageBucket: 'pull-point.appspot.com',
+    apiKey: 'AIzaSyAch-_TMl8G8nIEvTQ3HKlMqLWhfBPLiJA',
+    appId: '1:202060254182:android:1d3044f4963683d281e427',
+    messagingSenderId: '202060254182',
+    projectId: 'pull-point-app',
+    storageBucket: 'pull-point-app.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBK73Z3d5GaV3Tv8HrjaslmZZzdhka0yLg',
-    appId: '1:816197029801:ios:7a6c755f9130e177f4feb8',
-    messagingSenderId: '816197029801',
-    projectId: 'pull-point',
-    storageBucket: 'pull-point.appspot.com',
-    iosClientId: '816197029801-elr38kkb38ov2pmov6tg6kbsifuc78i6.apps.googleusercontent.com',
+    apiKey: 'AIzaSyC93fQrpr5TwkPrm6V_bjCot6_ZT9KkpOk',
+    appId: '1:202060254182:ios:43b8370195965ab281e427',
+    messagingSenderId: '202060254182',
+    projectId: 'pull-point-app',
+    storageBucket: 'pull-point-app.appspot.com',
+    iosClientId: '202060254182-lte5v1g53gipf80426ov5kv12jcl44c9.apps.googleusercontent.com',
     iosBundleId: 'com.example.pullPoint',
   );
 }
