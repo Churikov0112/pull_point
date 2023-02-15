@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/domain/domain.dart';
 import 'package:pull_point/presentation/blocs/blocs.dart';
 
 import '../../../../artist/artist_guest_screen.dart';
+import '../../../../static_methods/firebase_methods.dart';
 import '../../../../ui_kit/ui_kit.dart';
 
 class FavouritesScreen extends StatefulWidget {
@@ -18,6 +21,20 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
   void initState() {
     context.read<GetFavoritesBloc>().add(const GetFavoritesEventGet(needUpdate: true));
     super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
+      await sendPushToMyself();
+    });
+  }
+
+  Future<void> sendPushToMyself() async {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection("UserTokens").doc("Egor").get();
+    final token = snapshot["token"];
+
+    await FirebaseStaticMethods.sendNotification(
+      token,
+      "Ваш любимый артист скоро начнет выступление",
+      "Скорее бегите на улицу Ф. за шикарным представлением!",
+    );
   }
 
   @override

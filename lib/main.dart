@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
@@ -13,14 +14,40 @@ import 'domain/domain.dart';
 import 'firebase_options.dart';
 import 'presentation/blocs/blocs.dart';
 import 'presentation/ui_kit/ui_kit.dart';
+// import 'package:rxdart/rxdart.dart';
 
 late Box<UserModel?> userBox;
 
-void main() async {
+// // used to pass messages from event handler to the UI
+// final messageStreamController = BehaviorSubject<RemoteMessage>();
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("Handling a background message: ${message.messageId}");
+  print('Message data: ${message.data}');
+  print('Message notification: ${message.notification?.title}');
+  print('Message notification: ${message.notification?.body}');
+}
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(name: "pull-point-app", options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FirebaseMessaging.instance.getInitialMessage();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  // // TODO: Request permission
+  // // TODO: Register with FCM
+  // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  //   if (kDebugMode) {
+  //     print('Handling a foreground message: ${message.messageId}');
+  //     print('Message data: ${message.data}');
+  //     print('Message notification: ${message.notification?.title}');
+  //     print('Message notification: ${message.notification?.body}');
+  //   }
+
+  //   messageStreamController.sink.add(message);
+  // });
+
   final directory = await path_provider.getApplicationDocumentsDirectory();
   Hive.registerAdapter(UserModelAdapter());
   Hive.init(directory.path);

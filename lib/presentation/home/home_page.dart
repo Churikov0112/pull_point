@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:pull_point/presentation/favourites/ui/screens/screens.dart';
 import 'package:pull_point/presentation/qr_reader/ui/screens/qr_reader/qr_reader.dart';
@@ -11,8 +12,12 @@ import '../map/map.dart';
 import '../profile/profile.dart';
 import '../static_methods/firebase_methods.dart';
 
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -21,10 +26,28 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late MapController mapController;
 
+  // String _lastMessage = "";
+
+  // _HomePageState() {
+  //   main.messageStreamController.listen((message) {
+  //     setState(() {
+  //       if (message.notification != null) {
+  //         _lastMessage = 'Received a notification message:'
+  //             '\nTitle=${message.notification?.title},'
+  //             '\nBody=${message.notification?.body},'
+  //             '\nData=${message.data}';
+  //       } else {
+  //         _lastMessage = 'Received a data message: ${message.data}';
+  //       }
+  //     });
+  //   });
+  // }
+
   @override
   void initState() {
     FirebaseStaticMethods.requestNotificationPermission();
     FirebaseStaticMethods.getToken();
+    FirebaseStaticMethods.initInfo();
 
     final authState = context.read<AuthBloc>().state;
     if (authState is AuthStateAuthorized) {
@@ -113,6 +136,20 @@ class _HomePageState extends State<HomePage> {
           return const SizedBox.shrink();
         },
       ),
+      //     Scaffold(
+      //   appBar: AppBar(
+      //     title: const Text("test pushs"),
+      //   ),
+      //   body: Center(
+      //     child: Column(
+      //       mainAxisAlignment: MainAxisAlignment.center,
+      //       children: <Widget>[
+      //         Text('Last message from Firebase Messaging:', style: Theme.of(context).textTheme.titleLarge),
+      //         Text(_lastMessage, style: Theme.of(context).textTheme.bodyLarge),
+      //       ],
+      //     ),
+      //   ),
+      // ),
     );
   }
 }
