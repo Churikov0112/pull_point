@@ -177,7 +177,7 @@ class FavoritesButton extends StatelessWidget {
             }
             return GestureDetector(
               onTap: () {
-                context.read<DeleteFavoritesBloc>().add(DeleteFavoritesEventDelete(artistId: artist.id));
+                context.read<DeleteFavoritesBloc>().add(DeleteFavoritesEventDelete(artist: artist));
               },
               child: const Icon(
                 Icons.favorite,
@@ -197,7 +197,7 @@ class FavoritesButton extends StatelessWidget {
         }
         return GestureDetector(
           onTap: () {
-            context.read<AddFavoritesBloc>().add(AddFavoritesEventAdd(artistId: artist.id));
+            context.read<AddFavoritesBloc>().add(AddFavoritesEventAdd(artist: artist));
           },
           child: const Icon(
             Icons.favorite_border_rounded,

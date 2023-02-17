@@ -2,6 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/domain/domain.dart';
+import 'package:pull_point/presentation/static_methods/firebase_methods.dart';
 
 part 'add_favorites_event.dart';
 part 'add_favorites_state.dart';
@@ -18,11 +19,13 @@ class AddFavoritesBloc extends Bloc<AddFavoritesEvent, AddFavoritesState> {
 
   Future<void> _addFavorites(AddFavoritesEventAdd event, Emitter<AddFavoritesState> emit) async {
     emit(const AddFavoritesStatePending());
-    final succeeded = await _favoritesRepository.addArtistToUserFavorites(artistId: event.artistId);
+    final succeeded = await _favoritesRepository.addArtistToUserFavorites(artistId: event.artist.id);
     await Future.delayed(const Duration(milliseconds: 1000));
     if (succeeded) {
       emit(const AddFavoritesStateReady());
       BotToast.showText(text: "Артист успешно добавлен в избранное");
+      await FirebaseStaticMethods.subscribeToTopic(event.artist.name ?? "null");
+      BotToast.showText(text: "Вы подписались на уведомления от артиста");
       return;
     } else {
       emit(const AddFavoritesStateFailed(reason: "Произошла ошибка при добавлении в избранное"));

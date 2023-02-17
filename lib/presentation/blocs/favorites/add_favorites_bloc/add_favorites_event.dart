@@ -8,9 +8,9 @@ abstract class AddFavoritesEvent extends Equatable {
 }
 
 class AddFavoritesEventAdd extends AddFavoritesEvent {
-  final int artistId;
+  final ArtistModel artist;
 
   const AddFavoritesEventAdd({
-    required this.artistId,
+    required this.artist,
   });
 }

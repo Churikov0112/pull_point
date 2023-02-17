@@ -8,9 +8,9 @@ abstract class DeleteFavoritesEvent extends Equatable {
 }
 
 class DeleteFavoritesEventDelete extends DeleteFavoritesEvent {
-  final int artistId;
+  final ArtistModel artist;
 
   const DeleteFavoritesEventDelete({
-    required this.artistId,
+    required this.artist,
   });
 }

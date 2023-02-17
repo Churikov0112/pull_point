@@ -40,6 +40,14 @@ class FirebaseStaticMethods {
     print("token $token saved to FirebaseFirestore");
   }
 
+  static Future<void> subscribeToTopic(String topic) async {
+    await FirebaseMessaging.instance.subscribeToTopic(topic);
+  }
+
+  static Future<void> unsubscribeFromTopic(String topic) async {
+    await FirebaseMessaging.instance.unsubscribeFromTopic(topic);
+  }
+
   static initInfo() {
     var androidInitialize = const AndroidInitializationSettings('@mipmap/ic_launcher');
     var initializationSettings = InitializationSettings(android: androidInitialize);
@@ -49,15 +57,20 @@ class FirebaseStaticMethods {
         print(response.notificationResponseType);
       },
     );
+    FirebaseMessaging.instance.subscribeToTopic("topic");
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       print("-----------------------------on message------------------------------");
-      print("onMessage: ${message..notification?.title}/${message.notification?.body}");
+      print("onMessage: ${message.notification?.title}/${message.notification?.body}");
 
       BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
         message.notification?.body ?? "null",
         htmlFormatBigText: true,
         contentTitle: message.notification?.title ?? "null",
-        htmlFormatContentTitle: true,
+        // htmlFormatContentTitle: true,
+        // message.data["body"] ?? "null",
+        // htmlFormatBigText: true,
+        // contentTitle: message.data["title"] ?? "null",
+        // htmlFormatContentTitle: true,
       );
 
       AndroidNotificationDetails adnroidPlatformChanelSpecifics = AndroidNotificationDetails(
