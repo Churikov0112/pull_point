@@ -21,21 +21,21 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
   void initState() {
     context.read<GetFavoritesBloc>().add(const GetFavoritesEventGet(needUpdate: true));
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
-      await sendPushToMyself();
-    });
+    // SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
+    //   await sendPushToMyself();
+    // });
   }
 
-  Future<void> sendPushToMyself() async {
-    DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection("UserTokens").doc("Egor").get();
-    final token = snapshot["token"];
+  // Future<void> sendPushToMyself() async {
+  //   DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection("UserTokens").doc("Egor").get();
+  //   final token = snapshot["token"];
 
-    await FirebaseStaticMethods.sendNotification(
-      token,
-      "Ваш любимый артист скоро начнет выступление",
-      "Скорее бегите на улицу Ф. за шикарным представлением!",
-    );
-  }
+  //   await FirebaseStaticMethods.sendNotification(
+  //     token,
+  //     "Ваш любимый артист скоро начнет выступление",
+  //     "Скорее бегите на улицу Ф. за шикарным представлением!",
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {

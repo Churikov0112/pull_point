@@ -27,9 +27,9 @@ class FirebaseStaticMethods {
   static Future<String?> getToken() async {
     final token = await FirebaseMessaging.instance.getToken();
     print("firebase token $token");
-    if (token != null) {
-      await saveToken(token);
-    }
+    // if (token != null) {
+    //   await saveToken(token);
+    // }
     return token;
   }
 

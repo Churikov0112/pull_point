@@ -22,6 +22,7 @@ export 'user/create_user.dart';
 export 'user/send_code.dart';
 export 'user/verify_code.dart';
 export 'user/refresh_jwt.dart';
+export 'user/update_device_token.dart';
 export 'user/check_username_existence.dart';
 
 // favorites

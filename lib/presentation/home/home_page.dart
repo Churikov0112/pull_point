@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -26,30 +27,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late MapController mapController;
 
-  // String _lastMessage = "";
-
-  // _HomePageState() {
-  //   main.messageStreamController.listen((message) {
-  //     setState(() {
-  //       if (message.notification != null) {
-  //         _lastMessage = 'Received a notification message:'
-  //             '\nTitle=${message.notification?.title},'
-  //             '\nBody=${message.notification?.body},'
-  //             '\nData=${message.data}';
-  //       } else {
-  //         _lastMessage = 'Received a data message: ${message.data}';
-  //       }
-  //     });
-  //   });
-  // }
-
   @override
   void initState() {
-    FirebaseStaticMethods.requestNotificationPermission();
-    FirebaseStaticMethods.getToken();
-    FirebaseStaticMethods.initInfo();
-
     final authState = context.read<AuthBloc>().state;
+    final updateDeviceTokenBloc = context.read<UpdateDeviceTokenBloc>();
     if (authState is AuthStateAuthorized) {
       if (authState.user.isArtist != null) {
         if (authState.user.isArtist == true) {
@@ -60,6 +41,14 @@ class _HomePageState extends State<HomePage> {
 
     mapController = MapController();
     super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
+      FirebaseStaticMethods.requestNotificationPermission();
+      final deviceToken = await FirebaseStaticMethods.getToken();
+      if (deviceToken != null && authState is AuthStateAuthorized) {
+        updateDeviceTokenBloc.add(UpdateDeviceTokenEventUpdate(deviceToken: deviceToken));
+      }
+      FirebaseStaticMethods.initInfo();
+    });
   }
 
   void _onItemTapped(int index) {

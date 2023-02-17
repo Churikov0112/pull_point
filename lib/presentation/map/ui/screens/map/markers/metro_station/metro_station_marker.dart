@@ -37,8 +37,8 @@ class MetroStationMarker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (zoom > 12) {
-      return TouchableOpacity(
-        onPressed: () {
+      return GestureDetector(
+        onTap: () {
           BotToast.showAttachedWidget(
             onClose: () {},
             targetContext: context,

@@ -21,4 +21,7 @@ abstract class AuthRepositoryInterface {
   });
 
   Future<void> logout();
+
+  /// Для получения пуш уведомлений
+  Future<bool> updateUserDeviceToken(String deviceToken);
 }

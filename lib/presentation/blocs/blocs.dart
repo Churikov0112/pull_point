@@ -6,6 +6,7 @@ export 'artist/check_artist_name_existence_bloc/check_artist_name_existence_bloc
 
 export 'user/auth_bloc/auth_bloc.dart';
 export 'user/check_username_existence_bloc/check_username_existence_bloc.dart';
+export 'user/update_device_token_bloc/update_device_token_bloc.dart';
 
 export 'wallet/wallet_bloc/wallet_bloc.dart';
 export 'wallet/wallet_history_bloc/wallet_history_bloc.dart';

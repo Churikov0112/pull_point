@@ -106,6 +106,19 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
   }
 
   @override
+  Future<bool> updateUserDeviceToken(String deviceToken) async {
+    final response = await UpdateDeviceTokenRequest.send(
+      id: main.userBox.get("user")?.id,
+      phone: main.userBox.get("user")?.email,
+      username: main.userBox.get("user")?.username,
+      deviceToken: deviceToken,
+      jwt: main.userBox.get("user")?.accessToken,
+    );
+
+    return response.statusCode == 200;
+  }
+
+  @override
   Future<void> logout() async {
     main.userBox.clear();
     return;
