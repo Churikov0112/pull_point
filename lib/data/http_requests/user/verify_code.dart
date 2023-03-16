@@ -11,7 +11,7 @@ class VerifyCodeRequest {
     required String code,
   }) async {
     return await http.post(
-      Uri.parse("${BackendConfig.baseUrl}/user/verify"),
+      Uri.parse("${BackendConfig.baseUrl}/user/verification"),
       body: jsonEncode({
         "phone": email,
         "token": code,

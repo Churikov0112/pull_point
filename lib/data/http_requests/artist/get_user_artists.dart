@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+
 import '../backend_config/backend_config.dart';
 
 class GetUserArtistsRequest {
@@ -7,7 +8,7 @@ class GetUserArtistsRequest {
     required int userId,
   }) async {
     return await http.get(
-      Uri.parse("${BackendConfig.baseUrl}/artist/byUser/$userId"),
+      Uri.parse("${BackendConfig.baseUrl}/artist/by-user/$userId"),
       headers: BackendConfig.baseHeaders,
     );
   }

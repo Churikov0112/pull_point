@@ -20,7 +20,7 @@ class CreatePullPointRequest {
     required String? jwt,
   }) async {
     return await http.post(
-      Uri.parse("${BackendConfig.baseUrl}/pull_point"),
+      Uri.parse("${BackendConfig.baseUrl}/pull-point"),
       body: jsonEncode({
         "owner": ownerId,
         "name": name,
