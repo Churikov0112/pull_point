@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/presentation/auth/ui/screens/wanna_be_artist_screen/wanna_be_artist_screen.dart';
 import 'package:pull_point/presentation/ui_kit/ui_kit.dart';
@@ -112,6 +113,9 @@ class __EnterArtistDataScreenState extends State<EnterArtistDataScreen> {
                     keyboardType: TextInputType.text,
                     hintText: "Псевдоним",
                     maxLines: 1,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z0-9-_.~%]{1,900}$')),
+                    ],
                     controller: artistNameEditingController,
                   ),
                   const SizedBox(height: 16),
