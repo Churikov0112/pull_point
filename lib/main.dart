@@ -17,12 +17,7 @@ import 'presentation/ui_kit/ui_kit.dart';
 
 late Box<UserModel?> userBox;
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Handling a background message: ${message.messageId}");
-  print('Message data: ${message.data}');
-  print('Message notification: ${message.notification?.title}');
-  print('Message notification: ${message.notification?.body}');
-}
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
