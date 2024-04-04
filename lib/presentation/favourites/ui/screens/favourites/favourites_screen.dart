@@ -26,7 +26,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
       displacement: 100,
       color: AppColors.orange,
       onRefresh: () async {
-        await Future.delayed(const Duration(milliseconds: 500));
+        Future.delayed(const Duration(milliseconds: 500));
         context.read<GetFavoritesBloc>().add(const GetFavoritesEventGet(needUpdate: true));
       },
       child: DecoratedBox(

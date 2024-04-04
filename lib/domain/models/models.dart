@@ -4,8 +4,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:pull_point/data/repositories/mock/metro_stations.dart';
 import 'package:pull_point/domain/models/geo/geo.dart';
 
-import 'user/user.dart';
-
 // user
 export 'user/user.dart';
 

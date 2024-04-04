@@ -1,7 +1,5 @@
 import 'package:flutter/widgets.dart';
 
-import '../../../ui_kit.dart';
-
 class ChipWithChild extends StatelessWidget {
   final Gradient? gradient;
   final Color? backgroundColor;

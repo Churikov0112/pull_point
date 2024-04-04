@@ -53,7 +53,6 @@ class _WithdrawMoneySectionState extends State<WithdrawMoneySection> {
             ),
           ],
         );
-        ;
       },
     );
   }
@@ -136,9 +135,8 @@ class _WithdrawMoneySectionState extends State<WithdrawMoneySection> {
                               }
                               setState(() => _enableZero = newText.isNotEmpty);
                             },
-                            inputFormatters: !_enableZero
-                                ? [FilteringTextInputFormatter.allow(RegExp(r'[1-9]'))]
-                                : [FilteringTextInputFormatter.digitsOnly],
+                            inputFormatters:
+                                !_enableZero ? [FilteringTextInputFormatter.allow(RegExp(r'[1-9]'))] : [FilteringTextInputFormatter.digitsOnly],
                           ),
                           const Spacer(),
                           const SizedBox(height: 24),

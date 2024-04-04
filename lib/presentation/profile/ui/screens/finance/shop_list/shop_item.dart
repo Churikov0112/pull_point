@@ -47,7 +47,6 @@ class _ShopItemState extends State<ShopItem> {
             ),
           ],
         );
-        ;
       },
     );
   }
