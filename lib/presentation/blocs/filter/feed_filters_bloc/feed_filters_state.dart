@@ -1,10 +1,7 @@
 part of 'feed_filters_bloc.dart';
 
-abstract class FeedFiltersState extends Equatable {
+abstract class FeedFiltersState {
   const FeedFiltersState();
-
-  @override
-  List<Object> get props => [];
 }
 
 class FeedFiltersInitialState extends FeedFiltersState {
@@ -17,7 +14,4 @@ class FeedFiltersFilteredState extends FeedFiltersState {
   const FeedFiltersFilteredState({
     required this.filters,
   });
-
-  @override
-  List<Object> get props => [filters];
 }

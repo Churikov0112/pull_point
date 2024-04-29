@@ -1,10 +1,7 @@
 part of 'pull_points_bloc.dart';
 
-abstract class PullPointsEvent extends Equatable {
+abstract class PullPointsEvent {
   const PullPointsEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 class PullPointsEventLoad extends PullPointsEvent {
@@ -17,9 +14,6 @@ class SelectPullPointEvent extends PullPointsEvent {
   const SelectPullPointEvent({
     required this.selectedPullPointId,
   });
-
-  @override
-  List<Object> get props => [selectedPullPointId];
 }
 
 class UnselectPullPointEvent extends PullPointsEvent {

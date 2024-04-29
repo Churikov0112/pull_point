@@ -1,10 +1,7 @@
 part of 'user_artists_bloc.dart';
 
-abstract class UserArtistsEvent extends Equatable {
+abstract class UserArtistsEvent {
   const UserArtistsEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 class UserArtistsEventLoad extends UserArtistsEvent {

@@ -1,10 +1,7 @@
 part of 'feed_filters_bloc.dart';
 
-abstract class FeedFiltersEvent extends Equatable {
+abstract class FeedFiltersEvent {
   const FeedFiltersEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 class SetFeedFiltersEvent extends FeedFiltersEvent {

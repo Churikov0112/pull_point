@@ -1,10 +1,7 @@
 part of 'subcategories_bloc.dart';
 
-abstract class SubcategoriesState extends Equatable {
+abstract class SubcategoriesState {
   const SubcategoriesState();
-
-  @override
-  List<Object> get props => [];
 }
 
 class SubcategoriesStateInitial extends SubcategoriesState {
@@ -21,7 +18,4 @@ class SubcategoriesStateLoaded extends SubcategoriesState {
   const SubcategoriesStateLoaded({
     required this.subcategories,
   });
-
-  @override
-  List<Object> get props => [subcategories];
 }

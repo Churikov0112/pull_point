@@ -1,10 +1,7 @@
 part of 'user_artists_bloc.dart';
 
-abstract class UserArtistsState extends Equatable {
+abstract class UserArtistsState {
   const UserArtistsState();
-
-  @override
-  List<Object> get props => [];
 }
 
 class UserArtistsStateInitial extends UserArtistsState {
@@ -23,7 +20,4 @@ class UserArtistsStateSelected extends UserArtistsState {
     required this.allUserArtists,
     required this.selectedArtist,
   });
-
-  @override
-  List<Object> get props => [selectedArtist, allUserArtists];
 }

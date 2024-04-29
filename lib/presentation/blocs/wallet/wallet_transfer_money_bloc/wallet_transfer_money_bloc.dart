@@ -1,5 +1,4 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/domain/domain.dart';
 
@@ -17,8 +16,9 @@ class WalletTransferMoneyBloc extends Bloc<WalletTransferMoneyEvent, WalletTrans
   final WalletRepositoryInterface _walletRepository;
 
   Future<void> _transferMoney(
-      WalletTransferMoneyEventTransferMoney event, Emitter<WalletTransferMoneyState> emit) async {
-    emit(const WalletTransferMoneyStateInitial());
+    WalletTransferMoneyEventTransferMoney event,
+    Emitter<WalletTransferMoneyState> emit,
+  ) async {
     emit(const WalletTransferMoneyStatePending());
     final successful = await _walletRepository.transferCoins(sum: event.sum, artistName: event.artistName);
     if (successful) {

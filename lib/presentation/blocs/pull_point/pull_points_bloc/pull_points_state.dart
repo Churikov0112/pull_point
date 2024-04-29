@@ -1,10 +1,7 @@
 part of 'pull_points_bloc.dart';
 
-abstract class PullPointsState extends Equatable {
+abstract class PullPointsState {
   const PullPointsState();
-
-  @override
-  List<Object> get props => [];
 }
 
 class PullPointsStateInitial extends PullPointsState {}
@@ -17,9 +14,6 @@ class PullPointsStateLoaded extends PullPointsState {
   const PullPointsStateLoaded({
     required this.pullPoints,
   });
-
-  @override
-  List<Object> get props => [pullPoints];
 }
 
 class PullPointsStateSelected extends PullPointsState {
@@ -30,9 +24,6 @@ class PullPointsStateSelected extends PullPointsState {
     required this.selectedPullPoint,
     required this.otherPullPoints,
   });
-
-  @override
-  List<Object> get props => [otherPullPoints, selectedPullPoint];
 }
 
 class PullPointsStateFailed extends PullPointsState {
@@ -41,7 +32,4 @@ class PullPointsStateFailed extends PullPointsState {
   const PullPointsStateFailed({
     required this.errorMessage,
   });
-
-  @override
-  List<Object> get props => [errorMessage];
 }

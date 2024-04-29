@@ -1,10 +1,7 @@
 part of 'check_username_existence_bloc.dart';
 
-abstract class CheckUsernameExistenceState extends Equatable {
+abstract class CheckUsernameExistenceState {
   const CheckUsernameExistenceState();
-
-  @override
-  List<Object> get props => [];
 }
 
 class CheckUsernameExistenceStateInitial extends CheckUsernameExistenceState {

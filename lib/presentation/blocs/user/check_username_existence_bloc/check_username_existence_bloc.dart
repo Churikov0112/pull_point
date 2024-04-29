@@ -1,5 +1,4 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/domain/domain.dart';
 
@@ -18,7 +17,9 @@ class CheckUsernameExistenceBloc extends Bloc<CheckUsernameExistenceEvent, Check
   final AuthRepositoryInterface _authRepository;
 
   Future<void> _checkUsernameExistence(
-      CheckUsernameExistenceEventCheck event, Emitter<CheckUsernameExistenceState> emit) async {
+    CheckUsernameExistenceEventCheck event,
+    Emitter<CheckUsernameExistenceState> emit,
+  ) async {
     emit(const CheckUsernameExistenceStatePending());
     final exists = await _authRepository.checkUsernameExistence(username: event.username);
     await Future.delayed(const Duration(milliseconds: 1000));

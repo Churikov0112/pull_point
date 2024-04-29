@@ -1,7 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:pull_point/presentation/ui_kit/colors/colors.dart';
 
 import '../../../../../../../domain/models/models.dart';
 import '../../../../../../static_methods/static_methods.dart';

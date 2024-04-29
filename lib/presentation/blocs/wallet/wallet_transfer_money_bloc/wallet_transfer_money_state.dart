@@ -1,10 +1,7 @@
 part of 'wallet_transfer_money_bloc.dart';
 
-abstract class WalletTransferMoneyState extends Equatable {
+abstract class WalletTransferMoneyState {
   const WalletTransferMoneyState();
-
-  @override
-  List<Object> get props => [];
 }
 
 class WalletTransferMoneyStateInitial extends WalletTransferMoneyState {

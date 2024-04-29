@@ -1,5 +1,4 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../domain/domain.dart';
@@ -17,7 +16,10 @@ class DeleteArtistBloc extends Bloc<DeleteArtistEvent, DeleteArtistState> {
     on<DeleteArtistEventDelete>(_delete);
   }
 
-  Future<void> _delete(DeleteArtistEventDelete event, Emitter<DeleteArtistState> emit) async {
+  Future<void> _delete(
+    DeleteArtistEventDelete event,
+    Emitter<DeleteArtistState> emit,
+  ) async {
     emit(const DeleteArtistStateLoading());
     await Future.delayed(const Duration(seconds: 1));
     final created = await _artistsRepository.deleteArtist(

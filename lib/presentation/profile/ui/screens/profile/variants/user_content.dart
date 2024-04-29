@@ -29,7 +29,7 @@ class _UserContentState extends State<UserContent> {
   }
 
   void refreshData({required int userId}) {
-    context.read<WalletBloc>().add(const WalletEventGet(needUpdate: true));
+    // context.read<WalletBloc>().add(const WalletEventGet(needUpdate: true)); CHANGE VERSION
 
     final authState = authBloc.state;
     if (authState is AuthStateAuthorized) {
@@ -66,7 +66,7 @@ class _UserContentState extends State<UserContent> {
                   children: [
                     const SizedBox(height: 50),
                     UserInfoWidget(user: authState.user),
-                    const BalanceInfoWidget(),
+                    // const BalanceInfoWidget(),
                     if (authState.user.isArtist ?? false) const ArtistInfoWidget(),
                     if (authState.user.isArtist ?? false) const ArtistQRWidget(),
                     const SizedBox(height: 16),
@@ -85,8 +85,7 @@ class _UserContentState extends State<UserContent> {
                           onTap: () async {
                             context.read<UserArtistsBloc>().add(const UserArtistsEventResetSelectOnLogout());
                             context.read<FeedFiltersBloc>().add(const ResetFeedFiltersEvent());
-                            context.read<WalletBloc>().add(const WalletEventReset());
-
+                            // context.read<WalletBloc>().add(const WalletEventReset()); CHANGE VERSION
                             context.read<AuthBloc>().add(const AuthEventLogout());
                           },
                         );

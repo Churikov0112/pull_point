@@ -39,7 +39,7 @@ class UserInfoWidget extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 8),
-              AppText(user.email),
+              AppText(user.email ?? "NO EMAIL"),
             ],
           ),
         ),

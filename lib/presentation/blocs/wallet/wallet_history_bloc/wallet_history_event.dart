@@ -1,10 +1,7 @@
 part of 'wallet_history_bloc.dart';
 
-abstract class WalletHistoryEvent extends Equatable {
+abstract class WalletHistoryEvent {
   const WalletHistoryEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 class WalletHistoryEventGet extends WalletHistoryEvent {

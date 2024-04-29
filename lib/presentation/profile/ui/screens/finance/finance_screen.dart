@@ -8,14 +8,14 @@ import '../../../../blocs/blocs.dart';
 import '../../../../ui_kit/ui_kit.dart';
 import 'shop_list/shop_list.dart';
 
-class BalanceScreen extends StatefulWidget {
-  const BalanceScreen({super.key});
+class FinanceScreen extends StatefulWidget {
+  const FinanceScreen({super.key});
 
   @override
-  State<BalanceScreen> createState() => _BalanceScreenState();
+  State<FinanceScreen> createState() => _FinanceScreenState();
 }
 
-class _BalanceScreenState extends State<BalanceScreen> {
+class _FinanceScreenState extends State<FinanceScreen> {
   int _groupSliderValue = 0;
 
   @override

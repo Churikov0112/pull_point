@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/domain/domain.dart';
+
 import '../../../../../blocs/blocs.dart';
 import '../../../../../ui_kit/ui_kit.dart';
-import '../../finance/finance_screen.dart';
 import '../../create_wallet/create_wallet_screen.dart';
+import '../../finance/finance_screen.dart';
 
 class BalanceInfoWidget extends StatelessWidget {
   const BalanceInfoWidget({
@@ -55,7 +56,7 @@ class _WalletLoaded extends StatelessWidget {
       onPressed: () {
         Navigator.of(context).push(
           MaterialPageRoute<void>(
-            builder: (BuildContext context) => const BalanceScreen(),
+            builder: (BuildContext context) => const FinanceScreen(),
           ),
         );
       },
@@ -114,28 +115,28 @@ class _WalletCreate extends StatelessWidget {
   }
 }
 
-class _WalletError extends StatelessWidget {
-  const _WalletError({required this.reason});
+// class _WalletError extends StatelessWidget {
+//   const _WalletError({required this.reason});
 
-  final String reason;
+//   final String reason;
 
-  @override
-  Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
+//   @override
+//   Widget build(BuildContext context) {
+//     final mediaQuery = MediaQuery.of(context);
 
-    return Container(
-      width: mediaQuery.size.width,
-      decoration: const BoxDecoration(
-        color: AppColors.backgroundCard,
-        borderRadius: BorderRadius.all(Radius.circular(16)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-        child: AppTitle(reason),
-      ),
-    );
-  }
-}
+//     return Container(
+//       width: mediaQuery.size.width,
+//       decoration: const BoxDecoration(
+//         color: AppColors.backgroundCard,
+//         borderRadius: BorderRadius.all(Radius.circular(16)),
+//       ),
+//       child: Padding(
+//         padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+//         child: AppTitle(reason),
+//       ),
+//     );
+//   }
+// }
 
 class _WalletLoading extends StatelessWidget {
   @override

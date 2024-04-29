@@ -1,12 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart' show MaterialPageRoute;
+import 'package:flutter/widgets.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-import 'package:flutter/widgets.dart';
-
+import '../../../../../data/config/backend_config/backend_config.dart';
 import '../../../../../data/http_requests/artist/get_artists.dart';
-import '../../../../../data/http_requests/backend_config/backend_config.dart';
 import '../../../../../domain/models/models.dart';
 import '../../../../artist/artist_guest_screen.dart';
 

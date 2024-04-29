@@ -110,8 +110,9 @@ class PullPointBottomSheetContent extends StatelessWidget {
                     padding: EdgeInsets.only(top: 32),
                     child: Center(child: AppText("Это ваше выступление")),
                   )
-                else
-                  DonateButton(artist: pullPoint.owner),
+                // CHANGE VERSION
+                // else
+                //   DonateButton(artist: pullPoint.owner),
                 // if (main.userBox.get("user") == null)
                 //   DonateButton(artist: pullPoint.owner)
                 // else if (state is UserArtistsStateSelected)

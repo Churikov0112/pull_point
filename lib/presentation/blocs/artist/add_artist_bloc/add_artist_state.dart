@@ -1,10 +1,7 @@
 part of 'add_artist_bloc.dart';
 
-abstract class AddArtistState extends Equatable {
+abstract class AddArtistState {
   const AddArtistState();
-
-  @override
-  List<Object> get props => [];
 }
 
 class AddArtistStateInitial extends AddArtistState {

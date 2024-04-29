@@ -1,10 +1,7 @@
 part of 'delete_artist_bloc.dart';
 
-abstract class DeleteArtistEvent extends Equatable {
+abstract class DeleteArtistEvent {
   const DeleteArtistEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 class DeleteArtistEventDelete extends DeleteArtistEvent {
@@ -13,7 +10,4 @@ class DeleteArtistEventDelete extends DeleteArtistEvent {
   const DeleteArtistEventDelete({
     required this.artistId,
   });
-
-  @override
-  List<Object> get props => [artistId];
 }

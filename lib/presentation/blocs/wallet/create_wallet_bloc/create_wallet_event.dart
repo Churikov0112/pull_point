@@ -1,10 +1,7 @@
 part of 'create_wallet_bloc.dart';
 
-abstract class CreateWalletEvent extends Equatable {
+abstract class CreateWalletEvent {
   const CreateWalletEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 class CreateWalletEventCreate extends CreateWalletEvent {

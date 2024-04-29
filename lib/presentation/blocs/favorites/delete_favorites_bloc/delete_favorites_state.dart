@@ -1,10 +1,7 @@
 part of 'delete_favorites_bloc.dart';
 
-abstract class DeleteFavoritesState extends Equatable {
+abstract class DeleteFavoritesState {
   const DeleteFavoritesState();
-
-  @override
-  List<Object> get props => [];
 }
 
 class DeleteFavoritesStateInitial extends DeleteFavoritesState {

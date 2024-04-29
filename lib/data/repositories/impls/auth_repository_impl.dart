@@ -85,8 +85,8 @@ class AuthRepositoryImpl extends AuthRepositoryInterface {
   }) async {
     final response = await CreateUserRequest.send(
       id: userInput.id,
-      username: userInput.username ?? "-",
-      email: userInput.email,
+      username: userInput.username ?? "null",
+      email: userInput.email ?? "null",
     );
     final UserModel user;
     if (response.statusCode == 200) {

@@ -1,5 +1,4 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/domain/domain.dart';
 
@@ -18,7 +17,9 @@ class CheckArtistNameExistenceBloc extends Bloc<CheckArtistNameExistenceEvent, C
   final ArtistsRepositoryInterface _artistsRepository;
 
   Future<void> _checkArtistNameExistence(
-      CheckArtistNameExistenceEventCheck event, Emitter<CheckArtistNameExistenceState> emit) async {
+    CheckArtistNameExistenceEventCheck event,
+    Emitter<CheckArtistNameExistenceState> emit,
+  ) async {
     emit(const CheckArtistNameExistenceStatePending());
     final exists = await _artistsRepository.checkArtistNameExistence(artistName: event.artistName);
     await Future.delayed(const Duration(milliseconds: 1000));

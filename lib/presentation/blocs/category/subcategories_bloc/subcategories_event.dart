@@ -1,10 +1,7 @@
 part of 'subcategories_bloc.dart';
 
-abstract class SubcategoriesEvent extends Equatable {
+abstract class SubcategoriesEvent {
   const SubcategoriesEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 class SubcategoriesEventLoad extends SubcategoriesEvent {

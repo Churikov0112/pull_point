@@ -1,10 +1,7 @@
 part of 'update_device_token_bloc.dart';
 
-abstract class UpdateDeviceTokenEvent extends Equatable {
+abstract class UpdateDeviceTokenEvent {
   const UpdateDeviceTokenEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 class UpdateDeviceTokenEventUpdate extends UpdateDeviceTokenEvent {

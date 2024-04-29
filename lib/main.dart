@@ -1,7 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
@@ -42,7 +41,7 @@ class MyApp extends StatelessWidget {
     final AuthRepositoryInterface authRepository = AuthRepositoryImpl();
     final ArtistsRepositoryInterface artistsRepository = ArtistsRepositoryImpl();
     final PullPointsRepositoryInterface pullPointsRepository = PullPointsRepositoryImpl();
-    final WalletRepositoryInterface walletRepository = WalletRepositoryImpl();
+    // final WalletRepositoryInterface walletRepository = WalletRepositoryImpl(); CHANGE VERSION
     final FeedFiltersRepositoryInterface feedFiltersRepository = FeedFiltersRepositoryImpl();
     final CategoriesRepositoryInterface categoriesRepository = CategoriesRepositoryImpl();
     final FavoritesRepositoryInterface favoritesRepository = FavoritesRepositoryImpl();
@@ -89,16 +88,16 @@ class MyApp extends StatelessWidget {
         BlocProvider<CheckArtistNameExistenceBloc>(
             create: (context) => CheckArtistNameExistenceBloc(artistsRepository: artistsRepository)),
 
-        // wallet blocs
-        BlocProvider<CreateWalletBloc>(create: (context) => CreateWalletBloc(walletRepository: walletRepository)),
-        BlocProvider<WalletBloc>(create: (context) => WalletBloc(walletRepository: walletRepository)),
-        BlocProvider<WalletHistoryBloc>(create: (context) => WalletHistoryBloc(walletRepository: walletRepository)),
-        BlocProvider<WalletAddingMoneyBloc>(
-            create: (context) => WalletAddingMoneyBloc(walletRepository: walletRepository)),
-        BlocProvider<WalletWithdrawMoneyBloc>(
-            create: (context) => WalletWithdrawMoneyBloc(walletRepository: walletRepository)),
-        BlocProvider<WalletTransferMoneyBloc>(
-            create: (context) => WalletTransferMoneyBloc(walletRepository: walletRepository)),
+        // // wallet blocs
+        // BlocProvider<CreateWalletBloc>(create: (context) => CreateWalletBloc(walletRepository: walletRepository)), CHANGE VERSION
+        // BlocProvider<WalletBloc>(create: (context) => WalletBloc(walletRepository: walletRepository)), CHANGE VERSION
+        // BlocProvider<WalletHistoryBloc>(create: (context) => WalletHistoryBloc(walletRepository: walletRepository)), CHANGE VERSION
+        // BlocProvider<WalletAddingMoneyBloc>(
+        //     create: (context) => WalletAddingMoneyBloc(walletRepository: walletRepository)), CHANGE VERSION
+        // BlocProvider<WalletWithdrawMoneyBloc>(
+        //     create: (context) => WalletWithdrawMoneyBloc(walletRepository: walletRepository)), CHANGE VERSION
+        // BlocProvider<WalletTransferMoneyBloc>(
+        //     create: (context) => WalletTransferMoneyBloc(walletRepository: walletRepository)), CHANGE VERSION
 
         // favorites blocs
         BlocProvider<GetFavoritesBloc>(create: (context) => GetFavoritesBloc(favoritesRepository: favoritesRepository)),
@@ -112,7 +111,7 @@ class MyApp extends StatelessWidget {
         navigatorObservers: [BotToastNavigatorObserver()],
         debugShowCheckedModeBanner: false,
         theme: ThemeData.light().copyWith(
-          backgroundColor: AppColors.primary,
+          colorScheme: const ColorScheme.light(background: AppColors.primary),
         ),
         home: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {

@@ -1,10 +1,7 @@
 part of 'check_artist_name_existence_bloc.dart';
 
-abstract class CheckArtistNameExistenceState extends Equatable {
+abstract class CheckArtistNameExistenceState {
   const CheckArtistNameExistenceState();
-
-  @override
-  List<Object> get props => [];
 }
 
 class CheckArtistNameExistenceStateInitial extends CheckArtistNameExistenceState {

@@ -1,10 +1,7 @@
 part of 'artists_bloc.dart';
 
-abstract class ArtistsState extends Equatable {
+abstract class ArtistsState {
   const ArtistsState();
-
-  @override
-  List<Object> get props => [];
 }
 
 class ArtistsStateInitial extends ArtistsState {
@@ -21,7 +18,4 @@ class ArtistsStateLoaded extends ArtistsState {
   const ArtistsStateLoaded({
     required this.artists,
   });
-
-  @override
-  List<Object> get props => [artists];
 }

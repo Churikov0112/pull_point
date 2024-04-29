@@ -11,7 +11,7 @@ class UserModel {
   final String? username;
 
   @HiveField(2)
-  final String email;
+  final String? email;
 
   @HiveField(3)
   final bool? isArtist;

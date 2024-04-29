@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_point/presentation/blocs/blocs.dart';
-import 'package:pull_point/presentation/donation/donation_screen.dart';
 
 import '../../domain/models/models.dart';
 import '../ui_kit/ui_kit.dart';
@@ -112,21 +111,22 @@ class _ArtistGuestScreenState extends State<ArtistGuestScreen> {
                       ),
                     ),
                   ),
-                  floatingActionButton: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: LongButton(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (BuildContext context) => DonationScreen(artist: widget.artist),
-                          ),
-                        );
-                      },
-                      backgroundColor: AppColors.orange,
-                      child: const AppText("Пожертвовать", textColor: AppColors.textOnColors),
-                    ),
-                  ),
-                  floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+                  // CHANGE VERSION
+                  // floatingActionButton: Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 16),
+                  //   child: LongButton(
+                  //     onTap: () {
+                  //       Navigator.of(context).push(
+                  //         MaterialPageRoute<void>(
+                  //           builder: (BuildContext context) => DonationScreen(artist: widget.artist),
+                  //         ),
+                  //       );
+                  //     },
+                  //     backgroundColor: AppColors.orange,
+                  //     child: const AppText("Пожертвовать", textColor: AppColors.textOnColors),
+                  //   ),
+                  // ),
+                  // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
                 );
               },
             );

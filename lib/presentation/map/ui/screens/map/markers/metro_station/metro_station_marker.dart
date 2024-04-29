@@ -4,8 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:pull_point/presentation/ui_kit/ui_kit.dart';
 
 import '../../../../../../../domain/models/models.dart';
-import '../../../../../../ui_kit/colors/app_colors.dart';
-import '../../../../../../ui_kit/text/text.dart';
 
 Color _getColorByMetroLine(MetroLines line) {
   switch (line) {

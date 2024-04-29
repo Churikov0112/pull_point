@@ -1,10 +1,7 @@
 part of 'add_artist_bloc.dart';
 
-abstract class AddArtistEvent extends Equatable {
+abstract class AddArtistEvent {
   const AddArtistEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 class AddArtistEventCreate extends AddArtistEvent {
@@ -21,7 +18,4 @@ class AddArtistEventCreate extends AddArtistEvent {
     required this.categoryId,
     this.subcategoryIds,
   });
-
-  @override
-  List<Object> get props => [name, description, categoryId, userInput.id];
 }

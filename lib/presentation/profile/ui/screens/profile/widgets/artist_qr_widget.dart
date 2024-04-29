@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pull_point/data/http_requests/backend_config/backend_config.dart';
+import 'package:pull_point/data/config/backend_config/backend_config.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+
 import '../../../../../blocs/blocs.dart';
 import '../../../../../ui_kit/ui_kit.dart';
 

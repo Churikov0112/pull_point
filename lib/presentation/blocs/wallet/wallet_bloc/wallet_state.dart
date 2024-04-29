@@ -1,10 +1,7 @@
 part of 'wallet_bloc.dart';
 
-abstract class WalletState extends Equatable {
+abstract class WalletState {
   const WalletState();
-
-  @override
-  List<Object> get props => [];
 }
 
 class WalletStateInitial extends WalletState {

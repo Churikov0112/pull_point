@@ -1,10 +1,7 @@
 part of 'create_pull_point_bloc.dart';
 
-abstract class CreatePullPointState extends Equatable {
+abstract class CreatePullPointState {
   const CreatePullPointState();
-
-  @override
-  List<Object> get props => [];
 }
 
 class CreatePullPointStateInitial extends CreatePullPointState {

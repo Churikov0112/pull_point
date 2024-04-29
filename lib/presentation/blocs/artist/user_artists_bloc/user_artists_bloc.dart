@@ -1,5 +1,4 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../../domain/domain.dart';
@@ -19,7 +18,10 @@ class UserArtistsBloc extends Bloc<UserArtistsEvent, UserArtistsState> {
     on<UserArtistsEventResetSelectOnLogout>(_reset);
   }
 
-  Future<void> _load(UserArtistsEventLoad event, Emitter<UserArtistsState> emit) async {
+  Future<void> _load(
+    UserArtistsEventLoad event,
+    Emitter<UserArtistsState> emit,
+  ) async {
     emit(const UserArtistsStateLoading());
     await Future.delayed(const Duration(seconds: 1));
     final artists = await _artistsRepository.getUserArtists(userId: event.userId);
@@ -31,7 +33,10 @@ class UserArtistsBloc extends Bloc<UserArtistsEvent, UserArtistsState> {
     }
   }
 
-  Future<void> _select(UserArtistsEventSelect event, Emitter<UserArtistsState> emit) async {
+  Future<void> _select(
+    UserArtistsEventSelect event,
+    Emitter<UserArtistsState> emit,
+  ) async {
     final artists = await _artistsRepository.getUserArtists(userId: event.userId);
     _artistsRepository.selectArtist(artistId: event.artistId);
     final selectedArtist = _artistsRepository.getSelectedArtist();
@@ -42,7 +47,10 @@ class UserArtistsBloc extends Bloc<UserArtistsEvent, UserArtistsState> {
     }
   }
 
-  Future<void> _reset(UserArtistsEventResetSelectOnLogout event, Emitter<UserArtistsState> emit) async {
+  Future<void> _reset(
+    UserArtistsEventResetSelectOnLogout event,
+    Emitter<UserArtistsState> emit,
+  ) async {
     _artistsRepository.unselectArtistOnLogout();
     emit(const UserArtistsStateInitial());
   }

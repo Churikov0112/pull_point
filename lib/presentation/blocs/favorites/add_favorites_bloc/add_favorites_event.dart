@@ -1,10 +1,7 @@
 part of 'add_favorites_bloc.dart';
 
-abstract class AddFavoritesEvent extends Equatable {
+abstract class AddFavoritesEvent {
   const AddFavoritesEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 class AddFavoritesEventAdd extends AddFavoritesEvent {

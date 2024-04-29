@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import '../backend_config/backend_config.dart';
+import '../../config/backend_config/backend_config.dart';
 
 class UpdateDeviceTokenRequest {
   //

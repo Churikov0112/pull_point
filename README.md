@@ -1,6 +1,6 @@
 # pull_point
 
-Pull Point flutter app for street artists
+Pull Point Flutter app for street artists and audience
 
 ## bloc
 
