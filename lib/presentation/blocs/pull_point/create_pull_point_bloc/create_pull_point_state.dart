@@ -17,5 +17,8 @@ class CreatePullPointStateCreated extends CreatePullPointState {
 }
 
 class CreatePullPointStateFailed extends CreatePullPointState {
-  const CreatePullPointStateFailed();
+  final String? reason;
+  const CreatePullPointStateFailed({
+    required this.reason,
+  });
 }

@@ -16,14 +16,18 @@ class GetFavoritesBloc extends Bloc<GetFavoritesEvent, GetFavoritesState> {
 
   Future<void> _getFavorites(GetFavoritesEventGet event, Emitter<GetFavoritesState> emit) async {
     emit(const GetFavoritesStatePending());
-    final favorites = await _favoritesRepository.getUserFavorites();
-    await Future.delayed(const Duration(milliseconds: 1000));
-    if (favorites != null) {
-      emit(GetFavoritesStateLoaded(favorites: favorites));
-      return;
-    } else {
-      emit(const GetFavoritesStateFailed(reason: "Произошла ошибка при получении списка избранных артистов"));
-      return;
+    try {
+      final favorites = await _favoritesRepository.getUserFavorites();
+      await Future.delayed(const Duration(milliseconds: 1000));
+      if (favorites != null) {
+        emit(GetFavoritesStateLoaded(favorites: favorites));
+        return;
+      } else {
+        emit(const GetFavoritesStateFailed(reason: "Произошла ошибка при получении списка избранных артистов"));
+        return;
+      }
+    } catch (e) {
+      emit(GetFavoritesStateFailed(reason: e.toString()));
     }
   }
 }

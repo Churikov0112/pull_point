@@ -64,3 +64,10 @@ class AuthStateAuthorized extends AuthState {
 class AuthStateGuest extends AuthState {
   const AuthStateGuest();
 }
+
+class AuthStateFailed extends AuthState {
+  final String? reason;
+  const AuthStateFailed({
+    required this.reason,
+  });
+}

@@ -18,15 +18,20 @@ class ArtistsBloc extends Bloc<ArtistsEvent, ArtistsState> {
 
   Future<void> _load(ArtistsEventLoad event, Emitter<ArtistsState> emit) async {
     emit(const ArtistsStateLoading());
-    final artists = await _artistsRepository.getArtists(
-      search: event.search,
-      categoryId: event.categoryId,
-      subcategoryIds: event.subcategoryIds,
-    );
+    try {
+      final artists = await _artistsRepository.getArtists(
+        search: event.search,
+        categoryId: event.categoryId,
+        subcategoryIds: event.subcategoryIds,
+      );
 
-    if (artists.isNotEmpty) {
-      emit(ArtistsStateLoaded(artists: artists));
-    } else {
+      if (artists.isNotEmpty) {
+        emit(ArtistsStateLoaded(artists: artists));
+      } else {
+        BotToast.showText(text: "Мы не смогли найти ни одного артиста о вашему запросу");
+      }
+    } catch (e) {
+      emit(const ArtistsStateFailed(message: "Мы не смогли найти ни одного артиста о вашему запросу"));
       BotToast.showText(text: "Мы не смогли найти ни одного артиста о вашему запросу");
     }
   }

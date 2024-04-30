@@ -17,8 +17,12 @@ class SubcategoriesBloc extends Bloc<SubcategoriesEvent, SubcategoriesState> {
   }
 
   Future<void> _load(SubcategoriesEventLoad event, Emitter<SubcategoriesState> emit) async {
-    final subcategories = await _categoriesRepository.getSubcategories(parentCategoryIds: event.parentCategoryIds);
-    emit(SubcategoriesStateLoaded(subcategories: subcategories));
+    try {
+      final subcategories = await _categoriesRepository.getSubcategories(parentCategoryIds: event.parentCategoryIds);
+      emit(SubcategoriesStateLoaded(subcategories: subcategories));
+    } catch (e) {
+      emit(SubcategoriesStateFailed(message: e.toString()));
+    }
   }
 
   Future<void> _reset(SubcategoriesEventReset event, Emitter<SubcategoriesState> emit) async {

@@ -19,3 +19,10 @@ class CheckArtistNameExistenceStateExists extends CheckArtistNameExistenceState 
 class CheckArtistNameExistenceStateNotExists extends CheckArtistNameExistenceState {
   const CheckArtistNameExistenceStateNotExists();
 }
+
+class CheckArtistNameExistenceStateFailed extends CheckArtistNameExistenceState {
+  final String? message;
+  const CheckArtistNameExistenceStateFailed({
+    required this.message,
+  });
+}

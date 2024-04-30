@@ -22,16 +22,20 @@ class DeleteArtistBloc extends Bloc<DeleteArtistEvent, DeleteArtistState> {
   ) async {
     emit(const DeleteArtistStateLoading());
     await Future.delayed(const Duration(seconds: 1));
-    final created = await _artistsRepository.deleteArtist(
-      artistId: event.artistId,
-    );
-    if (created) {
-      emit(const DeleteArtistStateDeleted());
-      BotToast.showText(text: "Артист успешно удален");
-      emit(const DeleteArtistStateInitial());
-    } else {
-      BotToast.showText(text: "Не удалось удалить Артиста");
-      emit(const DeleteArtistStateInitial());
+    try {
+      final created = await _artistsRepository.deleteArtist(
+        artistId: event.artistId,
+      );
+      if (created) {
+        emit(const DeleteArtistStateDeleted());
+        BotToast.showText(text: "Артист успешно удален");
+        emit(const DeleteArtistStateInitial());
+      } else {
+        BotToast.showText(text: "Не удалось удалить Артиста");
+        emit(const DeleteArtistStateInitial());
+      }
+    } catch (e) {
+      emit(DeleteArtistStateFailed(message: e.toString()));
     }
   }
 }

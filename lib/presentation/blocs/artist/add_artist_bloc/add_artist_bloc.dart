@@ -19,20 +19,25 @@ class AddArtistBloc extends Bloc<AddArtistEvent, AddArtistState> {
   Future<void> _create(AddArtistEventCreate event, Emitter<AddArtistState> emit) async {
     emit(const AddArtistStateLoading());
     await Future.delayed(const Duration(seconds: 1));
-    final created = await _artistsRepository.createArtist(
-      userInput: event.userInput,
-      name: event.name,
-      description: event.description,
-      categoryId: event.categoryId,
-      subcategoryIds: event.subcategoryIds,
-    );
-    if (created) {
-      emit(const AddArtistStateCreated());
-      BotToast.showText(text: "Артист успешно создан");
-      emit(const AddArtistStateInitial());
-    } else {
+    try {
+      final created = await _artistsRepository.createArtist(
+        userInput: event.userInput,
+        name: event.name,
+        description: event.description,
+        categoryId: event.categoryId,
+        subcategoryIds: event.subcategoryIds,
+      );
+      if (created) {
+        emit(const AddArtistStateCreated());
+        BotToast.showText(text: "Артист успешно создан");
+        emit(const AddArtistStateInitial());
+      } else {
+        BotToast.showText(text: "Не удалось создать Артиста");
+        emit(const AddArtistStateInitial());
+      }
+    } catch (e) {
       BotToast.showText(text: "Не удалось создать Артиста");
-      emit(const AddArtistStateInitial());
+      emit(const AddArtistStateFailed());
     }
   }
 }

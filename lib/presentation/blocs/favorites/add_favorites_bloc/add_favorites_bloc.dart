@@ -18,18 +18,22 @@ class AddFavoritesBloc extends Bloc<AddFavoritesEvent, AddFavoritesState> {
 
   Future<void> _addFavorites(AddFavoritesEventAdd event, Emitter<AddFavoritesState> emit) async {
     emit(const AddFavoritesStatePending());
-    final succeeded = await _favoritesRepository.addArtistToUserFavorites(artistId: event.artist.id);
-    await Future.delayed(const Duration(milliseconds: 1000));
-    if (succeeded) {
-      emit(const AddFavoritesStateReady());
-      BotToast.showText(text: "Артист успешно добавлен в избранное");
-      await FirebaseStaticMethods.subscribeToTopic(event.artist.name ?? "null");
-      BotToast.showText(text: "Вы подписались на уведомления от артиста");
-      return;
-    } else {
-      emit(const AddFavoritesStateFailed(reason: "Произошла ошибка при добавлении в избранное"));
-      BotToast.showText(text: "Произошла ошибка при добавлении в избранное");
-      return;
+    try {
+      final succeeded = await _favoritesRepository.addArtistToUserFavorites(artistId: event.artist.id);
+      await Future.delayed(const Duration(milliseconds: 1000));
+      if (succeeded) {
+        emit(const AddFavoritesStateReady());
+        BotToast.showText(text: "Артист успешно добавлен в избранное");
+        await FirebaseStaticMethods.subscribeToTopic(event.artist.name ?? "null");
+        BotToast.showText(text: "Вы подписались на уведомления от артиста");
+        return;
+      } else {
+        emit(const AddFavoritesStateFailed(reason: "Произошла ошибка при добавлении в избранное"));
+        BotToast.showText(text: "Произошла ошибка при добавлении в избранное");
+        return;
+      }
+    } catch (e) {
+      emit(AddFavoritesStateFailed(reason: e.toString()));
     }
   }
 }

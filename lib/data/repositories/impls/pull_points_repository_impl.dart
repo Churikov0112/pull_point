@@ -8,7 +8,9 @@ import '../../http_requests/http_requests.dart';
 class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
   PullPointsRepositoryImpl();
 
-  List<PullPointModel> allPullPoints = [
+  List<PullPointModel> allPullPoints = [];
+
+  List<PullPointModel> mocks = [
     PullPointModel(
       id: 0,
       title: "title",
@@ -63,7 +65,6 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
     //     allPullPoints.add(PullPointModel.fromJson(element));
     //   }
     // } else {
-    //   // загружаем только в случае отсутствия пулл поинтов
     //   if (allPullPoints.isEmpty) {
     //     final response = await GetPullPointsRequest.send();
     //     String source = const Utf8Decoder().convert(response.bodyBytes);
@@ -75,6 +76,7 @@ class PullPointsRepositoryImpl extends PullPointsRepositoryInterface {
     //   }
     // }
 
+    allPullPoints.addAll(mocks);
     return allPullPoints;
   }
 

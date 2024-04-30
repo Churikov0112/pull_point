@@ -19,3 +19,10 @@ class ArtistsStateLoaded extends ArtistsState {
     required this.artists,
   });
 }
+
+class ArtistsStateFailed extends ArtistsState {
+  final String? message;
+  const ArtistsStateFailed({
+    required this.message,
+  });
+}

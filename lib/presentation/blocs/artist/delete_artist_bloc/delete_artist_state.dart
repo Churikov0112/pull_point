@@ -15,3 +15,10 @@ class DeleteArtistStateLoading extends DeleteArtistState {
 class DeleteArtistStateDeleted extends DeleteArtistState {
   const DeleteArtistStateDeleted();
 }
+
+class DeleteArtistStateFailed extends DeleteArtistState {
+  final String? message;
+  const DeleteArtistStateFailed({
+    required this.message,
+  });
+}

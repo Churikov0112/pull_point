@@ -19,3 +19,11 @@ class CategoriesStateLoaded extends CategoriesState {
     required this.categories,
   });
 }
+
+class CategoriesStateFailed extends CategoriesState {
+  final String? message;
+
+  const CategoriesStateFailed({
+    required this.message,
+  });
+}

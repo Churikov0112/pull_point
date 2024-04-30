@@ -17,14 +17,17 @@ class WalletAddingMoneyBloc extends Bloc<WalletAddingMoneyEvent, WalletAddingMon
 
   Future<void> _addMoney(WalletAddingMoneyEventAddMoney event, Emitter<WalletAddingMoneyState> emit) async {
     emit(const WalletAddingMoneyStatePending());
-    final successful = await _walletRepository.buyCoins(sum: event.shopItem.sum);
-    if (successful) {
-      emit(const WalletAddingMoneyStateReady());
-      BotToast.showText(text: "Кошелек успешно пополнен");
-    } else {
-      BotToast.showText(text: "Не удалось пополнить кошелек");
-      emit(const WalletAddingMoneyStateFailed(reason: "Не удалось пополнить кошелек"));
+    try {
+      final successful = await _walletRepository.buyCoins(sum: event.shopItem.sum);
+      if (successful) {
+        emit(const WalletAddingMoneyStateReady());
+        BotToast.showText(text: "Кошелек успешно пополнен");
+      } else {
+        BotToast.showText(text: "Не удалось пополнить кошелек");
+        emit(const WalletAddingMoneyStateFailed(reason: "Не удалось пополнить кошелек"));
+      }
+    } catch (e) {
+      emit(WalletAddingMoneyStateFailed(reason: e.toString()));
     }
-    // emit(const WalletAddingMoneyStateInitial());
   }
 }

@@ -19,3 +19,10 @@ class CheckUsernameExistenceStateExists extends CheckUsernameExistenceState {
 class CheckUsernameExistenceStateNotExists extends CheckUsernameExistenceState {
   const CheckUsernameExistenceStateNotExists();
 }
+
+class CheckUsernameExistenceStateFailed extends CheckUsernameExistenceState {
+  final String? reason;
+  const CheckUsernameExistenceStateFailed({
+    required this.reason,
+  });
+}

@@ -20,23 +20,27 @@ class CreatePullPointBloc extends Bloc<CreatePullPointEvent, CreatePullPointStat
   Future<void> _create(CreatePullPointEventCreate event, Emitter<CreatePullPointState> emit) async {
     emit(const CreatePullPointStateLoading());
     await Future.delayed(const Duration(seconds: 1));
-    final created = await _pullPointsRepository.createPullPoint(
-      name: event.name,
-      description: event.description,
-      ownerId: event.ownerId,
-      latitude: event.latitude,
-      longitude: event.longitude,
-      startTime: event.startTime,
-      endTime: event.endTime,
-      categoryId: event.categoryId,
-      subcategoryIds: event.subcategoryIds,
-    );
-    if (created) {
-      emit(const CreatePullPointStateCreated());
-      BotToast.showText(text: "Pull Point успешно создан");
-    } else {
-      BotToast.showText(text: "Не удалось создать Pull Point");
-      emit(const CreatePullPointStateInitial());
+    try {
+      final created = await _pullPointsRepository.createPullPoint(
+        name: event.name,
+        description: event.description,
+        ownerId: event.ownerId,
+        latitude: event.latitude,
+        longitude: event.longitude,
+        startTime: event.startTime,
+        endTime: event.endTime,
+        categoryId: event.categoryId,
+        subcategoryIds: event.subcategoryIds,
+      );
+      if (created) {
+        emit(const CreatePullPointStateCreated());
+        BotToast.showText(text: "Pull Point успешно создан");
+      } else {
+        BotToast.showText(text: "Не удалось создать Pull Point");
+        emit(const CreatePullPointStateInitial());
+      }
+    } catch (e) {
+      emit(CreatePullPointStateFailed(reason: e.toString()));
     }
   }
 

@@ -20,13 +20,17 @@ class WalletTransferMoneyBloc extends Bloc<WalletTransferMoneyEvent, WalletTrans
     Emitter<WalletTransferMoneyState> emit,
   ) async {
     emit(const WalletTransferMoneyStatePending());
-    final successful = await _walletRepository.transferCoins(sum: event.sum, artistName: event.artistName);
-    if (successful) {
-      emit(const WalletTransferMoneyStateReady());
-      BotToast.showText(text: "Пожертвование прошло успешно", duration: const Duration(seconds: 5));
-    } else {
-      BotToast.showText(text: "Не удалось совершить пожертвование");
-      emit(const WalletTransferMoneyStateFailed(reason: "Не удалось совершить пожертвование"));
+    try {
+      final successful = await _walletRepository.transferCoins(sum: event.sum, artistName: event.artistName);
+      if (successful) {
+        emit(const WalletTransferMoneyStateReady());
+        BotToast.showText(text: "Пожертвование прошло успешно", duration: const Duration(seconds: 5));
+      } else {
+        BotToast.showText(text: "Не удалось совершить пожертвование");
+        emit(const WalletTransferMoneyStateFailed(reason: "Не удалось совершить пожертвование"));
+      }
+    } catch (e) {
+      emit(WalletTransferMoneyStateFailed(reason: e.toString()));
     }
   }
 }

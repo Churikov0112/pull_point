@@ -17,8 +17,12 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
   }
 
   Future<void> _load(CategoriesEventLoad event, Emitter<CategoriesState> emit) async {
-    final categories = await _categoriesRepository.getCategories();
-    emit(CategoriesStateLoaded(categories: categories));
+    try {
+      final categories = await _categoriesRepository.getCategories();
+      emit(CategoriesStateLoaded(categories: categories));
+    } catch (e) {
+      emit(CategoriesStateFailed(message: e.toString()));
+    }
   }
 
   Future<void> _reset(CategoriesEventReset event, Emitter<CategoriesState> emit) async {

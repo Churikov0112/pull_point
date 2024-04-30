@@ -17,5 +17,9 @@ class UpdateDeviceTokenStateUpdated extends UpdateDeviceTokenState {
 }
 
 class UpdateDeviceTokenStateFailed extends UpdateDeviceTokenState {
-  const UpdateDeviceTokenStateFailed();
+  final String? reason;
+
+  const UpdateDeviceTokenStateFailed({
+    required this.reason,
+  });
 }

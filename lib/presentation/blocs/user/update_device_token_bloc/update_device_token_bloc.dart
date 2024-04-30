@@ -18,13 +18,17 @@ class UpdateDeviceTokenBloc extends Bloc<UpdateDeviceTokenEvent, UpdateDeviceTok
 
   Future<void> _update(UpdateDeviceTokenEventUpdate event, Emitter<UpdateDeviceTokenState> emit) async {
     emit(const UpdateDeviceTokenStatePending());
-    final success = await _authRepository.updateUserDeviceToken(event.deviceToken);
-    if (success) {
-      emit(const UpdateDeviceTokenStateUpdated());
-      BotToast.showText(text: "device token обновлён");
-      return;
+    try {
+      final success = await _authRepository.updateUserDeviceToken(event.deviceToken);
+      if (success) {
+        emit(const UpdateDeviceTokenStateUpdated());
+        BotToast.showText(text: "device token обновлён");
+        return;
+      }
+      emit(const UpdateDeviceTokenStateFailed(reason: "Не удалось обновить device token"));
+      BotToast.showText(text: "Не удалось обновить device token");
+    } catch (e) {
+      emit(UpdateDeviceTokenStateFailed(reason: e.toString()));
     }
-    emit(const UpdateDeviceTokenStateFailed());
-    BotToast.showText(text: "Не удалось обновить device token");
   }
 }

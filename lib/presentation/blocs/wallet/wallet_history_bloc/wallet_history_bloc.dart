@@ -17,19 +17,27 @@ class WalletHistoryBloc extends Bloc<WalletHistoryEvent, WalletHistoryState> {
 
   Future<void> _getWalletHistory(WalletHistoryEventGet event, Emitter<WalletHistoryState> emit) async {
     emit(const WalletHistoryStatePending());
-    final walletHistory = await _walletRepository.getUserWalletHistory();
-    await Future.delayed(const Duration(milliseconds: 1000));
-    if (walletHistory != null) {
-      emit(WalletHistoryStateLoaded(transactions: walletHistory));
-      return;
-    } else {
-      emit(const WalletHistoryStateNoWallet());
-      return;
+    try {
+      final walletHistory = await _walletRepository.getUserWalletHistory();
+      await Future.delayed(const Duration(milliseconds: 1000));
+      if (walletHistory != null) {
+        emit(WalletHistoryStateLoaded(transactions: walletHistory));
+        return;
+      } else {
+        emit(const WalletHistoryStateNoWallet());
+        return;
+      }
+    } catch (e) {
+      emit(WalletHistoryStateFailed(reason: e.toString()));
     }
   }
 
   Future<void> _reset(WalletHistoryEventReset event, Emitter<WalletHistoryState> emit) async {
-    await _walletRepository.getUserWalletHistory();
-    emit(const WalletHistoryStateInitial());
+    try {
+      await _walletRepository.getUserWalletHistory();
+      emit(const WalletHistoryStateInitial());
+    } catch (e) {
+      emit(WalletHistoryStateFailed(reason: e.toString()));
+    }
   }
 }

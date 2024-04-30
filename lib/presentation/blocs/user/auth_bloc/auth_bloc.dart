@@ -30,8 +30,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _continueAsGuest(AuthEventContinueAsGuest event, Emitter<AuthState> emit) async {
-    emit(const AuthStateGuest());
-    BotToast.showText(text: "Вы продолжили как гость. Некоторые функции будут недоступны");
+    try {
+      emit(const AuthStateGuest());
+      BotToast.showText(text: "Вы продолжили как гость. Некоторые функции будут недоступны");
+    } catch (e) {
+      emit(AuthStateFailed(reason: e.toString()));
+    }
   }
 
   Future<void> _openEmailPage(AuthEventOpenEmailPage event, Emitter<AuthState> emit) async {
@@ -49,78 +53,102 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _checkAccountLocally(AuthEventCheckAccoutLocally event, Emitter<AuthState> emit) async {
     emit(const AuthStatePending());
     await Future.delayed(const Duration(milliseconds: 1000));
-    final UserModel? user = await _authRepository.checkAccountLocally();
-    if (user != null) {
-      await Future.delayed(const Duration(milliseconds: 1000));
-      final refreshedUser = await _authRepository.refreshJWT();
-      if (refreshedUser != null) {
-        emit(AuthStateAuthorized(user: user));
+    try {
+      final UserModel? user = await _authRepository.checkAccountLocally();
+      if (user != null) {
+        await Future.delayed(const Duration(milliseconds: 1000));
+        final refreshedUser = await _authRepository.refreshJWT();
+        if (refreshedUser != null) {
+          emit(AuthStateAuthorized(user: user));
+        } else {
+          BotToast.showText(text: "Не удалось обновить токен");
+          emit(const AuthStateUnauthorized());
+        }
       } else {
-        BotToast.showText(text: "Не удалось обновить токен");
         emit(const AuthStateUnauthorized());
       }
-    } else {
-      emit(const AuthStateUnauthorized());
+    } catch (e) {
+      emit(AuthStateFailed(reason: e.toString()));
     }
   }
 
   Future<void> _sendVerificationCode(AuthEventSendCode event, Emitter<AuthState> emit) async {
     emit(const AuthStatePending());
     await Future.delayed(const Duration(milliseconds: 1000));
-    final code = await _authRepository.getVerificationCode(email: event.email);
-    if (code != null) {
-      emit(AuthStateCodeSent(email: event.email, code: code));
-      // await _login(AuthEventLogin(email: event.email, code: code), emit);
-    } else {
-      BotToast.showText(text: "Не удалось отправить проверочный код");
+    try {
+      final code = await _authRepository.getVerificationCode(email: event.email);
+      if (code != null) {
+        emit(AuthStateCodeSent(email: event.email, code: code));
+        // await _login(AuthEventLogin(email: event.email, code: code), emit);
+      } else {
+        BotToast.showText(text: "Не удалось отправить проверочный код");
+      }
+    } catch (e) {
+      emit(AuthStateFailed(reason: e.toString()));
     }
   }
 
   Future<void> _login(AuthEventLogin event, Emitter<AuthState> emit) async {
     emit(const AuthStatePending());
     await Future.delayed(const Duration(milliseconds: 1000));
-    final user = await _authRepository.login(email: event.email, code: event.code);
-    if (user != null) {
-      if (user.username != null) {
-        emit(AuthStateAuthorized(user: user));
+    try {
+      final user = await _authRepository.login(email: event.email, code: event.code);
+      if (user != null) {
+        if (user.username != null) {
+          emit(AuthStateAuthorized(user: user));
+        } else {
+          emit(AuthStateCodeVerified(user: user));
+        }
       } else {
-        emit(AuthStateCodeVerified(user: user));
+        BotToast.showText(text: "Неверный код, попробуйте снова");
       }
-    } else {
-      BotToast.showText(text: "Неверный код, попробуйте снова");
+    } catch (e) {
+      emit(AuthStateFailed(reason: e.toString()));
     }
   }
 
   Future<void> _registerUser(AuthEventRegisterUser event, Emitter<AuthState> emit) async {
     emit(const AuthStatePending());
     await Future.delayed(const Duration(milliseconds: 1000));
-    final user = await _authRepository.createUser(userInput: event.user);
-    if (user != null) {
-      emit(AuthStateAuthorized(user: user));
-    } else {
-      BotToast.showText(text: "Ошибка при создании пользователя");
+    try {
+      final user = await _authRepository.createUser(userInput: event.user);
+      if (user != null) {
+        emit(AuthStateAuthorized(user: user));
+      } else {
+        BotToast.showText(text: "Ошибка при создании пользователя");
+      }
+    } catch (e) {
+      emit(AuthStateFailed(reason: e.toString()));
     }
   }
 
   Future<void> _registerArtist(AuthEventRegisterArtist event, Emitter<AuthState> emit) async {
     emit(const AuthStatePending());
     await Future.delayed(const Duration(milliseconds: 1000));
-    final user = await _authRepository.createUser(userInput: event.user);
-    if (user != null) {
-      final artistCreated = await _artistsRepository.createArtist(
-        userInput: user,
-        name: event.name,
-        description: event.description,
-        categoryId: event.categoryId,
-        subcategoryIds: event.subcategoryIds,
-      );
-      if (artistCreated) emit(AuthStateAuthorized(user: event.user));
-      if (!artistCreated) BotToast.showText(text: "Ошибка при создании артиста");
+    try {
+      final user = await _authRepository.createUser(userInput: event.user);
+      if (user != null) {
+        final artistCreated = await _artistsRepository.createArtist(
+          userInput: user,
+          name: event.name,
+          description: event.description,
+          categoryId: event.categoryId,
+          subcategoryIds: event.subcategoryIds,
+        );
+        if (artistCreated) emit(AuthStateAuthorized(user: event.user));
+        if (!artistCreated) BotToast.showText(text: "Ошибка при создании артиста");
+      }
+    } catch (e) {
+      emit(AuthStateFailed(reason: e.toString()));
     }
   }
 
   Future<void> _logout(AuthEventLogout event, Emitter<AuthState> emit) async {
-    await _authRepository.logout();
-    emit(const AuthStateGuest());
+    try {
+      await _authRepository.logout();
+      emit(const AuthStateGuest());
+    } catch (e) {
+      emit(AuthStateFailed(reason: e.toString()));
+    }
   }
 }

@@ -19,18 +19,22 @@ class DeleteFavoritesBloc extends Bloc<DeleteFavoritesEvent, DeleteFavoritesStat
 
   Future<void> _deleteArtistFromFavorites(DeleteFavoritesEventDelete event, Emitter<DeleteFavoritesState> emit) async {
     emit(DeleteFavoritesStatePending(artistId: event.artist.id));
-    final succeeded = await _favoritesRepository.deleteArtistFromUserFavorites(artistId: event.artist.id);
-    await Future.delayed(const Duration(milliseconds: 1000));
-    if (succeeded) {
-      emit(const DeleteFavoritesStateReady());
-      BotToast.showText(text: "Артист успешно удален из избранного");
-      await FirebaseStaticMethods.unsubscribeFromTopic(event.artist.name ?? "null");
-      BotToast.showText(text: "Вы отписались от уведомлений ${event.artist.name ?? "null"}");
-      return;
-    } else {
-      emit(const DeleteFavoritesStateFailed(reason: "Произошла ошибка при удалении артиста из избранного"));
-      BotToast.showText(text: "Произошла ошибка при удалении артиста из избранного");
-      return;
+    try {
+      final succeeded = await _favoritesRepository.deleteArtistFromUserFavorites(artistId: event.artist.id);
+      await Future.delayed(const Duration(milliseconds: 1000));
+      if (succeeded) {
+        emit(const DeleteFavoritesStateReady());
+        BotToast.showText(text: "Артист успешно удален из избранного");
+        await FirebaseStaticMethods.unsubscribeFromTopic(event.artist.name ?? "null");
+        BotToast.showText(text: "Вы отписались от уведомлений ${event.artist.name ?? "null"}");
+        return;
+      } else {
+        emit(const DeleteFavoritesStateFailed(reason: "Произошла ошибка при удалении артиста из избранного"));
+        BotToast.showText(text: "Произошла ошибка при удалении артиста из избранного");
+        return;
+      }
+    } catch (e) {
+      emit(DeleteFavoritesStateFailed(reason: e.toString()));
     }
   }
 }

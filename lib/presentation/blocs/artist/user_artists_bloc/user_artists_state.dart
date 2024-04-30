@@ -21,3 +21,11 @@ class UserArtistsStateSelected extends UserArtistsState {
     required this.selectedArtist,
   });
 }
+
+class UserArtistsStateFailed extends UserArtistsState {
+  final String? message;
+
+  const UserArtistsStateFailed({
+    required this.message,
+  });
+}

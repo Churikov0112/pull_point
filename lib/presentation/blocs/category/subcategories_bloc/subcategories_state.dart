@@ -19,3 +19,11 @@ class SubcategoriesStateLoaded extends SubcategoriesState {
     required this.subcategories,
   });
 }
+
+class SubcategoriesStateFailed extends SubcategoriesState {
+  final String? message;
+
+  const SubcategoriesStateFailed({
+    required this.message,
+  });
+}

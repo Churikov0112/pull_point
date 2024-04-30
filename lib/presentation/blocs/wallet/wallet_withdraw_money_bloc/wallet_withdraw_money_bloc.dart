@@ -20,14 +20,17 @@ class WalletWithdrawMoneyBloc extends Bloc<WalletWithdrawMoneyEvent, WalletWithd
     Emitter<WalletWithdrawMoneyState> emit,
   ) async {
     emit(const WalletWithdrawMoneyStatePending());
-    final successful = await _walletRepository.sellCoins(sum: event.sum);
-    if (successful) {
-      emit(const WalletWithdrawMoneyStateReady());
-      BotToast.showText(text: "Деньги успешно выведены на карту");
-    } else {
-      BotToast.showText(text: "Не удалось вывести деньги");
-      emit(const WalletWithdrawMoneyStateFailed(reason: "Не удалось вывести деньги"));
+    try {
+      final successful = await _walletRepository.sellCoins(sum: event.sum);
+      if (successful) {
+        emit(const WalletWithdrawMoneyStateReady());
+        BotToast.showText(text: "Деньги успешно выведены на карту");
+      } else {
+        BotToast.showText(text: "Не удалось вывести деньги");
+        emit(const WalletWithdrawMoneyStateFailed(reason: "Не удалось вывести деньги"));
+      }
+    } catch (e) {
+      emit(WalletWithdrawMoneyStateFailed(reason: e.toString()));
     }
-    // emit(const WalletWithdrawMoneyStateInitial());
   }
 }

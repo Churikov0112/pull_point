@@ -24,12 +24,16 @@ class UserArtistsBloc extends Bloc<UserArtistsEvent, UserArtistsState> {
   ) async {
     emit(const UserArtistsStateLoading());
     await Future.delayed(const Duration(seconds: 1));
-    final artists = await _artistsRepository.getUserArtists(userId: event.userId);
-    final selectedArtist = _artistsRepository.getSelectedArtist();
-    if (selectedArtist != null) {
-      emit(UserArtistsStateSelected(allUserArtists: artists, selectedArtist: selectedArtist));
-    } else {
-      BotToast.showText(text: "Вы можете выбрать артиста в вашем профиле");
+    try {
+      final artists = await _artistsRepository.getUserArtists(userId: event.userId);
+      final selectedArtist = _artistsRepository.getSelectedArtist();
+      if (selectedArtist != null) {
+        emit(UserArtistsStateSelected(allUserArtists: artists, selectedArtist: selectedArtist));
+      } else {
+        BotToast.showText(text: "Вы можете выбрать артиста в вашем профиле");
+      }
+    } catch (e) {
+      emit(UserArtistsStateFailed(message: e.toString()));
     }
   }
 
@@ -37,13 +41,17 @@ class UserArtistsBloc extends Bloc<UserArtistsEvent, UserArtistsState> {
     UserArtistsEventSelect event,
     Emitter<UserArtistsState> emit,
   ) async {
-    final artists = await _artistsRepository.getUserArtists(userId: event.userId);
-    _artistsRepository.selectArtist(artistId: event.artistId);
-    final selectedArtist = _artistsRepository.getSelectedArtist();
-    if (selectedArtist != null) {
-      emit(UserArtistsStateSelected(allUserArtists: artists, selectedArtist: selectedArtist));
-    } else {
-      BotToast.showText(text: "Произошла ошибка при выборе артиста");
+    try {
+      final artists = await _artistsRepository.getUserArtists(userId: event.userId);
+      _artistsRepository.selectArtist(artistId: event.artistId);
+      final selectedArtist = _artistsRepository.getSelectedArtist();
+      if (selectedArtist != null) {
+        emit(UserArtistsStateSelected(allUserArtists: artists, selectedArtist: selectedArtist));
+      } else {
+        BotToast.showText(text: "Произошла ошибка при выборе артиста");
+      }
+    } catch (e) {
+      emit(UserArtistsStateFailed(message: e.toString()));
     }
   }
 
